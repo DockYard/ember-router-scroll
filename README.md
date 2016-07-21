@@ -119,6 +119,7 @@ See example app: (EXAMPLE APP HERE) -->
 
 * `git clone` this repository
 * `npm install`
+* `bower install`
 
 ## Running
 
