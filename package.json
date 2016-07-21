@@ -1,21 +1,29 @@
 {
   "name": "ember-router-scroll",
-  "version": "0.0.0",
-  "description": "The default blueprint for ember-cli addons.",
+  "version": "0.0.1",
+  "description": "Scroll to top with preserved browser history scroll position",
   "directories": {
     "doc": "doc",
     "test": "tests"
   },
   "scripts": {
     "build": "ember build",
+    "eslint": "eslint . --ignore-path .eslintignore",
     "start": "ember server",
     "test": "ember try:each"
+  },
+  "config": {
+    "pre-git": {
+      "pre-push": [
+        "npm run eslint"
+      ]
+    }
   },
   "repository": "",
   "engines": {
     "node": ">= 0.10.0"
   },
-  "author": "",
+  "author": "Jason Farmer <jacefarm@gmail.com> and Benny C. Wong <bwong337@gmail.com>",
   "license": "MIT",
   "devDependencies": {
     "broccoli-asset-rev": "^2.4.2",
@@ -37,10 +45,16 @@
     "ember-load-initializers": "^0.5.1",
     "ember-resolver": "^2.0.3",
     "ember-welcome-page": "^1.0.1",
+    "eslint": "^2.4.0",
+    "eslint-config-airbnb": "^6.1.0",
+    "eslint-plugin-dollarshaveclub": "^1.0.0",
     "loader.js": "^4.0.1"
   },
   "keywords": [
-    "ember-addon"
+    "ember-addon",
+    "ember-router-scroll",
+    "popstateEvent",
+    "browser scroll"
   ],
   "dependencies": {
     "ember-cli-babel": "^5.1.6"

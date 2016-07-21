@@ -1,0 +1,15 @@
+{
+  "extends": [
+    "airbnb/base",
+    "plugin:dollarshaveclub/ember"
+  ],
+  "plugins": [
+    "dollarshaveclub"
+  ],
+  "globals": {
+    "Fingerprint": true,
+    "Flickity": true,
+    "Modernizr": false,
+    "Raven": true
+  }
+}
