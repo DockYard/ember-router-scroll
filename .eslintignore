@@ -12,8 +12,12 @@ tests/fixtures/**/*
 tmp/**/*
 vendor/**/*
 
-app/router.js
-public/assets/js/skrimps.js
+# Generated files
+index.js
+testem.js
+tests/test-helper.js
+tests/dummy/*
+tests/helpers/*
 
 # runs in Phantom, which lacks support for required ES2016 features
 tests/blanket-options.js
