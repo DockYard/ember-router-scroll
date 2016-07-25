@@ -1,15 +1,17 @@
 # Ember-router-scroll
 
 Scroll to page top on transition, like a non-SPA website. An alternative scroll behavior for Ember applications.
-<!--
-## Demo
 
--- TO-DO -- GIF HERE BEFORE
-
--- TO-DO -- GIF HERE AFTER
+### Before
+![before-scroll](https://cloud.githubusercontent.com/assets/4430436/17122972/0a1fe454-5295-11e6-937f-f1f5beab9d6b.gif)  
+Notice that the in the full purple page, the user is sent to the **middle** of the page
 
 
- -->
+
+### After
+![after-scroll](https://cloud.githubusercontent.com/assets/4430436/17122970/07c1a3a0-5295-11e6-977f-37eb955d95b1.gif)  
+Notice that the in the full purple page, the user is sent to the **top** of the page
+
 
 ## Why Use it?
 
@@ -72,16 +74,20 @@ import RouterScrollMixin from 'ember-router-scroll';
 And add RouterScrollMixin as an extension to your Router object:
 
 ```javascript
-`const Router = Ember.Router.extend(RouterScrollMixin,{}`
+const Router = Ember.Router.extend(RouterScrollMixin,{}
 ```
 
 ### Step 3: Profit
 
 ## Preserve Scroll Position
-<!--
--- TO-DO -- PRESERVE SCROLL BEFORE GIF --
 
--- TO-DO -- PRESERVE SCROLL AFTER GIF -- -->
+### Before:
+![before-preserve](https://cloud.githubusercontent.com/assets/4430436/17122971/0a1e34ce-5295-11e6-8d30-9f687dd69dbb.gif)  
+Notice the unwanted scroll to top in this case.
+
+### After: 
+![after-preserve](https://cloud.githubusercontent.com/assets/4430436/17122969/07acbb48-5295-11e6-9900-f9ba519affa4.gif)  
+Adding a query parameter fixes this issue.
 
 In certain cases, you might want to have certain routes preserve scroll position when coming from a specific location. For example, inside your application, there is a way to get to a route where the user expects scroll position to be preserved (such as a tab section).
 
