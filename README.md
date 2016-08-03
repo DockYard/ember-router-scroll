@@ -52,7 +52,7 @@ On `didTransition`, it first checks to see if the route transition was triggered
 ### Step 1: Install Ember Router Scroll
 
 ```bash
-npm install ember-router-scroll
+ember install ember-router-scroll
 ```
 or
 
