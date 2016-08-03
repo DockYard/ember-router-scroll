@@ -1,6 +1,6 @@
 {
   "name": "ember-router-scroll",
-  "version": "0.1.0",
+  "version": "0.0.3",
   "description": "Scroll to top with preserved browser history scroll position",
   "directories": {
     "doc": "doc",
