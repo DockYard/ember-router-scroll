@@ -59,7 +59,7 @@ or
 Add this in the dependencies block of your `package.json` file:
 
 ```json
-"ember-router-scroll": "dollarshaveclub/ember-router-scroll#v0.0.1",
+"ember-router-scroll": "dollarshaveclub/ember-router-scroll#v0.1.0",
 ```
 
 ### Step 2: Import ember-router-scroll
