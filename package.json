@@ -19,7 +19,7 @@
       ]
     }
   },
-  "repository": "",
+  "repository": "dollarshaveclub/ember-router-scroll",
   "engines": {
     "node": ">= 0.10.0"
   },
