@@ -59,7 +59,7 @@ or
 Add this in the dependencies block of your `package.json` file:
 
 ```json
-"ember-router-scroll": "dollarshaveclub/ember-router-scroll#v0.0.1",
+"ember-router-scroll": "dollarshaveclub/ember-router-scroll#v0.0.3",
 ```
 
 ### Step 2: Import ember-router-scroll
@@ -85,7 +85,7 @@ const Router = Ember.Router.extend(RouterScrollMixin,{}
 ![before-preserve](https://cloud.githubusercontent.com/assets/4430436/17122971/0a1e34ce-5295-11e6-8d30-9f687dd69dbb.gif)  
 Notice the unwanted scroll to top in this case.
 
-### After: 
+### After:
 ![after-preserve](https://cloud.githubusercontent.com/assets/4430436/17122969/07acbb48-5295-11e6-9900-f9ba519affa4.gif)  
 Adding a query parameter fixes this issue.
 
