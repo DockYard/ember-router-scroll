@@ -1,42 +1,30 @@
 import Ember from 'ember';
 
-// ember-router-scroll variables
-let popStateEvent = false;
-const scrollMap = {};
-let windowLocation = '';
-
-// ember-router-scroll event handler
-window.addEventListener('popstate', () => {
-  popStateEvent = true;
-});
+const {
+  get,
+  inject,
+  run: { next },
+} = Ember;
 
 export default Ember.Mixin.create({
+  service: inject.service('router-scroll'),
 
   willTransition(...args) {
     this._super(...args);
-    scrollMap[windowLocation] = Ember.$(window).scrollTop();
+    get(this, 'service').update();
   },
 
   didTransition(transitions, ...args) {
     this._super(transitions, ...args);
+    next(() => {
+      let scrollPosition = get(this, 'service.position');
 
-    Ember.run.next(() => {
-      windowLocation = window.location.pathname;
-      const scrollPosition = scrollMap[windowLocation] ? scrollMap[windowLocation] : 0;
-      const preserveScrollPosition = transitions[transitions.length - 1]
+      let preserveScrollPosition = transitions[transitions.length - 1]
         .handler.controller.get('preserveScrollPosition');
-      if (popStateEvent) {
-        // If the back or forward browser button is pressed, set scroll top to
-        // the position it had when the page was last seen.
-        Ember.$(window).scrollTop(scrollPosition);
-      } else {
-        // This is an initial or direct page visit, so begin at page top.
-        if (preserveScrollPosition) {return;}
-        Ember.$(window).scrollTop(0);
-      }
 
-      // Reset popstate event status.
-      popStateEvent = false;
+      if (!preserveScrollPosition) {
+        window.scrollTo(scrollPosition.x, scrollPosition.y);
+      }
     });
-  },
+  }
 });
