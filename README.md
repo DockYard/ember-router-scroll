@@ -3,13 +3,13 @@
 Scroll to page top on transition, like a non-SPA website. An alternative scroll behavior for Ember applications.
 
 ### Before
-![before-scroll](https://cloud.githubusercontent.com/assets/4430436/17122972/0a1fe454-5295-11e6-937f-f1f5beab9d6b.gif)
+![before-scroll](https://cloud.githubusercontent.com/assets/4430436/17122972/0a1fe454-5295-11e6-937f-f1f5beab9d6b.gif)  
 Notice that the in the full purple page, the user is sent to the **middle** of the page
 
 
 
 ### After
-![after-scroll](https://cloud.githubusercontent.com/assets/4430436/17122970/07c1a3a0-5295-11e6-977f-37eb955d95b1.gif)
+![after-scroll](https://cloud.githubusercontent.com/assets/4430436/17122970/07c1a3a0-5295-11e6-977f-37eb955d95b1.gif)  
 Notice that the in the full purple page, the user is sent to the **top** of the page
 
 
@@ -39,7 +39,7 @@ For the purposes of this section, here are some definitions:
 
 **Ember-router-scroll** is a mixin that adds behavior to the `willTransition` and `didTransition` hooks in the router.
 
-When `willTransition` is triggered, the scroll position is stored in a map with the **previous route's** url (window location) as the key with the scroll position as the value.
+When `willTransition` is triggered, the scroll position is stored in a map with the **previous route's** ID from the HistoryLocation API as the key with the scroll position as the value.
 
 `scrollMap[previous_route] = 1234`
 
@@ -52,14 +52,7 @@ On `didTransition`, it first checks to see if the route transition was triggered
 ### Step 1: Install Ember Router Scroll
 
 ```bash
-ember install ember-router-scroll
-```
-or
-
-Add this in the dependencies block of your `package.json` file:
-
-```json
-"ember-router-scroll": "dollarshaveclub/ember-router-scroll#v0.0.3",
+npm install ember-router-scroll
 ```
 
 ### Step 2: Import ember-router-scroll
@@ -87,23 +80,30 @@ locationType: 'router-scroll'
 
 This location type inherits from Ember's `HistoryLocation`.
 
-### Step 4: Profit
+### Step 4: Tests
+In your router and controller tests, add `'service:router-scroll',` it as a dependency in the `needs: []` block:
+
+```js
+//{your-app}}/tests/unit/routes/{{your-route}}.js
+needs:[ 'service:router-scroll '],
+```
+### Step 5: Profit
 
 ## Preserve Scroll Position
 
 ### Before:
-![before-preserve](https://cloud.githubusercontent.com/assets/4430436/17122971/0a1e34ce-5295-11e6-8d30-9f687dd69dbb.gif)
+![before-preserve](https://cloud.githubusercontent.com/assets/4430436/17122971/0a1e34ce-5295-11e6-8d30-9f687dd69dbb.gif)  
 Notice the unwanted scroll to top in this case.
 
 ### After:
-![after-preserve](https://cloud.githubusercontent.com/assets/4430436/17122969/07acbb48-5295-11e6-9900-f9ba519affa4.gif)
+![after-preserve](https://cloud.githubusercontent.com/assets/4430436/17122969/07acbb48-5295-11e6-9900-f9ba519affa4.gif)  
 Adding a query parameter fixes this issue.
 
 In certain cases, you might want to have certain routes preserve scroll position when coming from a specific location. For example, inside your application, there is a way to get to a route where the user expects scroll position to be preserved (such as a tab section).
 
 To use this feature:
 
-#####Step 1.
+##### Step 1.
 
 Add `preserveScrollPosition` as a queryParam in the controller for the route that needs to preserve the scroll position.
 
@@ -119,7 +119,7 @@ export default Ember.Controller.extend({
 });
 ```
 
-#####Step 2.
+##### Step 2.
 
 Next, in the place where a transition is triggered, pass in `preserveScrollPosition=true`. For example
 
