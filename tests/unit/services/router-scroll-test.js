@@ -6,7 +6,7 @@ const {
   set
 } = Ember;
 
-moduleFor('service:router-scroll', 'Unit | Service | router scroll', {
+moduleFor('service:router-scroll', {
   // Specify the other units that are required for this test.
   // needs: ['service:foo']
 });
