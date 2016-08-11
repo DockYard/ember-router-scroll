@@ -2,8 +2,9 @@
 
 Scroll to page top on transition, like a non-SPA website. An alternative scroll behavior for Ember applications.
 ## Demo
-See demo made by [@Chuabacca](https://github.com/Chuabacca/)  
-[https://chuabacca.github.io/scroll-demo/](https://chuabacca.github.io/scroll-demo/)
+See [demo](https://dollarshaveclub.github.io/router-scroll-demo/) made by [@Chuabacca](https://github.com/Chuabacca/)
+
+Relevant repo: [https://github.com/dollarshaveclub/router-scroll-demo](https://github.com/dollarshaveclub/router-scroll-demo)
 
 ## Real Life Usage
 

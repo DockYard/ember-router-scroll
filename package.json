@@ -60,6 +60,7 @@
     "ember-cli-babel": "^5.1.6"
   },
   "ember-addon": {
-    "configPath": "tests/dummy/config"
+    "configPath": "tests/dummy/config",
+     "demoURL": "https://dollarshaveclub.github.io/router-scroll-demo/"
   }
 }
