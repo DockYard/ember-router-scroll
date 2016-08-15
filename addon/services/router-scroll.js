@@ -30,7 +30,7 @@ export default Service.extend({
     const stateId = get(window, 'history.state.id');
 
     set(this, 'key', stateId);
-    const key = getWithDefault(this, 'key', '-1');
+    const key = get(this, 'key') || '-1';
 
     return getWithDefault(scrollMap, key, { x: 0, y: 0 });
   }).volatile(),
