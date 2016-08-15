@@ -2,7 +2,7 @@ import Ember from 'ember';
 
 const {
   get,
-  HistoryLocation
+  HistoryLocation,
 } = Ember;
 
 export default HistoryLocation.extend({
@@ -11,15 +11,15 @@ export default HistoryLocation.extend({
     this.stateCounter = 0;
   },
   pushState(path) {
-    let id = `${this.stateCounter++}`;
-    let state = { path, id };
+    const id = `${this.stateCounter++}`;
+    const state = { path, id };
     get(this, 'history').pushState(state, null, path);
-    this._previousURL = this.getURL();
+    this._previousURL = this.getURL(); // eslint-disable-line no-underscore-dangle
   },
   replaceState(path) {
-    let id = `${this.stateCounter++}`;
-    let state = { path, id };
+    const id = `${this.stateCounter++}`;
+    const state = { path, id };
     get(this, 'history').replaceState(state, null, path);
-    this._previousURL = this.getURL();
-  }
+    this._previousURL = this.getURL(); // eslint-disable-line no-underscore-dangle
+  },
 });

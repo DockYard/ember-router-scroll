@@ -24,7 +24,7 @@ export default Ember.Mixin.create({
   didTransition(transitions, ...args) {
     this._super(transitions, ...args);
 
-		if (get(this, 'isFastBoot')) return;
+		if (get(this, 'isFastBoot')) { return; }
 
     next(() => this.updateScrollPosition(transitions));
   },

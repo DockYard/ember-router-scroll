@@ -8,7 +8,7 @@
   },
   "scripts": {
     "build": "ember build",
-    "eslint": "eslint . --ignore-path .eslintignore",
+    "eslint": "eslint app/**/*.js addon/**/*.js tests/**/*.js --quiet --ignore-path .eslintignore",
     "start": "ember server",
     "test": "ember try:each"
   },
