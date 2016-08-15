@@ -1,13 +1,14 @@
 ---
+sudo: required
+dist: trusty
 language: node_js
 node_js:
   - "4"
 
-sudo: false
-
 cache:
   directories:
     - node_modules
+    - bower_components
 
 env:
   - EMBER_TRY_SCENARIO=default
@@ -22,9 +23,16 @@ matrix:
     - env: EMBER_TRY_SCENARIO=ember-canary
 
 before_install:
+  - export CHROME_BIN=google-chrome
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
+  - sudo apt-get update
+  - sudo apt-get install -y libappindicator1 fonts-liberation
+  - wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+  - sudo dpkg -i google-chrome*.deb
   - npm config set spin false
   - npm install -g bower
-  - npm install phantomjs-prebuilt
+  - bower --version
 
 install:
   - npm install
