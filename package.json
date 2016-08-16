@@ -9,8 +9,12 @@
   "scripts": {
     "build": "ember build",
     "eslint": "eslint app/**/*.js addon/**/*.js tests/**/*.js --quiet --ignore-path .eslintignore",
+    "prepublish": "npm test",
     "start": "ember server",
     "test": "ember try:each"
+  },
+  "bugs": {
+    "url": "https://github.com/dollarshaveclub/ember-router-scroll/issues"
   },
   "config": {
     "pre-git": {
@@ -19,11 +23,37 @@
       ]
     }
   },
-  "repository": "dollarshaveclub/ember-router-scroll",
+  "homepage": "https://dollarshaveclub.github.io/router-scroll-demo/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dollarshaveclub/ember-router-scroll.git"
+  },
   "engines": {
-    "node": ">= 0.10.0"
+    "node": ">= 4"
   },
   "author": "Jason Farmer <jacefarm@gmail.com> and Benny C. Wong <bwong337@gmail.com>",
+  "contributors": [
+    {
+      "name": "Benny Wong",
+      "email": "bwong337@gmail.com"
+    },
+    {
+      "name": "Jason Farmer",
+      "email": "jacefarm@gmail.com"
+    },
+    {
+      "name": "Brian Cardarella",
+      "url": "https://github.com/bcardarella"
+    },
+    {
+      "name": "Arjan Singh",
+      "url": "https://github.com/arjansingh"
+    },
+    {
+      "name": "Brian Gonzalez",
+      "url": "https://twitter.com/brianmgonzalez"
+    }
+  ],
   "license": "MIT",
   "devDependencies": {
     "broccoli-asset-rev": "^2.4.2",
