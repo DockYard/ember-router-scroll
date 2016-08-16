@@ -8,7 +8,7 @@
   },
   "scripts": {
     "build": "ember build",
-    "eslint": "eslint . --ignore-path .eslintignore",
+    "eslint": "eslint app/**/*.js addon/**/*.js tests/**/*.js --quiet --ignore-path .eslintignore",
     "start": "ember server",
     "test": "ember try:each"
   },
@@ -42,13 +42,15 @@
     "ember-data": "^2.6.0",
     "ember-disable-prototype-extensions": "^1.1.0",
     "ember-export-application-global": "^1.0.5",
+    "ember-getowner-polyfill": "1.0.1",
     "ember-load-initializers": "^0.5.1",
     "ember-resolver": "^2.0.3",
     "ember-welcome-page": "^1.0.1",
     "eslint": "^2.4.0",
     "eslint-config-airbnb": "^6.1.0",
     "eslint-plugin-dollarshaveclub": "^1.0.0",
-    "loader.js": "^4.0.1"
+    "loader.js": "^4.0.1",
+    "pre-git": "^3.10.0"
   },
   "keywords": [
     "ember-addon",
