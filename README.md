@@ -93,7 +93,7 @@ In your router and controller tests, add `'service:router-scroll',` it as a depe
 
 ```js
 //{your-app}}/tests/unit/routes/{{your-route}}.js
-needs:[ 'service:router-scroll '],
+needs:[ 'service:router-scroll' ],
 ```
 ### Step 5: Profit
 
