@@ -34,10 +34,10 @@ test('updating will not set `scrollMap` to the current scroll position if `key` 
   assert.deepEqual(get(service, 'scrollMap'), { });
 });
 
-test('computing the position for an existing state id return the coords', function(assert) {
+test('computing the position for an existing state uuid return the coords', function(assert) {
   let service = this.subject();
   let state = window.history.state;
-  window.history.replaceState({id: '123'}, null);
+  window.history.replaceState({uuid: '123'}, null);
 
   let expected = { x: 1, y: 1 };
   set(service, 'scrollMap.123', expected);
@@ -48,7 +48,7 @@ test('computing the position for an existing state id return the coords', functi
 test('computing the position for a state without a cached scroll position returns default', function(assert) {
   let service = this.subject();
   let state = window.history.state;
-  window.history.replaceState({id: '123'}, null);
+  window.history.replaceState({uuid: '123'}, null);
 
   let expected = { x: 0, y: 0 };
   assert.deepEqual(get(service, 'position'), expected);

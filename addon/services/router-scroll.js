@@ -26,11 +26,11 @@ export default Service.extend({
   },
 
   position: computed(function position() {
-    const scrollMap = get(this, 'scrollMap');
-    const stateId = get(window, 'history.state.id');
+    let scrollMap = get(this, 'scrollMap');
+    let stateUuid = get(window, 'history.state.uuid');
 
-    set(this, 'key', stateId);
-    const key = get(this, 'key') || '-1';
+    set(this, 'key', stateUuid);
+    let key = getWithDefault(this, 'key', '-1');
 
     return getWithDefault(scrollMap, key, { x: 0, y: 0 });
   }).volatile(),
