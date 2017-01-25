@@ -1,25 +1,25 @@
 import Ember from 'ember';
 
+const uuid = () => 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+  const r = Math.random() * 16 | 0;
+  const v = c === 'x' ? r : r & 3 | 8;
+  return v.toString(16);
+});
+
 const {
   get,
   HistoryLocation,
 } = Ember;
 
 export default HistoryLocation.extend({
-  init(...args) {
-    this._super(...args);
-    this.stateCounter = 0;
-  },
   pushState(path) {
-    const id = `${this.stateCounter++}`;
-    const state = { path, id };
+    const state = { path, uuid: uuid() };
     get(this, 'history').pushState(state, null, path);
-    this._previousURL = this.getURL(); // eslint-disable-line no-underscore-dangle
+    this.previousURL = this.getURL();
   },
   replaceState(path) {
-    const id = `${this.stateCounter++}`;
-    const state = { path, id };
+    const state = { path, uuid: uuid() };
     get(this, 'history').replaceState(state, null, path);
-    this._previousURL = this.getURL(); // eslint-disable-line no-underscore-dangle
+    this.previousURL = this.getURL();
   },
 });
