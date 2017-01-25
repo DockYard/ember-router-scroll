@@ -10,10 +10,12 @@
 ember install ember-router-scroll
 ```
 
-## Demo
-See [demo](https://dollarshaveclub.github.io/router-scroll-demo/) made by [@Chuabacca](https://github.com/Chuabacca/)
+### A small note
 
-Relevant repo: [https://github.com/dollarshaveclub/router-scroll-demo](https://github.com/dollarshaveclub/router-scroll-demo)
+Like all good ember addons, this behavior was considered for core implementation. Good news, people like the idea. For now, the feature will live under the flag `ember-unique-location-history-state` until it's finally released in Ember 2.13. You can follow along for yourself [here](https://github.com/emberjs/ember.js/pull/14011/) and read up on the [RFC](https://github.com/emberjs/rfcs/pull/186#issuecomment-271416805) if you'd like as well.
+
+## Demo
+See [demo](https://dollarshaveclub.github.io/router-scroll-demo/) and [repo](https://github.com/dollarshaveclub/router-scroll-demo) made by [Jon Chua](https://github.com/Chuabacca/).
 
 ## Real Life Usage
 
@@ -21,12 +23,9 @@ Relevant repo: [https://github.com/dollarshaveclub/router-scroll-demo](https://g
 ![before-scroll](https://cloud.githubusercontent.com/assets/4430436/17122972/0a1fe454-5295-11e6-937f-f1f5beab9d6b.gif)  
 Notice that the in the full purple page, the user is sent to the **middle** of the page
 
-
-
 ### After
 ![after-scroll](https://cloud.githubusercontent.com/assets/4430436/17122970/07c1a3a0-5295-11e6-977f-37eb955d95b1.gif)  
 Notice that the in the full purple page, the user is sent to the **top** of the page
-
 
 ## Why Use it?
 
