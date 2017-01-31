@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import getOwner from 'ember-getowner-polyfill';
+const { getOwner } = Ember;
 
 const {
   computed,
