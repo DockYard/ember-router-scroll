@@ -20,11 +20,11 @@ See [demo](https://dollarshaveclub.github.io/router-scroll-demo/) and [repo](htt
 ## Real Life Usage
 
 ### Before
-![before-scroll](https://cloud.githubusercontent.com/assets/4430436/17122972/0a1fe454-5295-11e6-937f-f1f5beab9d6b.gif)  
+![before-scroll](https://cloud.githubusercontent.com/assets/4430436/17122972/0a1fe454-5295-11e6-937f-f1f5beab9d6b.gif)
 Notice that the in the full purple page, the user is sent to the **middle** of the page
 
 ### After
-![after-scroll](https://cloud.githubusercontent.com/assets/4430436/17122970/07c1a3a0-5295-11e6-977f-37eb955d95b1.gif)  
+![after-scroll](https://cloud.githubusercontent.com/assets/4430436/17122970/07c1a3a0-5295-11e6-977f-37eb955d95b1.gif)
 Notice that the in the full purple page, the user is sent to the **top** of the page
 
 ## Why Use it?
@@ -86,11 +86,11 @@ const Router = Ember.Router.extend(RouterScroll, {}
 
 ### Step 3: Update your app's locationType
 
-Edit `config/environment.js` and change `locationType`.  
+Edit `config/environment.js` and change `locationType`.
 Also add `historySupportMiddleware: true,` to get live-reload working in nested routes. (See [Issue #21](https://github.com/dollarshaveclub/ember-router-scroll/issues/21))
 
 ```js
-locationType: 'router-scroll'
+locationType: 'router-scroll',
 historySupportMiddleware: true,
 ```
 
@@ -108,11 +108,11 @@ needs:[ 'service:router-scroll' ],
 ## Preserve Scroll Position
 
 ### Before:
-![before-preserve](https://cloud.githubusercontent.com/assets/4430436/17122971/0a1e34ce-5295-11e6-8d30-9f687dd69dbb.gif)  
+![before-preserve](https://cloud.githubusercontent.com/assets/4430436/17122971/0a1e34ce-5295-11e6-8d30-9f687dd69dbb.gif)
 Notice the unwanted scroll to top in this case.
 
 ### After:
-![after-preserve](https://cloud.githubusercontent.com/assets/4430436/17122969/07acbb48-5295-11e6-9900-f9ba519affa4.gif)  
+![after-preserve](https://cloud.githubusercontent.com/assets/4430436/17122969/07acbb48-5295-11e6-9900-f9ba519affa4.gif)
 Adding a query parameter fixes this issue.
 
 In certain cases, you might want to have certain routes preserve scroll position when coming from a specific location. For example, inside your application, there is a way to get to a route where the user expects scroll position to be preserved (such as a tab section).
