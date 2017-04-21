@@ -109,17 +109,19 @@ needs:[ 'service:router-scroll' ],
 
 ### Before:
 ![before-preserve](https://cloud.githubusercontent.com/assets/4430436/17122971/0a1e34ce-5295-11e6-8d30-9f687dd69dbb.gif)
+
 Notice the unwanted scroll to top in this case.
 
 ### After:
 ![after-preserve](https://cloud.githubusercontent.com/assets/4430436/17122969/07acbb48-5295-11e6-9900-f9ba519affa4.gif)
+
 Adding a query parameter or controller property fixes this issue.
 
 #### preserveScrollPosition with queryParams
 
 In certain cases, you might want to have certain routes preserve scroll position when coming from a specific location. For example, inside your application, there is a way to get to a route where the user expects scroll position to be preserved (such as a tab section).
 
-##### Step 1.
+1. Step 1.
 
 Add `preserveScrollPosition` as a queryParam in the controller for the route that needs to preserve the scroll position.
 
@@ -135,7 +137,7 @@ export default Ember.Controller.extend({
 });
 ```
 
-##### Step 2.
+1. Step 2.
 
 Next, in the place where a transition is triggered, pass in `preserveScrollPosition=true`. For example
 
@@ -147,7 +149,7 @@ Next, in the place where a transition is triggered, pass in `preserveScrollPosit
 
 In other cases, you may have certain routes that always preserve scroll position, or routes where the controller can decide when to preserve scroll position. For instance, you may have some nested routes that have true nested UI where preserving scroll position is expected. Or you want a particular route to start off with the default scroll-to-top behavior but then preserve scroll position when query params change in reponse to user interaction. Using a conroller property also allows the use of preserveScrollPosition without adding this to the query params.
 
-##### Step 1.
+1. Step 1.
 
 Add `preserveScrollPosition` as a controller property for the route that needs to preserve the scroll position.
 In this example we have `preserveScrollPosition` initially set to false so that we get our normal scroll-to-top behavior when the route loads. Later on, when an action triggers a change to the `filter` query param, we also set `preserveScrollPosition` to true so that this user interaction does not trigger the scroll-to-top behavior.
@@ -161,7 +163,7 @@ export default Ember.Controller.extend({
   queryParams: ['filter'],
 
   preserveScrollPosition: false,
-  
+
   actions: {
     changeFilter(filter) {
       this.set('preserveScrollPosition', true);
@@ -171,7 +173,7 @@ export default Ember.Controller.extend({
 });
 ```
 
-##### Step 2.
+1. Step 2.
 
 If your controller is changing the preserveScrollPosition property, you'll probably need to reset preserveScrollPosition back to the default behavior whenever the controller is reset. This is not necceary on routes where `preserveScrollPosition` is always set to true.
 
