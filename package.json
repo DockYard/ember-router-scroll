@@ -77,6 +77,7 @@
     "eslint": "^3.19.0",
     "eslint-config-airbnb": "^14.1.0",
     "eslint-plugin-dollarshaveclub": "^1.0.0",
+    "eslint-plugin-import": "latest",
     "loader.js": "^4.3.0",
     "pre-git": "^3.14.0"
   },

@@ -1,4 +1,4 @@
-/* global window */
+/* eslint-disable */
 import Ember from 'ember';
 
 const {

@@ -1,3 +1,4 @@
+/* eslint-disable */
 import Ember from 'ember';
 
 const uuid = () => 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
