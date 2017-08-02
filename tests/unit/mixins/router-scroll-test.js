@@ -4,6 +4,14 @@ import { module, test } from 'qunit';
 
 module('mixin:router-scroll');
 
+function getSchedulerMock() {
+  return {
+    scheduleWork: ((eventName, callback) => {
+      callback();
+    }),
+  };
+}
+
 test('when the application is FastBooted', (assert) => {
   assert.expect(1);
 
@@ -11,6 +19,7 @@ test('when the application is FastBooted', (assert) => {
   const RouterScrollObject = Ember.Object.extend(RouterScroll);
   const subject = RouterScrollObject.create({
     isFastBoot: true,
+    scheduler: getSchedulerMock(),
     updateScrollPosition() {
       assert.notOk(true, 'it should not call updateScrollPosition.');
       done();
@@ -33,6 +42,7 @@ test('when the application is not FastBooted', (assert) => {
   const RouterScrollObject = Ember.Object.extend(RouterScroll);
   const subject = RouterScrollObject.create({
     isFastBoot: false,
+    scheduler: getSchedulerMock(),
     updateScrollPosition() {
       assert.ok(true, 'it should call updateScrollPosition.');
       done();

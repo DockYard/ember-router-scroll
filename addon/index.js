@@ -5,10 +5,10 @@ const {
   computed,
   get,
   inject,
-  run: { next },
 } = Ember;
 
 export default Ember.Mixin.create({
+  scheduler: inject.service('scheduler'),
   service: inject.service('router-scroll'),
 
   isFastBoot: computed(function() {
@@ -26,7 +26,9 @@ export default Ember.Mixin.create({
 
 		if (get(this, 'isFastBoot')) { return; }
 
-    next(() => this.updateScrollPosition(transitions));
+    this.get('scheduler').scheduleWork('afterContentPaint', () => {
+      this.updateScrollPosition(transitions);
+    });
   },
 
   updateScrollPosition(transitions) {
