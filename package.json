@@ -62,7 +62,7 @@
     "ember-cli-htmlbars-inline-precompile": "^0.4.4",
     "ember-cli-inject-live-reload": "^1.4.0",
     "ember-cli-jshint": "^2.0.1",
-    "ember-cli-qunit": "^3.1.2",
+    "ember-cli-qunit": "^4.0.0",
     "ember-cli-sri": "^2.1.0",
     "ember-cli-uglify": "^1.2.0",
     "ember-disable-prototype-extensions": "^1.1.0",
@@ -83,9 +83,9 @@
     "browser scroll"
   ],
   "dependencies": {
+    "ember-app-scheduler": "0.0.5",
     "ember-cli-babel": "^6.6.0",
-    "ember-getowner-polyfill": "^1.2.3",
-    "ember-app-scheduler": "0.0.5"
+    "ember-getowner-polyfill": "^1.2.3"
   },
   "ember-addon": {
     "configPath": "tests/dummy/config",
