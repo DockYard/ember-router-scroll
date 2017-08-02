@@ -89,7 +89,7 @@
     "browser scroll"
   ],
   "dependencies": {
-    "ember-cli-babel": "^5.2.4",
+    "ember-cli-babel": "^6.6.0",
     "ember-getowner-polyfill": "^1.2.3"
   },
   "ember-addon": {
