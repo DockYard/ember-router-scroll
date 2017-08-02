@@ -1,13 +1,6 @@
 /* eslint-disable */
-import Ember from 'ember';
-
-const {
-  get,
-  set,
-  computed,
-  getWithDefault,
-  Service,
-} = Ember;
+import Service from '@ember/service';
+import { getWithDefault, computed, set, get } from '@ember/object';
 
 export default Service.extend({
   init(...args) {

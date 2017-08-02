@@ -1,15 +1,11 @@
-import Ember from 'ember';
-const { getOwner } = Ember;
+import Mixin from '@ember/object/mixin';
+import { get, computed } from '@ember/object';
+import { inject } from '@ember/service';
+import { getOwner } from '@ember/application';
 
-const {
-  computed,
-  get,
-  inject,
-} = Ember;
-
-export default Ember.Mixin.create({
-  scheduler: inject.service('scheduler'),
-  service: inject.service('router-scroll'),
+export default Mixin.create({
+  scheduler: inject('scheduler'),
+  service: inject('router-scroll'),
 
   isFastBoot: computed(function() {
     const fastboot = getOwner(this).lookup('service:fastboot');
