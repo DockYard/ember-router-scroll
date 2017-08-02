@@ -1,4 +1,5 @@
-import Ember from 'ember';
+import { run, next } from '@ember/runloop';
+import EmberObject from '@ember/object';
 import RouterScroll from 'ember-router-scroll';
 import { module, test } from 'qunit';
 
@@ -16,7 +17,7 @@ test('when the application is FastBooted', (assert) => {
   assert.expect(1);
 
   const done = assert.async();
-  const RouterScrollObject = Ember.Object.extend(RouterScroll);
+  const RouterScrollObject = EmberObject.extend(RouterScroll);
   const subject = RouterScrollObject.create({
     isFastBoot: true,
     scheduler: getSchedulerMock(),
@@ -26,9 +27,9 @@ test('when the application is FastBooted', (assert) => {
     },
   });
 
-  Ember.run(() => {
+  run(() => {
     subject.didTransition();
-    Ember.run.next(() => {
+    next(() => {
       assert.ok(true, 'it should not call updateScrollPosition.');
       done();
     });
@@ -39,7 +40,7 @@ test('when the application is not FastBooted', (assert) => {
   assert.expect(1);
 
   const done = assert.async();
-  const RouterScrollObject = Ember.Object.extend(RouterScroll);
+  const RouterScrollObject = EmberObject.extend(RouterScroll);
   const subject = RouterScrollObject.create({
     isFastBoot: false,
     scheduler: getSchedulerMock(),
@@ -49,7 +50,7 @@ test('when the application is not FastBooted', (assert) => {
     },
   });
 
-  Ember.run(() => {
+  run(() => {
     subject.didTransition();
   });
 });

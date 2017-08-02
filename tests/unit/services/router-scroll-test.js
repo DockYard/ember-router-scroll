@@ -1,10 +1,5 @@
-import Ember from 'ember';
+import { set, get } from '@ember/object';
 import { moduleFor, test } from 'ember-qunit';
-
-const {
-  get,
-  set,
-} = Ember;
 
 moduleFor('service:router-scroll');
 
