@@ -85,7 +85,7 @@
   "dependencies": {
     "ember-app-scheduler": "0.0.5",
     "ember-cli-babel": "^6.6.0",
-    "ember-getowner-polyfill": "^1.2.3"
+    "ember-getowner-polyfill": "^2.0.1"
   },
   "ember-addon": {
     "configPath": "tests/dummy/config",
