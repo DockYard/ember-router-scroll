@@ -1,17 +1,14 @@
-import Ember from 'ember';
-const { getOwner } = Ember;
+import Mixin from '@ember/object/mixin';
+import { get, computed } from '@ember/object';
+import { inject } from '@ember/service';
+import { next } from '@ember/runloop';
+import { getOwner } from '@ember/application';
 
-const {
-  computed,
-  get,
-  inject,
-} = Ember;
-
-export default Ember.Mixin.create({
+export default Mixin.create({
   scheduler: inject.service('scheduler'),
-  service: inject.service('router-scroll'),
+  service: inject('router-scroll'),
 
-  isFastBoot: computed(function() {
+  isFastBoot: computed(function () {
     const fastboot = getOwner(this).lookup('service:fastboot');
     return fastboot ? fastboot.get('isFastBoot') : false;
   }),
@@ -24,7 +21,7 @@ export default Ember.Mixin.create({
   didTransition(transitions, ...args) {
     this._super(transitions, ...args);
 
-		if (get(this, 'isFastBoot')) { return; }
+    if (get(this, 'isFastBoot')) { return; }
 
     this.get('scheduler').scheduleWork('afterContentPaint', () => {
       this.updateScrollPosition(transitions);
