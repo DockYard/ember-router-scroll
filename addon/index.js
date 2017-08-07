@@ -28,13 +28,24 @@ export default Mixin.create({
   },
 
   updateScrollPosition(transitions) {
+    const scrollElement = get(this, 'service.scrollElement');
     let scrollPosition = get(this, 'service.position');
 
     let preserveScrollPosition = transitions[transitions.length - 1]
       .handler.controller.get('preserveScrollPosition');
 
     if (!preserveScrollPosition) {
-      window.scrollTo(scrollPosition.x, scrollPosition.y);
+      if ('window' === scrollElement) {
+        window.scrollTo(scrollPosition.x, scrollPosition.y);
+
+      } else if ('#' === scrollElement.charAt(0)) {
+        let element = document.getElementById(scrollElement.substring(1));
+
+        if (element) {
+          element.scrollLeft = scrollPosition.x;
+          element.scrollTop = scrollPosition.y;
+        }
+      }
     }
   }
 });
