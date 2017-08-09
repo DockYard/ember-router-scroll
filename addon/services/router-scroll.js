@@ -25,7 +25,6 @@ export default Service.extend({
     if ('window' === scrollElement) {
       x = window.scrollX;
       y = window.scrollY;
-
     } else if ('#' === scrollElement.charAt(0)) {
       let element = document.getElementById(scrollElement.substring(1));
 

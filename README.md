@@ -11,7 +11,7 @@ ember install ember-router-scroll
 ```
 
 ### Options
-You can specify the id of an element for which the scroll position is saved and set. Default is `window` for using the scroll position of the whole viewport. You can pass an options object in your applications `config/environment.js` file.
+You can specify the id of an element for which the scroll position is saved and set. Default is `window` for using the scroll position of the whole viewport. You can pass an options object in your application's `config/environment.js` file.
 
 ```javascript
 ENV['routerScroll'] = {

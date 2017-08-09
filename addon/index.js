@@ -37,7 +37,6 @@ export default Mixin.create({
     if (!preserveScrollPosition) {
       if ('window' === scrollElement) {
         window.scrollTo(scrollPosition.x, scrollPosition.y);
-
       } else if ('#' === scrollElement.charAt(0)) {
         let element = document.getElementById(scrollElement.substring(1));
 
