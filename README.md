@@ -81,11 +81,11 @@ historySupportMiddleware: true,
 This location type inherits from Ember's `HistoryLocation`.
 
 4. Tests
-In your router and controller tests, add `'service:router-scroll',` it as a dependency in the `needs: []` block:
+In your router and controller tests, add `'service:router-scroll'` and `'service:scheduler'` as dependencies in the `needs: []` block:
 
 ```js
 //{your-app}}/tests/unit/routes/{{your-route}}.js
-needs:[ 'service:router-scroll' ],
+needs:[ 'service:router-scroll', 'service:scheduler' ],
 ```
 
 ## Issues with nested routes
