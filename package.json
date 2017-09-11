@@ -1,6 +1,6 @@
 {
   "name": "ember-router-scroll",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Scroll to top with preserved browser history scroll position",
   "directories": {
     "doc": "doc",
@@ -8,7 +8,8 @@
   },
   "scripts": {
     "build": "ember build",
-    "eslint": "eslint app/**/*.js addon/**/*.js tests/**/*.js --quiet --ignore-path .eslintignore",
+    "eslint":
+      "eslint app/**/*.js addon/**/*.js tests/**/*.js --quiet --ignore-path .eslintignore",
     "start": "ember server",
     "test": "ember try:each"
   },
@@ -17,9 +18,7 @@
   },
   "config": {
     "pre-git": {
-      "pre-push": [
-        "npm run eslint"
-      ]
+      "pre-push": ["npm run eslint"]
     }
   },
   "homepage": "https://dollarshaveclub.github.io/router-scroll-demo/",
@@ -30,7 +29,8 @@
   "engines": {
     "node": ">= 4"
   },
-  "author": "Jason Farmer <jacefarm@gmail.com> and Benny C. Wong <bwong337@gmail.com>",
+  "author":
+    "Jason Farmer <jacefarm@gmail.com> and Benny C. Wong <bwong337@gmail.com>",
   "contributors": [
     {
       "name": "Benny Wong",
