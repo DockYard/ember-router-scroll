@@ -83,7 +83,7 @@
     "browser scroll"
   ],
   "dependencies": {
-    "ember-app-scheduler": "0.0.5",
+    "ember-app-scheduler": "^0.2.0",
     "ember-cli-babel": "^6.6.0",
     "ember-getowner-polyfill": "^2.0.1"
   },

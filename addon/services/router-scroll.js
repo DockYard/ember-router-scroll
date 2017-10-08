@@ -55,8 +55,8 @@ export default Service.extend({
     if (config && config.routerScroll && config.routerScroll.scrollElement) {
       const scrollElement = config.routerScroll.scrollElement;
 
-      if ('string' === typeOf(config.routerScroll.scrollElement)) {
-        set(this, 'scrollElement', config.routerScroll.scrollElement);
+      if ('string' === typeOf(scrollElement)) {
+        set(this, 'scrollElement', scrollElement);
       }
     }
   }
