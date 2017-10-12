@@ -6,6 +6,7 @@ const Router = EmberRouter.extend({
 });
 
 Router.map(function() {
+  this.route('next-page');
 });
 
 export default Router;
