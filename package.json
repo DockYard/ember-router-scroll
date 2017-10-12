@@ -10,7 +10,8 @@
     "build": "ember build",
     "eslint": "eslint app/**/*.js addon/**/*.js tests/**/*.js --quiet --ignore-path .eslintignore",
     "start": "ember server",
-    "test": "ember try:each"
+    "test": "ember try:each",
+    "deploy": "ember github-pages:commit --message \"Deploy gh-pages from commit $(git rev-parse HEAD)\"; git push; git checkout -"
   },
   "bugs": {
     "url": "https://github.com/dollarshaveclub/ember-router-scroll/issues"
@@ -22,7 +23,7 @@
       ]
     }
   },
-  "homepage": "https://dollarshaveclub.github.io/router-scroll-demo/",
+  "homepage": "https://dollarshaveclub.github.io/ember-router-scroll/",
   "repository": {
     "type": "git",
     "url": "https://github.com/dollarshaveclub/ember-router-scroll.git"
@@ -90,6 +91,6 @@
   },
   "ember-addon": {
     "configPath": "tests/dummy/config",
-    "demoURL": "https://dollarshaveclub.github.io/router-scroll-demo/"
+    "demoURL": "https://dollarshaveclub.github.io/ember-router-scroll/"
   }
 }
