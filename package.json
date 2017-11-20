@@ -8,6 +8,7 @@
   },
   "scripts": {
     "build": "ember build",
+    "changelog": "lerna-changelog",
     "eslint": "eslint app/**/*.js addon/**/*.js tests/**/*.js --quiet --ignore-path .eslintignore",
     "start": "ember server",
     "test": "ember try:each",
@@ -75,6 +76,7 @@
     "eslint-config-airbnb": "^14.1.0",
     "eslint-plugin-dollarshaveclub": "^1.0.0",
     "eslint-plugin-import": "latest",
+    "lerna-changelog": "^0.7.0",
     "loader.js": "^4.3.0",
     "pre-git": "^3.14.0"
   },
@@ -88,6 +90,17 @@
     "ember-app-scheduler": "^0.2.0",
     "ember-cli-babel": "^6.6.0",
     "ember-getowner-polyfill": "^2.0.1"
+  },
+
+  "changelog": {
+    "repo": "dollarshaveclub/ember-router-scroll",
+    "labels": {
+      "breaking": ":boom: Breaking Change",
+      "enhancement": ":rocket: Enhancement",
+      "bug": ":bug: Bug Fix",
+      "documentation": ":memo: Documentation",
+      "internal": ":house: Internal"
+    }
   },
   "ember-addon": {
     "configPath": "tests/dummy/config",
