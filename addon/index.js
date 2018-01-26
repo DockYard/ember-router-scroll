@@ -28,11 +28,20 @@ export default Mixin.create({
   },
 
   updateScrollPosition(transitions) {
-    const scrollElement = get(this, 'service.scrollElement');
-    let scrollPosition = get(this, 'service.position');
+    const lastTransition = transitions[transitions.length - 1];
 
-    let preserveScrollPosition = transitions[transitions.length - 1]
-      .handler.controller.get('preserveScrollPosition');
+    const url = get(lastTransition, 'handler.router.currentURL');
+    
+    let scrollPosition;
+    if(url.indexOf('#') > -1) {
+      const hashElement = document.getElementById(url.split('#').pop());
+      scrollPosition = { x: hashElement.offsetLeft, y: hashElement.offsetTop };
+    } else {
+      scrollPosition = get(this, 'service.position');
+    }
+    const scrollElement = get(this, 'service.scrollElement');
+
+    let preserveScrollPosition = get(lastTransition, 'handler.controller.preserveScrollPosition');
 
     if (!preserveScrollPosition) {
       if ('window' === scrollElement) {
