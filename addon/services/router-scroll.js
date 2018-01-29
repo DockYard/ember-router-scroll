@@ -16,6 +16,10 @@ export default Service.extend({
   },
 
   update() {
+    if((typeof window === 'undefined') || (typeof document === 'undefined')) {
+      return;
+    }
+
     const scrollElement = get(this, 'scrollElement');
     const scrollMap = get(this, 'scrollMap');
     const key = get(this, 'key');
@@ -40,6 +44,10 @@ export default Service.extend({
   },
 
   position: computed(function position() {
+    if(typeof window === 'undefined') {
+      return;
+    }
+
     const scrollMap = get(this, 'scrollMap');
     const stateUuid = get(window, 'history.state.uuid');
 
