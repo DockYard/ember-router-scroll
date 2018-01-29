@@ -30,7 +30,7 @@ export default Mixin.create({
   updateScrollPosition(transitions) {
     const lastTransition = transitions[transitions.length - 1];
 
-    const url = get(lastTransition, 'handler.router.currentURL');
+    const url =  get(lastTransition, 'handler.router.currentURL');
     
     let scrollPosition;
     if(url.indexOf('#') > -1) {
@@ -41,13 +41,13 @@ export default Mixin.create({
     }
     const scrollElement = get(this, 'service.scrollElement');
 
-    let preserveScrollPosition = get(lastTransition, 'handler.controller.preserveScrollPosition');
+    const preserveScrollPosition = get(lastTransition, 'handler.controller.preserveScrollPosition');
 
     if (!preserveScrollPosition) {
       if ('window' === scrollElement) {
         window.scrollTo(scrollPosition.x, scrollPosition.y);
       } else if ('#' === scrollElement.charAt(0)) {
-        let element = document.getElementById(scrollElement.substring(1));
+        const element = document.getElementById(scrollElement.substring(1));
 
         if (element) {
           element.scrollLeft = scrollPosition.x;
