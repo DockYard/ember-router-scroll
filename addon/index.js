@@ -28,6 +28,9 @@ export default Mixin.create({
   },
 
   updateScrollPosition(transitions) {
+    if((typeof window === 'undefined') || (typeof document === 'undefined')) {
+      return;
+    }
     const scrollElement = get(this, 'service.scrollElement');
     let scrollPosition = get(this, 'service.position');
 
