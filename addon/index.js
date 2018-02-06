@@ -29,12 +29,12 @@ export default Mixin.create({
 
   updateScrollPosition(transitions) {
     const lastTransition = transitions[transitions.length - 1];
-
     const url =  get(lastTransition, 'handler.router.currentURL');
-    
+    const hashElement = document.getElementById(url.split('#').pop());
+
     let scrollPosition;
-    if(url && url.indexOf('#') > -1) {
-      const hashElement = document.getElementById(url.split('#').pop());
+
+    if(url && url.indexOf('#') > -1 && hashElement) {
       scrollPosition = { x: hashElement.offsetLeft, y: hashElement.offsetTop };
     } else {
       scrollPosition = get(this, 'service.position');
