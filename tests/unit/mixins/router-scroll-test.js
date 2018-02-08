@@ -127,6 +127,55 @@ test('Update Scroll Position: URL is an anchor', (assert) => {
   });
 });
 
+test('Update Scroll Position: URL has nothing after an anchor', (assert) => {
+  assert.expect(1);
+  const done = assert.async();
+
+  window.scrollTo = (x, y) =>
+    assert.ok(x === 1 && y === 2, 'Scroll to called with correct offsets');
+
+  const RouterScrollObject = EmberObject.extend(RouterScroll);
+  const subject = RouterScrollObject.create({
+    isFastBoot: false,
+    scheduler: getSchedulerMock(),
+    service: {
+      position: { x: 1, y: 2 },
+      scrollElement: 'window',
+    },
+  });
+
+  run(() => {
+    subject.didTransition(getTransitionsMock('Hello/#'));
+    done();
+  });
+});
+
+test('Update Scroll Position: URL has nonexistent element after anchor', (assert) => {
+  assert.expect(1);
+  const done = assert.async();
+
+  const elem = document.createElement('div');
+  elem.id = 'World';
+  document.body.insertBefore(elem, null);
+  window.scrollTo = (x, y) =>
+    assert.ok(x === 1 && y === 2, 'Scroll to called with correct offsets');
+
+  const RouterScrollObject = EmberObject.extend(RouterScroll);
+  const subject = RouterScrollObject.create({
+    isFastBoot: false,
+    scheduler: getSchedulerMock(),
+    service: {
+      position: { x: 1, y: 2 },
+      scrollElement: 'window',
+    },
+  });
+
+  run(() => {
+    subject.didTransition(getTransitionsMock('Hello/#Bar'));
+    done();
+  });
+});
+
 test('Update Scroll Position: Scroll Position is set by service', (assert) => {
   assert.expect(1);
   const done = assert.async();
