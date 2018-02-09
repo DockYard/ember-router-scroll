@@ -33,7 +33,7 @@ export default Mixin.create({
     const url =  get(lastTransition, 'handler.router.currentURL');
     
     let scrollPosition;
-    if(url.indexOf('#') > -1) {
+    if(url && url.indexOf('#') > -1) {
       const hashElement = document.getElementById(url.split('#').pop());
       scrollPosition = { x: hashElement.offsetLeft, y: hashElement.offsetTop };
     } else {
