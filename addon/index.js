@@ -14,6 +14,9 @@ export default Mixin.create({
 
   willTransition(...args) {
     this._super(...args);
+    
+		if (get(this, 'isFastBoot')) { return; }
+
     get(this, 'service').update();
   },
 
