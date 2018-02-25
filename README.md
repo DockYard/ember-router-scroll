@@ -19,10 +19,6 @@ ENV['routerScroll'] = {
 };
 ```
 
-### A small note
-
-Like all good ember addons, this behavior was considered for core implementation. Good news, people like the idea. For now, the feature will live under the flag `ember-unique-location-history-state` until it's finally released in Ember 2.13. You can follow along for yourself [here](https://github.com/emberjs/ember.js/pull/14011/) and read up on the [RFC](https://github.com/emberjs/rfcs/pull/186#issuecomment-271416805) if you'd like as well.
-
 ## A working example
 See [demo](https://dollarshaveclub.github.io/ember-router-scroll/) made by [Jon Chua](https://github.com/Chuabacca/).
 
