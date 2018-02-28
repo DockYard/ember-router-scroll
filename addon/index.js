@@ -60,7 +60,7 @@ export default Mixin.create({
     }
     const scrollElement = get(this, 'service.scrollElement');
 
-    const preserveScrollPosition = get(lastTransition, 'handler.controller.preserveScrollPosition');
+    const preserveScrollPosition = transitions.some((transition) => get(transition, 'handler.controller.preserveScrollPosition'));
 
     if (!preserveScrollPosition) {
       if ('window' === scrollElement) {
