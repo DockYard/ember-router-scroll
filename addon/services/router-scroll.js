@@ -30,6 +30,10 @@ export default Service.extend({
       x = window.scrollX;
       y = window.scrollY;
     } else if ('#' === scrollElement.charAt(0)) {
+      if (get(this, 'isFastBoot')) {
+        return;
+      }
+
       let element = document.getElementById(scrollElement.substring(1));
 
       if (element) {
