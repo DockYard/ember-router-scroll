@@ -1,11 +1,15 @@
 /* eslint-disable */
-import Ember from 'ember';
 import Service from '@ember/service';
 import { getWithDefault, computed, set, get } from '@ember/object';
-
-const { getOwner, typeOf } = Ember;
+import { typeOf } from '@ember/utils';
+import { getOwner } from '@ember/application';
 
 export default Service.extend({
+  isFastBoot: computed(function() {
+    const fastboot = getOwner(this).lookup('service:fastboot');
+    return fastboot ? fastboot.get('isFastBoot') : false;
+  }),
+
   scrollElement: 'window',
 
   init(...args) {
