@@ -1,14 +1,15 @@
-import { test } from 'qunit';
-import moduleForAcceptance from '../../tests/helpers/module-for-acceptance';
+import { module, test } from 'qunit';
+import { setupApplicationTest } from 'ember-qunit';
+import { visit, click, currentURL } from '@ember/test-helpers';
 
-moduleForAcceptance('Acceptance | basic functionality');
+module('Acceptance | basic functionality', function(hooks) {
+  setupApplicationTest(hooks);
 
-test('The application should work when loading a page and clicking a link', function(assert) {
-  visit('/');
+  test('The application should work when loading a page and clicking a link', async function(assert) {
+    await visit('/');
 
-  click('a[href="/next-page"]');
+    await click('a[href="/next-page"]');
 
-  andThen(() => {
     assert.equal(currentURL(), '/next-page');
   });
 });
