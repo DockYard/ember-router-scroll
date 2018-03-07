@@ -7,7 +7,7 @@ const Router = EmberRouter.extend(RouterScroll, {
   rootURL: config.rootURL
 });
 
-Router.map(function() {
+Router.map(function () {
   this.route('next-page');
 });
 
