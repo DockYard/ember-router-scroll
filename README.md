@@ -4,21 +4,6 @@
 
 > Scroll to page top on transition, like a non-SPA website. An alternative scroll behavior for Ember applications.
 
-## Installation
-
-```
-ember install ember-router-scroll
-```
-
-### Options
-You can specify the id of an element for which the scroll position is saved and set. Default is `window` for using the scroll position of the whole viewport. You can pass an options object in your application's `config/environment.js` file.
-
-```javascript
-ENV['routerScroll'] = {
-  scrollElement: '#mainScrollElement'
-};
-```
-
 ## A working example
 See [demo](https://dollarshaveclub.github.io/ember-router-scroll/) made by [Jon Chua](https://github.com/Chuabacca/).
 
@@ -42,7 +27,8 @@ In addition to scrolling to the top of the page on most transitions, a user woul
 
 **ember-router-scroll** makes your single page application feel more like a regular website.
 
-## Usage
+
+## Installation & Usage
 
 1. Install addon
 
@@ -82,6 +68,15 @@ In your router and controller tests, add `'service:router-scroll'` and `'service
 ```js
 //{your-app}}/tests/unit/routes/{{your-route}}.js
 needs:[ 'service:router-scroll', 'service:scheduler' ],
+```
+
+### Options
+You can specify the id of an element for which the scroll position is saved and set. Default is `window` for using the scroll position of the whole viewport. You can pass an options object in your application's `config/environment.js` file.
+
+```javascript
+ENV['routerScroll'] = {
+  scrollElement: '#mainScrollElement'
+};
 ```
 
 ## Issues with nested routes
