@@ -25,7 +25,7 @@ export default Mixin.create({
 
 		if (get(this, 'isFastBoot')) { return; }
 
-    this.get('scheduler').scheduleWork('afterContentPaint', () => {
+    this.get('scheduler').scheduleWork('afterFirstRoutePaint', () => {
       this.updateScrollPosition(transitions);
     });
   },
