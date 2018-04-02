@@ -4,5 +4,6 @@ module.exports = {
   ],
   env: {
     browser: true
-  }
+  },
+  root: true
 };

@@ -1,5 +1,5 @@
-'use strict';
+'use strict'
 
 module.exports = {
-  name: 'ember-router-scroll'
-};
+  name: 'ember-router-scroll',
+}
