@@ -1,6 +1,6 @@
 {
   "name": "ember-router-scroll",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Scroll to top with preserved browser history scroll position",
   "directories": {
     "doc": "doc",
@@ -8,7 +8,8 @@
   },
   "scripts": {
     "build": "ember build",
-    "lint:js": "eslint ./*.js addon addon-test-support app config lib server test-support tests",
+    "eslint": "eslint . --fix",
+    "lint:ci": "eslint .",
     "start": "ember serve",
     "test": "ember try:each",
     "changelog": "lerna-changelog",
@@ -48,8 +49,8 @@
     "ember-source": "~3.0.0",
     "ember-source-channel-url": "^1.0.1",
     "ember-try": "^0.2.23",
-    "eslint-plugin-ember": "^5.0.0",
-    "eslint-plugin-node": "^5.2.1",
+    "eslint": "^4.19.1",
+    "eslint-config-dollarshaveclub": "^3.1.0",
     "loader.js": "^4.2.3"
   },
   "engines": {
