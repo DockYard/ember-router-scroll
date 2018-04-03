@@ -1,6 +1,6 @@
 {
   "name": "ember-router-scroll",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "Scroll to top with preserved browser history scroll position",
   "directories": {
     "doc": "doc",
@@ -12,8 +12,13 @@
     "lint:js": "eslint ./*.js addon addon-test-support app config lib server test-support tests",
     "start": "ember serve",
     "test": "ember try:each",
-    "changelog": "lerna-changelog",
-    "deploy": "ember github-pages:commit --message \"Deploy gh-pages from commit $(git rev-parse HEAD)\"; git push; git checkout -"
+    "chore:delete-branch": "if git show-ref --quiet refs/heads/chore-changelog; then git branch -D chore-changelog; fi",
+    "chore:branch": "git checkout -b chore-changelog",
+    "chore:changelog": "lerna-changelog",
+    "chore:pr": "git add . && git commit -m '[chore] updates changelog' --no-verify && git push origin chore-changelog -f",
+    "chore": "npm run chore:delete-branch && npm run chore:branch && npm run chore:changelog && npm run chore:pr",
+    "deploy": "ember github-pages:commit --message \"Deploy gh-pages from commit $(git rev-parse HEAD)\"; git push; git checkout -",
+    "postpublish": "git tag $npm_package_version && git push origin --tags && npm run chore"
   },
   "bugs": {
     "url": "https://github.com/dollarshaveclub/ember-router-scroll/issues"
