@@ -1,0 +1,119 @@
+defaults: &defaults
+  working_directory: ~/code
+  docker:
+    - image: circleci/node:4
+      environment:
+        NPM_CONFIG_LOGLEVEL: error # make npm commands less noisy
+        JOBS: max # https://gist.github.com/ralphtheninja/f7c45bdee00784b41fed
+
+restore_cache: &restore_cache
+  keys:
+    - code-{{ .Branch }}-{{ checksum "package.json" }}
+    - code-master-{{ checksum "package.json" }}
+
+save_cache: &save_cache
+  key: code-{{ .Branch }}-{{ checksum "package.json" }}
+  paths:
+    - node_modules
+
+requires-lint: &requires-lint
+  requires:
+    - lint
+
+restore_build_cache: &restore_build_cache
+  keys:
+    - source-v1-{{ .Branch }}-{{ .Revision }}
+    - source-v1-{{ .Branch }}
+    - source-v1-
+
+save_build_cache: &save_build_cache
+  key: source-v1-{{ .Branch }}-{{ .Revision }}
+  paths:
+    - ~/code
+
+version: 2
+jobs:
+  build:
+    <<: *defaults
+    steps:
+      - restore_cache: *restore_build_cache
+      - checkout
+      - run: yarn install --no-lockfile --non-interactive
+      - save_cache: *save_build_cache
+
+  lint:
+    <<: *defaults
+    steps:
+      - restore_cache: *restore_build_cache
+      - checkout
+      - run: yarn lint:js
+
+  test-ember-lst-2.16:
+    <<: *defaults
+    steps:
+      - restore_cache: *restore_build_cache
+      - checkout
+      - run: EMBER_TRY_SCENARIO=ember-lts-2.16
+
+  test-ember-lst-2.18:
+    <<: *defaults
+    steps:
+      - restore_cache: *restore_build_cache
+      - checkout
+      - run: EMBER_TRY_SCENARIO=ember-lts-2.18
+
+  test-ember-release:
+    <<: *defaults
+    steps:
+      - restore_cache: *restore_build_cache
+      - checkout
+      - run: EMBER_TRY_SCENARIO=ember-release
+
+  test-ember-beta:
+    <<: *defaults
+    steps:
+      - restore_cache: *restore_build_cache
+      - checkout
+      - run: EMBER_TRY_SCENARIO=ember-beta
+
+  test-ember-canary:
+    <<: *defaults
+    steps:
+      - restore_cache: *restore_build_cache
+      - checkout
+      - run: EMBER_TRY_SCENARIO=ember-canary
+
+  test-ember-default:
+    <<: *defaults
+    steps:
+      - restore_cache: *restore_build_cache
+      - checkout
+      - run: EMBER_TRY_SCENARIO=ember-default
+
+workflows:
+  version: 2
+  commit:
+    jobs:
+      - build
+      - lint:
+          requires:
+            - build
+      - test-ember-lst-2.16:
+          requires:
+              - build
+      - test-ember-lst-2.18:
+          requires:
+              - build
+      - test-ember-release:
+          requires:
+              - build
+      - test-ember-beta:
+          requires:
+            - build
+      - test-ember-canary:
+          requires:
+            - build
+      - test-ember-default:
+          requires:
+            - build
+
