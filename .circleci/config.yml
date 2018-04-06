@@ -1,8 +1,9 @@
 defaults: &defaults
   working_directory: ~/code
   docker:
-    - image: circleci/node:4
+    - image: circleci/node:4-browsers
       environment:
+        CHROME_BIN: "/usr/bin/google-chrome"
         NPM_CONFIG_LOGLEVEL: error # make npm commands less noisy
         JOBS: max # https://gist.github.com/ralphtheninja/f7c45bdee00784b41fed
 
@@ -16,97 +17,87 @@ save_cache: &save_cache
   paths:
     - node_modules
 
-requires-lint: &requires-lint
-  requires:
-    - lint
-
-restore_build_cache: &restore_build_cache
-  keys:
-    - source-v1-{{ .Branch }}-{{ .Revision }}
-    - source-v1-{{ .Branch }}
-    - source-v1-
-
-save_build_cache: &save_build_cache
-  key: source-v1-{{ .Branch }}-{{ .Revision }}
-  paths:
-    - ~/code
 
 version: 2
+jobs:
 jobs:
   build:
     <<: *defaults
     steps:
-      - restore_cache: *restore_build_cache
       - checkout
+      - restore_cache: *restore_cache
+      - run: curl -o- -L https://yarnpkg.com/install.sh | bash
+      - run: export PATH=$HOME/.yarn/bin:$PATH
       - run: yarn install --no-lockfile --non-interactive
-      - save_cache: *save_build_cache
+      - save_cache: *save_cache
 
-  lint:
+  test-es:
     <<: *defaults
     steps:
-      - restore_cache: *restore_build_cache
       - checkout
-      - run: yarn lint:js
+      - restore_cache: *restore_cache
+      - run: yarn test:es-check
 
   test-ember-lst-2.16:
     <<: *defaults
     steps:
-      - restore_cache: *restore_build_cache
       - checkout
-      - run: EMBER_TRY_SCENARIO=ember-lts-2.16
+      - restore_cache: *restore_cache
+      - run: node_modules/.bin/ember try:one ember-lts-2.16 --config-path="config/ember-try.js" --skip-cleanup
 
   test-ember-lst-2.18:
     <<: *defaults
     steps:
-      - restore_cache: *restore_build_cache
       - checkout
-      - run: EMBER_TRY_SCENARIO=ember-lts-2.18
+      - restore_cache: *restore_cache
+      - run: node_modules/.bin/ember try:one ember-lts-2.18 --config-path="config/ember-try.js" --skip-cleanup
 
   test-ember-release:
     <<: *defaults
     steps:
-      - restore_cache: *restore_build_cache
       - checkout
-      - run: EMBER_TRY_SCENARIO=ember-release
+      - restore_cache: *restore_cache
+      - run: node_modules/.bin/ember try:one ember-release --config-path="config/ember-try.js" --skip-cleanup
 
   test-ember-beta:
     <<: *defaults
     steps:
-      - restore_cache: *restore_build_cache
       - checkout
-      - run: EMBER_TRY_SCENARIO=ember-beta
+      - restore_cache: *restore_cache
+      - run: node_modules/.bin/ember try:one ember-beta --config-path="config/ember-try.js" --skip-cleanup
 
   test-ember-canary:
     <<: *defaults
     steps:
-      - restore_cache: *restore_build_cache
       - checkout
-      - run: EMBER_TRY_SCENARIO=ember-canary
+      - restore_cache: *restore_cache
+      - run: node_modules/.bin/ember try:one ember-canary --config-path="config/ember-try.js" --skip-cleanup
 
   test-ember-default:
     <<: *defaults
     steps:
-      - restore_cache: *restore_build_cache
       - checkout
-      - run: EMBER_TRY_SCENARIO=ember-default
+      - restore_cache: *restore_cache
+      - run: node_modules/.bin/ember try:one ember-default --config-path="config/ember-try.js" --skip-cleanup
+
 
 workflows:
   version: 2
   commit:
     jobs:
       - build
-      - lint:
+      - test-es:
           requires:
             - build
       - test-ember-lst-2.16:
           requires:
-              - build
+            - build
       - test-ember-lst-2.18:
           requires:
-              - build
+            - build
       - test-ember-release:
           requires:
-              - build
+            - build
       - test-ember-beta:
           requires:
             - build
