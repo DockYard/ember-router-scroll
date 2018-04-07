@@ -1,6 +1,8 @@
 # ember-router-scroll
 
-[![Build Status](https://travis-ci.org/dollarshaveclub/ember-router-scroll.svg?branch=master)](https://travis-ci.org/dollarshaveclub/ember-router-scroll) [![Greenkeeper badge](https://badges.greenkeeper.io/dollarshaveclub/ember-router-scroll.svg)](https://greenkeeper.io/)
+[![CircleCI](https://circleci.com/gh/dollarshaveclub/ember-router-scroll.svg?style=svg)](https://circleci.com/gh/dollarshaveclub/ember-router-scroll)
+[![codecov](https://codecov.io/gh/dollarshaveclub/ember-router-scroll/branch/master/graph/badge.svg)](https://codecov.io/gh/dollarshaveclub/ember-router-scroll)
+[![Greenkeeper badge](https://badges.greenkeeper.io/dollarshaveclub/ember-router-scroll.svg)](https://greenkeeper.io/)
 
 > Scroll to page top on transition, like a non-SPA website. An alternative scroll behavior for Ember applications.
 
