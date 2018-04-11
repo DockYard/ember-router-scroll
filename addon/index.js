@@ -32,7 +32,7 @@ export default Mixin.create({
 
   updateScrollPosition (transitions) {
     const lastTransition = transitions[transitions.length - 1]
-    const url = get(lastTransition, 'handler.router.currentURL')
+    const url = get(lastTransition, 'handler._router.currentURL')
     const hashElement = url ? document.getElementById(url.split('#').pop()) : null
 
     let scrollPosition
