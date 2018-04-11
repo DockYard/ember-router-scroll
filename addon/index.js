@@ -30,10 +30,17 @@ export default Mixin.create({
     });
   },
 
-  updateScrollPosition(transitions) {
-    const lastTransition = transitions[transitions.length - 1];
-    const url = get(lastTransition, 'handler.router.currentURL');
-    const hashElement = url ? document.getElementById(url.split('#').pop()) : null;
+  updateScrollPosition (transitions) {
+    const lastTransition = transitions[transitions.length - 1]
+
+    let routerPath
+    if (typeof get(lastTransition, 'handler._router') !== 'undefined') {
+      routerPath = 'handler._router'
+    } else {
+      routerPath = 'handler.router'
+    }
+    const url = get(lastTransition, `${routerPath}.currentURL`)
+    const hashElement = url ? document.getElementById(url.split('#').pop()) : null
 
     let scrollPosition;
 
