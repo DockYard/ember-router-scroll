@@ -1,6 +1,6 @@
 {
   "name": "ember-router-scroll",
-  "version": "0.7.0",
+  "version": "0.5.0",
   "description": "Scroll to top with preserved browser history scroll position",
   "directories": {
     "doc": "doc",
@@ -8,18 +8,11 @@
   },
   "scripts": {
     "build": "ember build",
-    "eslint": "eslint . --fix",
-    "lint:js": "eslint .",
+    "lint:js": "eslint ./*.js addon addon-test-support app config lib server test-support tests",
     "start": "ember serve",
     "test": "ember try:each",
-    "test:es-check": "es-check es5 ./vendor/js/*.js",
-    "chore:delete-branch": "if git show-ref --quiet refs/heads/chore-changelog; then git branch -D chore-changelog; fi",
-    "chore:branch": "git checkout -b chore-changelog",
-    "chore:changelog": "lerna-changelog",
-    "chore:pr": "git add . && git commit -m '[chore] updates changelog' --no-verify && git push origin chore-changelog -f",
-    "chore": "npm run chore:delete-branch && npm run chore:branch && npm run chore:changelog && npm run chore:pr",
-    "deploy": "ember github-pages:commit --message \"Deploy gh-pages from commit $(git rev-parse HEAD)\"; git push; git checkout -",
-    "postpublish": "git tag $npm_package_version && git push origin --tags && npm run chore"
+    "changelog": "lerna-changelog",
+    "deploy": "ember github-pages:commit --message \"Deploy gh-pages from commit $(git rev-parse HEAD)\"; git push; git checkout -"
   },
   "bugs": {
     "url": "https://github.com/dollarshaveclub/ember-router-scroll/issues"
@@ -39,7 +32,7 @@
     "ember-cli": "~3.0.0",
     "ember-cli-dependency-checker": "^2.0.0",
     "ember-cli-eslint": "^4.2.1",
-    "ember-cli-github-pages": "^0.2.0",
+    "ember-cli-github-pages": "^0.1.2",
     "ember-cli-htmlbars": "^2.0.1",
     "ember-cli-htmlbars-inline-precompile": "^1.0.0",
     "ember-cli-inject-live-reload": "^1.4.1",
@@ -55,9 +48,8 @@
     "ember-source": "~3.0.0",
     "ember-source-channel-url": "^1.0.1",
     "ember-try": "^0.2.23",
-    "es-check": "^2.0.3",
-    "eslint": "^4.19.1",
-    "eslint-config-dollarshaveclub": "^3.1.0",
+    "eslint-plugin-ember": "^5.0.0",
+    "eslint-plugin-node": "^5.2.1",
     "loader.js": "^4.2.3"
   },
   "engines": {
