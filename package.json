@@ -2,69 +2,13 @@
   "name": "ember-router-scroll",
   "version": "0.5.0",
   "description": "Scroll to top with preserved browser history scroll position",
-  "directories": {
-    "doc": "doc",
-    "test": "tests"
-  },
-  "scripts": {
-    "build": "ember build",
-    "lint:js": "eslint ./*.js addon addon-test-support app config lib server test-support tests",
-    "start": "ember serve",
-    "test": "ember try:each",
-    "changelog": "lerna-changelog",
-    "deploy": "ember github-pages:commit --message \"Deploy gh-pages from commit $(git rev-parse HEAD)\"; git push; git checkout -"
-  },
-  "bugs": {
-    "url": "https://github.com/dollarshaveclub/ember-router-scroll/issues"
-  },
-  "homepage": "https://dollarshaveclub.github.io/ember-router-scroll/",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/dollarshaveclub/ember-router-scroll.git"
-  },
-  "dependencies": {
-    "ember-app-scheduler": "^0.2.0",
-    "ember-cli-babel": "^6.6.0",
-    "ember-getowner-polyfill": "^2.0.1"
-  },
-  "devDependencies": {
-    "broccoli-asset-rev": "^2.4.5",
-    "ember-cli": "~3.0.0",
-    "ember-cli-dependency-checker": "^2.0.0",
-    "ember-cli-eslint": "^4.2.1",
-    "ember-cli-github-pages": "^0.1.2",
-    "ember-cli-htmlbars": "^2.0.1",
-    "ember-cli-htmlbars-inline-precompile": "^1.0.0",
-    "ember-cli-inject-live-reload": "^1.4.1",
-    "ember-cli-qunit": "^4.1.1",
-    "ember-cli-shims": "^1.2.0",
-    "ember-cli-sri": "^2.1.0",
-    "ember-cli-uglify": "^2.0.0",
-    "ember-disable-prototype-extensions": "^1.1.2",
-    "ember-export-application-global": "^2.0.0",
-    "ember-load-initializers": "^1.0.0",
-    "ember-maybe-import-regenerator": "^0.1.6",
-    "ember-resolver": "^4.0.0",
-    "ember-source": "~3.0.0",
-    "ember-source-channel-url": "^1.0.1",
-    "ember-try": "^0.2.23",
-    "eslint-plugin-ember": "^5.0.0",
-    "eslint-plugin-node": "^5.2.1",
-    "loader.js": "^4.2.3"
-  },
-  "engines": {
-    "node": "^4.5 || 6.* || >= 7.*"
-  },
-  "ember-addon": {
-    "configPath": "tests/dummy/config",
-    "demoURL": "https://dollarshaveclub.github.io/ember-router-scroll/"
-  },
   "keywords": [
     "ember-addon",
     "ember-router-scroll",
     "popstateEvent",
     "browser scroll"
   ],
+  "license": "MIT",
   "author": "Jason Farmer <jacefarm@gmail.com> and Benny C. Wong <bwong337@gmail.com>",
   "contributors": [
     {
@@ -86,8 +30,74 @@
     {
       "name": "Brian Gonzalez",
       "url": "https://github.com/briangonzalez"
+    },
+    {
+      "name": "Robert Wagner",
+      "url": "https://github.com/rwwagner90"
+    },
+    {
+      "name": "Scott Newcomer",
+      "url": "https://github.com/snewcomer"
     }
   ],
+  "directories": {
+    "doc": "doc",
+    "test": "tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dollarshaveclub/ember-router-scroll.git"
+  },
+  "bugs": {
+    "url": "https://github.com/dollarshaveclub/ember-router-scroll/issues"
+  },
+  "homepage": "https://dollarshaveclub.github.io/ember-router-scroll/",
+  "scripts": {
+    "build": "ember build",
+    "lint:js": "eslint ./*.js addon addon-test-support app config lib server test-support tests",
+    "start": "ember serve",
+    "test": "ember test",
+    "changelog": "lerna-changelog",
+    "deploy": "ember github-pages:commit --message \"Deploy gh-pages from commit $(git rev-parse HEAD)\"; git push; git checkout -",
+    "test:all": "ember try:each"
+  },
+  "dependencies": {
+    "ember-app-scheduler": "^0.2.0",
+    "ember-cli-babel": "^6.6.0",
+    "ember-getowner-polyfill": "^2.0.1"
+  },
+  "devDependencies": {
+    "broccoli-asset-rev": "^2.4.5",
+    "ember-cli": "~3.1.2",
+    "ember-cli-dependency-checker": "^2.0.0",
+    "ember-cli-eslint": "^4.2.1",
+    "ember-cli-github-pages": "^0.2.0",
+    "ember-cli-htmlbars": "^2.0.1",
+    "ember-cli-htmlbars-inline-precompile": "^1.0.0",
+    "ember-cli-inject-live-reload": "^1.4.1",
+    "ember-cli-qunit": "^4.1.1",
+    "ember-cli-shims": "^1.2.0",
+    "ember-cli-sri": "^2.1.0",
+    "ember-cli-uglify": "^2.0.0",
+    "ember-disable-prototype-extensions": "^1.1.2",
+    "ember-export-application-global": "^2.0.0",
+    "ember-load-initializers": "^1.0.0",
+    "ember-maybe-import-regenerator": "^0.1.6",
+    "ember-resolver": "^4.0.0",
+    "ember-source": "~3.1.0",
+    "ember-source-channel-url": "^1.0.1",
+    "ember-try": "^0.2.23",
+    "eslint-plugin-ember": "^5.0.0",
+    "eslint-plugin-node": "^6.0.1",
+    "loader.js": "^4.2.3"
+  },
+  "engines": {
+    "node": "^4.5 || 6.* || >= 7.*"
+  },
+  "ember-addon": {
+    "configPath": "tests/dummy/config",
+    "demoURL": "https://dollarshaveclub.github.io/ember-router-scroll/"
+  },
   "changelog": {
     "repo": "dollarshaveclub/ember-router-scroll",
     "labels": {
