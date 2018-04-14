@@ -22,14 +22,14 @@ module('mixin:router-scroll', function(hooks) {
     };
   }
 
-  function getTransitionsMock(URL, isPreserveScroll) {
+  function getTransitionsMock (URL, isPreserveScroll, hasIntimateRouterAPI) {
     return [
       {
         handler: {
           controller: {
             preserveScrollPosition: isPreserveScroll || false,
           },
-          router: {
+          [hasIntimateRouterAPI ? '_router' : 'router']: {
             currentURL: URL || 'Hello/World',
           },
         },
@@ -122,10 +122,36 @@ module('mixin:router-scroll', function(hooks) {
     });
 
     run(() => {
-      subject.didTransition(getTransitionsMock('Hello/#World'));
-      done();
-    });
-  });
+      subject.didTransition(getTransitionsMock('Hello/#World', false, false))
+      done()
+    })
+  })
+
+  test('Ensure correct internal router intimate api is used: _router', (assert) => {
+    assert.expect(1)
+    const done = assert.async()
+
+    const elem = document.createElement('div')
+    elem.id = 'World'
+    document.body.insertBefore(elem, null)
+    window.scrollTo = (x, y) =>
+      assert.ok(x === elem.offsetLeft && y === elem.offsetTop, 'Scroll to called with correct offsets')
+
+    const RouterScrollObject = EmberObject.extend(RouterScroll)
+    const subject = RouterScrollObject.create({
+      isFastBoot: false,
+      scheduler: getSchedulerMock(),
+      service: {
+        position: null,
+        scrollElement: 'window',
+      },
+    })
+
+    run(() => {
+      subject.didTransition(getTransitionsMock('Hello/#World', false, true))
+      done()
+    })
+  })
 
   test('Update Scroll Position: URL has nothing after an anchor', (assert) => {
     assert.expect(1);
