@@ -28,7 +28,7 @@ export default Mixin.create({
   willTransition(...args) {
     this._super(...args);
 
-		if (get(this, 'isFastBoot')) { return; }
+    if (get(this, 'isFastBoot')) { return; }
 
     get(this, 'service').update();
   },
@@ -36,7 +36,7 @@ export default Mixin.create({
   didTransition(transitions, ...args) {
     this._super(transitions, ...args);
 
-		if (get(this, 'isFastBoot')) { return; }
+    if (get(this, 'isFastBoot')) { return; }
 
     const delayScrollTop = get(this, 'service.delayScrollTop');
 
@@ -52,16 +52,8 @@ export default Mixin.create({
   },
 
   updateScrollPosition(transitions) {
-    const lastTransition = transitions[transitions.length - 1];
-
-    let routerPath
-    if (typeof get(lastTransition, 'handler._router') !== 'undefined') {
-      routerPath = 'handler._router';
-    } else {
-      routerPath = 'handler.router';
-    }
-    const url = get(lastTransition, `${routerPath}.currentURL`);
-    const hashElement = url ? document.getElementById(url.split('#').pop()) : null;
+    const url = get(this, 'currentURL');
+    const hashElement = url ? document.getElementById(url.split('#').pop()) : null
 
     let scrollPosition;
 
