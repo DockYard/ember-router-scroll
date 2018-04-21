@@ -61,7 +61,7 @@
     "test:all": "ember try:each"
   },
   "dependencies": {
-    "ember-app-scheduler": "^0.2.0",
+    "ember-app-scheduler": "^1.0.0-beta.2",
     "ember-cli-babel": "^6.6.0",
     "ember-getowner-polyfill": "^2.0.1"
   },
