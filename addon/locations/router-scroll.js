@@ -12,11 +12,12 @@ export default HistoryLocation.extend({
   pushState(path) {
     const state = { path, uuid: uuid() };
     get(this, 'history').pushState(state, null, path);
-    set(this, 'previousURL', this.getURL());
+    set(this, '_previousURL', this.getURL());
   },
+
   replaceState(path) {
     const state = { path, uuid: uuid() };
     get(this, 'history').replaceState(state, null, path);
-    set(this, 'previousURL', this.getURL());
-  },
+    set(this, '_previousURL', this.getURL());
+  }
 });
