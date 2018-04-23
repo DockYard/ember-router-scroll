@@ -247,8 +247,8 @@ module('mixin:router-scroll', function(hooks) {
     run(() => {
       subject.didTransition(getTransitionsMock('Hello/World'));
       next(() => {
-        done()
-      })
-    })
-  })
-})
+        done();
+      });
+    });
+  });
+});
