@@ -4,6 +4,28 @@
 
 > Scroll to page top on transition, like a non-SPA website. An alternative scroll behavior for Ember applications.
 
+## Installation
+
+```
+ember install ember-router-scroll
+```
+
+### Options
+You can specify the id of an element for which the scroll position is saved and set. Default is `window` for using the scroll position of the whole viewport. You can pass an options object in your application's `config/environment.js` file.
+
+```javascript
+ENV['routerScroll'] = {
+  scrollElement: '#mainScrollElement'
+};
+
+Moreover, if your route breaks up render into multiple phases, you may need to delay scrollTop functionality until after the First Meaningful Paint using `delayScrollTop: true` in your config.  This `delayScrollTop` defaults to `false`.
+
+```javascript
+ENV['routerScroll'] = {
+  delayScrollTop: true
+};
+```
+
 ## A working example
 See [demo](https://dollarshaveclub.github.io/router-scroll-demo/) made by [Jon Chua](https://github.com/Chuabacca/).
 

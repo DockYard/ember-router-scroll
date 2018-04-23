@@ -11,6 +11,7 @@ export default Service.extend({
   }),
 
   scrollElement: 'window',
+  delayScrollTop: false,
 
   init(...args) {
     this._super(...args);
@@ -65,6 +66,11 @@ export default Service.extend({
 
       if ('string' === typeOf(scrollElement)) {
         set(this, 'scrollElement', scrollElement);
+      }
+
+      const delayScrollTop = config.routerScroll.delayScrollTop;
+      if (delayScrollTop === true) {
+        set(this, 'delayScrollTop', true);
       }
     }
   }
