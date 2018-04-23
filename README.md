@@ -18,7 +18,7 @@ ENV['routerScroll'] = {
   scrollElement: '#mainScrollElement'
 };
 
-Moreover, if your route breaks up render into multiple phases, you may need to delay scrollTop functionality until after the First Meaningful Paint using `delayScrollTop: true` in your config.  This `delayScrollTop` defaults to `false`.
+Moreover, if your route breaks up render into multiple phases, you may need to delay scrollTop functionality until after the First Meaningful Paint using `delayScrollTop: true` in your config.  `delayScrollTop` defaults to `false`.
 
 ```javascript
 ENV['routerScroll'] = {
