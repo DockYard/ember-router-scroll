@@ -72,15 +72,15 @@ module('mixin:router-scroll', function(hooks) {
         delayScrollTop: false,
       },
       updateScrollPosition () {
-        assert.ok(true, 'it should call updateScrollPosition.')
-        done()
+        assert.ok(true, 'it should call updateScrollPosition.');
+        done();
       },
-    })
+    });
 
     run(() => {
-      subject.didTransition()
-    })
-  })
+      subject.didTransition();
+    });
+  });
 
   test('when the application is not FastBooted with delayScrollTop', (assert) => {
     assert.expect(1);
@@ -94,8 +94,8 @@ module('mixin:router-scroll', function(hooks) {
         delayScrollTop: true,
       },
       updateScrollPosition () {
-        assert.ok(true, 'it should call updateScrollPosition.')
-        done()
+        assert.ok(true, 'it should call updateScrollPosition.');
+        done();
       },
     });
 
