@@ -68,7 +68,32 @@ module('mixin:router-scroll', function(hooks) {
     const subject = RouterScrollObject.create({
       isFastBoot: false,
       scheduler: getSchedulerMock(),
-      updateScrollPosition() {
+      service: {
+        delayScrollTop: false,
+      },
+      updateScrollPosition () {
+        assert.ok(true, 'it should call updateScrollPosition.');
+        done();
+      },
+    });
+
+    run(() => {
+      subject.didTransition();
+    });
+  });
+
+  test('when the application is not FastBooted with delayScrollTop', (assert) => {
+    assert.expect(1);
+
+    const done = assert.async();
+    const RouterScrollObject = EmberObject.extend(RouterScroll);
+    const subject = RouterScrollObject.create({
+      isFastBoot: false,
+      scheduler: getSchedulerMock(),
+      service: {
+        delayScrollTop: true,
+      },
+      updateScrollPosition () {
         assert.ok(true, 'it should call updateScrollPosition.');
         done();
       },
@@ -122,22 +147,22 @@ module('mixin:router-scroll', function(hooks) {
     });
 
     run(() => {
-      subject.didTransition(getTransitionsMock('Hello/#World', false, false))
-      done()
-    })
-  })
+      subject.didTransition(getTransitionsMock('Hello/#World', false, false));
+      done();
+    });
+  });
 
   test('Ensure correct internal router intimate api is used: _router', (assert) => {
-    assert.expect(1)
-    const done = assert.async()
+    assert.expect(1);
+    const done = assert.async();
 
-    const elem = document.createElement('div')
-    elem.id = 'World'
-    document.body.insertBefore(elem, null)
+    const elem = document.createElement('div');
+    elem.id = 'World';
+    document.body.insertBefore(elem, null);
     window.scrollTo = (x, y) =>
-      assert.ok(x === elem.offsetLeft && y === elem.offsetTop, 'Scroll to called with correct offsets')
+      assert.ok(x === elem.offsetLeft && y === elem.offsetTop, 'Scroll to called with correct offsets');
 
-    const RouterScrollObject = EmberObject.extend(RouterScroll)
+    const RouterScrollObject = EmberObject.extend(RouterScroll);
     const subject = RouterScrollObject.create({
       isFastBoot: false,
       scheduler: getSchedulerMock(),
@@ -145,13 +170,13 @@ module('mixin:router-scroll', function(hooks) {
         position: null,
         scrollElement: 'window',
       },
-    })
+    });
 
     run(() => {
-      subject.didTransition(getTransitionsMock('Hello/#World', false, true))
-      done()
-    })
-  })
+      subject.didTransition(getTransitionsMock('Hello/#World', false, true));
+      done();
+    });
+  });
 
   test('Update Scroll Position: URL has nothing after an anchor', (assert) => {
     assert.expect(1);
