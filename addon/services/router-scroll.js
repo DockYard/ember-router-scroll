@@ -1,4 +1,3 @@
-/* eslint-disable */
 import Service from '@ember/service';
 import { getWithDefault, computed, set, get } from '@ember/object';
 import { typeOf } from '@ember/utils';
@@ -52,7 +51,7 @@ export default Service.extend({
     const scrollMap = get(this, 'scrollMap');
     const stateUuid = get(window, 'history.state.uuid');
 
-    set(this, 'key', stateUuid);
+    set(this, 'key', stateUuid); // eslint-disable-line ember/no-side-effects
     const key = getWithDefault(this, 'key', '-1');
 
     return getWithDefault(scrollMap, key, { x: 0, y: 0 });

@@ -1,4 +1,3 @@
-/* eslint-disable */
 import HistoryLocation from '@ember/routing/history-location';
 import { set, get } from '@ember/object';
 
