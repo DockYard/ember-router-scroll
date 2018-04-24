@@ -38,7 +38,7 @@ export default Service.extend({
         x = element.offsetLeft;
         y = element.offsetTop;
 
-        set(scrollMap, 'default', { x, y });
+        return set(scrollMap, 'default', { x, y });
       }
     } else if ('window' === scrollElement) {
       x = window.scrollX;
@@ -68,13 +68,13 @@ export default Service.extend({
     set(this, 'key', stateUuid); // eslint-disable-line ember/no-side-effects
     const key = getWithDefault(this, 'key', '-1');
 
-    return getWithDefault(scrollMap, key, { x: 0, y: 0 });
+    return getWithDefault(scrollMap, key, scrollMap.default);
   }).volatile(),
 
   _loadConfig() {
     const config = getOwner(this).resolveRegistration('config:environment');
 
-    if (config && config.routerScroll && config.routerScroll.scrollElement) {
+    if (config && config.routerScroll) {
       const scrollElement = config.routerScroll.scrollElement;
       if ('string' === typeOf(scrollElement)) {
         set(this, 'scrollElement', scrollElement);

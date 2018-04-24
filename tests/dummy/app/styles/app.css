@@ -56,6 +56,12 @@ div {
   margin: 12% 10% -200px 10%;
 }
 
+#nav {
+  height: 44px;
+  background-color: white;
+  color: black;
+}
+
 .depth {
   font-size: 26px;
 }
