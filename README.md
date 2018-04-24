@@ -18,6 +18,12 @@ ENV['routerScroll'] = {
   scrollElement: '#mainScrollElement'
 };
 
+If your viewport is not a scrollable area, you can still scroll to an elemenet on the page.
+
+ENV['routerScroll'] = {
+  targetElement: '#mainTargetElement'
+};
+
 Moreover, if your route breaks up render into multiple phases, you may need to delay scrollTop functionality until after the First Meaningful Paint using `delayScrollTop: true` in your config.  `delayScrollTop` defaults to `false`.
 
 ```javascript
@@ -90,15 +96,6 @@ In your router and controller tests, add `'service:router-scroll'` and `'service
 ```js
 //{your-app}}/tests/unit/routes/{{your-route}}.js
 needs:[ 'service:router-scroll', 'service:scheduler' ],
-```
-
-### Options
-You can specify the id of an element for which the scroll position is saved and set. Default is `window` for using the scroll position of the whole viewport. You can pass an options object in your application's `config/environment.js` file.
-
-```javascript
-ENV['routerScroll'] = {
-  scrollElement: '#mainScrollElement'
-};
 ```
 
 ## Issues with nested routes

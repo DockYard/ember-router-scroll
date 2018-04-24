@@ -11,7 +11,7 @@ module('service:router-scroll', (hooks) => {
     assert.deepEqual(get(service, 'key'), null);
   });
 
-  test('it inits `scrollMap` and `key` with scrollElement other than window', function init (assert) {
+  test('it inits `scrollMap` and `key` with scrollElement other than window', function(assert) {
     const service = this.owner.factoryFor('service:router-scroll').create({ scrollElement: '#other-elem' });
     assert.deepEqual(get(service, 'scrollMap'), {});
     assert.deepEqual(get(service, 'key'), null);
@@ -25,7 +25,7 @@ module('service:router-scroll', (hooks) => {
     assert.deepEqual(get(service, 'scrollMap'), { });
   });
 
-  test('updating will set `scrollMap` to the current scroll position', function scrollMap (assert) {
+  test('updating will set `scrollMap` to the current scroll position', function(assert) {
     const service = this.owner.lookup('service:router-scroll');
 
     const expected = { x: window.scrollX, y: window.scrollY };
@@ -34,8 +34,7 @@ module('service:router-scroll', (hooks) => {
     assert.deepEqual(get(service, 'scrollMap'), { 123: expected });
   });
 
-  test('updating will not set `scrollMap` if scrollElement is defined',
-  function scrollMapCurrentPos (assert) {
+  test('updating will not set `scrollMap` if scrollElement is defined and element is not found', function(assert) {
     const service = this.owner.factoryFor('service:router-scroll').create({ scrollElement: '#other-elem' });
 
     service.update();
@@ -44,8 +43,16 @@ module('service:router-scroll', (hooks) => {
     assert.deepEqual(get(service, 'scrollMap'), { });
   });
 
-  test('updating will not set `scrollMap` if scrollElement is defined and in fastboot',
-  function scrollMapCurrentPos (assert) {
+  test('updating will not set `scrollMap` if targetElement is defined and element is not found', function(assert) {
+    const service = this.owner.factoryFor('service:router-scroll').create({ targetElement: '#other-elem' });
+
+    service.update();
+    const expected = { x: 0, y: 0 };
+    assert.deepEqual(get(service, 'position'), expected);
+    assert.deepEqual(get(service, 'scrollMap'), { });
+  });
+
+  test('updating will not set `scrollMap` if scrollElement is defined and in fastboot', function(assert) {
     const otherElem = document.createElement('div');
     otherElem.setAttribute('id', 'other-elem');
     const testing = document.querySelector('#ember-testing');
@@ -59,8 +66,7 @@ module('service:router-scroll', (hooks) => {
     assert.deepEqual(get(service, 'scrollMap'), { }, 'does not set scrollMap b/c in fastboot');
   });
 
-  test('updating will set `scrollMap` if scrollElement is defined',
-  function scrollMapCurrentPos (assert) {
+  test('updating will set `scrollMap` if scrollElement is defined', function(assert) {
     const otherElem = document.createElement('div');
     otherElem.setAttribute('id', 'other-elem');
     const testing = document.querySelector('#ember-testing');
@@ -74,8 +80,7 @@ module('service:router-scroll', (hooks) => {
     assert.deepEqual(get(service, 'scrollMap'), { '123': expected }, 'sets scrollMap');
   });
 
-  test('computing the position for an existing state uuid return the coords',
-  function existingUUID (assert) {
+  test('computing the position for an existing state uuid return the coords', function(assert) {
     const service = this.owner.lookup('service:router-scroll');
     window.history.replaceState({ uuid: '123' }, null);
 
@@ -84,8 +89,7 @@ module('service:router-scroll', (hooks) => {
     assert.deepEqual(get(service, 'position'), expected);
   });
 
-  test('computing the position for a state without a cached scroll position returns default',
-  function cachedScroll (assert) {
+  test('computing the position for a state without a cached scroll position returns default', function(assert) {
     const service = this.owner.lookup('service:router-scroll');
     const state = window.history.state;
     window.history.replaceState({ uuid: '123' }, null);
@@ -95,8 +99,7 @@ module('service:router-scroll', (hooks) => {
     window.history.replaceState(state, null);
   });
 
-  test('computing the position for a non-existant state returns default',
-  function nonExistantState (assert) {
+  test('computing the position for a non-existant state returns default', function(assert) {
     const service = this.owner.lookup('service:router-scroll');
 
     const expected = { x: 0, y: 0 };

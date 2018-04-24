@@ -10,6 +10,7 @@ export default Service.extend({
   }),
 
   scrollElement: 'window',
+  targetElement: null,
   delayScrollTop: false,
 
   init(...args) {
@@ -21,12 +22,23 @@ export default Service.extend({
 
   update() {
     const scrollElement = get(this, 'scrollElement');
+    const targetElement = get(this, 'targetElement');
     const scrollMap = get(this, 'scrollMap');
     const key = get(this, 'key');
     let x;
     let y;
 
-    if ('window' === scrollElement) {
+    if (targetElement && '#' === targetElement.charAt(0)) {
+      if (get(this, 'isFastBoot')) {
+        return;
+      }
+
+      let element = document.getElementById(targetElement.substring(1));
+      if (element) {
+        x = element.offsetLeft;
+        y = element.offsetTop;
+      }
+    } else if ('window' === scrollElement) {
       x = window.scrollX;
       y = window.scrollY;
     } else if ('#' === scrollElement.charAt(0)) {
@@ -62,9 +74,13 @@ export default Service.extend({
 
     if (config && config.routerScroll && config.routerScroll.scrollElement) {
       const scrollElement = config.routerScroll.scrollElement;
-
       if ('string' === typeOf(scrollElement)) {
         set(this, 'scrollElement', scrollElement);
+      }
+
+      const targetElement = config.routerScroll.targetElement;
+      if ('string' === typeOf(targetElement)) {
+        set(this, 'targetElement', targetElement);
       }
 
       const delayScrollTop = config.routerScroll.delayScrollTop;

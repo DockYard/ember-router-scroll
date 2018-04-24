@@ -82,6 +82,28 @@ module('mixin:router-scroll', function(hooks) {
     });
   });
 
+  test('when the application is not FastBooted with targetElement', (assert) => {
+    assert.expect(1);
+
+    const done = assert.async();
+    const RouterScrollObject = EmberObject.extend(RouterScroll);
+    const subject = RouterScrollObject.create({
+      isFastBoot: false,
+      scheduler: getSchedulerMock(),
+      service: {
+        targetElement: '#myElement',
+      },
+      updateScrollPosition () {
+        assert.ok(true, 'it should call updateScrollPosition.');
+        done();
+      },
+    });
+
+    run(() => {
+      subject.didTransition();
+    });
+  });
+
   test('when the application is not FastBooted with delayScrollTop', (assert) => {
     assert.expect(1);
 
