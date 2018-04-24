@@ -16,7 +16,7 @@ export default Service.extend({
   init(...args) {
     this._super(...args);
     this._loadConfig();
-    set(this, 'scrollMap', {});
+    set(this, 'scrollMap', { default: { x: 0, y: 0 }});
     set(this, 'key', null);
   },
 
@@ -37,6 +37,8 @@ export default Service.extend({
       if (element) {
         x = element.offsetLeft;
         y = element.offsetTop;
+
+        set(scrollMap, 'default', { x, y });
       }
     } else if ('window' === scrollElement) {
       x = window.scrollX;
