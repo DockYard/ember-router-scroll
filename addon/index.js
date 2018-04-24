@@ -1,8 +1,8 @@
-import Mixin from '@ember/object/mixin'
-import { get, computed } from '@ember/object'
-import { inject } from '@ember/service'
-import { getOwner } from '@ember/application'
-import { scheduleOnce } from '@ember/runloop'
+import Mixin from '@ember/object/mixin';
+import { get, computed } from '@ember/object';
+import { inject } from '@ember/service';
+import { getOwner } from '@ember/application';
+import { scheduleOnce } from '@ember/runloop';
 
 export default Mixin.create({
   scheduler: inject('scheduler'),
@@ -26,30 +26,30 @@ export default Mixin.create({
 
 		if (get(this, 'isFastBoot')) { return; }
 
-    const delayScrollTop = get(this, 'service.delayScrollTop')
+    const delayScrollTop = get(this, 'service.delayScrollTop');
 
     if (!delayScrollTop) {
-      scheduleOnce('render', this, () => this.updateScrollPosition(transitions))
+      scheduleOnce('render', this, () => this.updateScrollPosition(transitions));
     } else {
       // as described in ember-app-scheduler, this addon can be used to delay rendering until after First Meaningful Paint.
       // If you loading your routes progressively, this may be a good option to delay scrollTop until the remaining DOM elements are painted.
       this.get('scheduler').scheduleWork('afterContentPaint', () => {
-        this.updateScrollPosition(transitions)
-      })
+        this.updateScrollPosition(transitions);
+      });
     }
   },
 
   updateScrollPosition (transitions) {
-    const lastTransition = transitions[transitions.length - 1]
+    const lastTransition = transitions[transitions.length - 1];
 
     let routerPath
     if (typeof get(lastTransition, 'handler._router') !== 'undefined') {
-      routerPath = 'handler._router'
+      routerPath = 'handler._router';
     } else {
-      routerPath = 'handler.router'
+      routerPath = 'handler.router';
     }
-    const url = get(lastTransition, `${routerPath}.currentURL`)
-    const hashElement = url ? document.getElementById(url.split('#').pop()) : null
+    const url = get(lastTransition, `${routerPath}.currentURL`);
+    const hashElement = url ? document.getElementById(url.split('#').pop()) : null;
 
     let scrollPosition;
 
