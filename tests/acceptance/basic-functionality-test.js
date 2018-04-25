@@ -17,7 +17,7 @@ module('Acceptance | basic functionality', function(hooks) {
     assert.equal(currentURL(), '/next-page');
   });
 
-  test('The application should work when loading a page and clicking a link', async function(assert) {
+  test('The application should work when loading a page and clicking a link to target an element to scroll to', async function(assert) {
     await visit('/target');
     assert.equal(window.scrollY, 0);
 
