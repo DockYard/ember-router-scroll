@@ -18,7 +18,7 @@ ENV['routerScroll'] = {
   scrollElement: '#mainScrollElement'
 };
 
-If your viewport is not a scrollable area, you can still scroll to an elemenet on the page.
+If your viewport is not a scrollable area, you can still scroll to an element on the page.  This is particularly useful if instead of scrolling to the top of the window, you want to scroll to the top of the main content area.
 
 ENV['routerScroll'] = {
   targetElement: '#mainTargetElement'
