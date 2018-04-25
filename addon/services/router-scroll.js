@@ -38,7 +38,9 @@ export default Service.extend({
         x = element.offsetLeft;
         y = element.offsetTop;
 
-        return set(scrollMap, 'default', { x, y });
+        // if we are looking to where to transition to next, we need to set the default to the position
+        // of the targetElement on screen
+        set(scrollMap, 'default', { x, y });
       }
     } else if ('window' === scrollElement) {
       x = window.scrollX;

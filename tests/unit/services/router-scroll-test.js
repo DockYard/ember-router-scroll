@@ -100,7 +100,7 @@ module('service:router-scroll', (hooks) => {
     let expected = { x: 0, y: 0 };
     assert.deepEqual(get(service, 'position'), expected, 'position is defaulted');
     service.update();
-    assert.deepEqual(get(service, 'scrollMap'), { default: { x: 0, y: 100 } }, 'sets scrollMap');
+    assert.deepEqual(get(service, 'scrollMap'), { '123': { x: 0, y: 100 }, default: { x: 0, y: 100 } }, 'sets scrollMap');
   });
 
   test('computing the position for an existing state uuid return the coords', function(assert) {
