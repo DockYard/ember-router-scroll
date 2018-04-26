@@ -8,7 +8,6 @@ const Router = EmberRouter.extend(RouterScroll, {
 });
 
 Router.map(function () {
-  this.route('index', { path: '/' });
   this.route('next-page');
   this.route('target');
   this.route('target-next-page');
