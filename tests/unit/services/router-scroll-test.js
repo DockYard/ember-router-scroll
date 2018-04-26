@@ -72,6 +72,20 @@ module('service:router-scroll', function(hooks) {
     assert.deepEqual(get(service, 'scrollMap'), defaultScrollMap, 'does not set scrollMap b/c in fastboot');
   });
 
+  test('updating will not set `scrollMap` if targetElement is defined and in fastboot', function(assert) {
+    const otherElem = document.createElement('div');
+    otherElem.setAttribute('id', 'other-elem');
+    const testing = document.querySelector('#ember-testing');
+    testing.appendChild(otherElem);
+    const service = this.owner.factoryFor('service:router-scroll').create({ targetElement: '#other-elem', isFastBoot: true });
+    window.history.replaceState({ uuid: '123' }, null);
+
+    let expected = { x: 0, y: 0 };
+    assert.deepEqual(get(service, 'position'), expected, 'position is defaulted');
+    service.update();
+    assert.deepEqual(get(service, 'scrollMap'), defaultScrollMap, 'does not set scrollMap b/c in fastboot');
+  });
+
   test('updating will set `scrollMap` if scrollElement is defined', function(assert) {
     const otherElem = document.createElement('div');
     otherElem.setAttribute('id', 'other-elem');
