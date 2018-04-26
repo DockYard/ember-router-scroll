@@ -12,7 +12,7 @@ const defaultScrollMap = {
 module('service:router-scroll', function(hooks) {
   setupTest(hooks);
 
-  test('it inits `scrollMap` and `key`', function init (assert) {
+  test('it inits `scrollMap` and `key`', function(assert) {
     const service = this.owner.lookup('service:router-scroll');
     assert.deepEqual(get(service, 'scrollMap'), defaultScrollMap);
     assert.deepEqual(get(service, 'key'), null);
@@ -24,8 +24,7 @@ module('service:router-scroll', function(hooks) {
     assert.deepEqual(get(service, 'key'), null);
   });
 
-  test('updating will not set `scrollMap` to the current scroll position if `key` is not yet set',
-  function scrollMapCurrentPos (assert) {
+  test('updating will not set `scrollMap` to the current scroll position if `key` is not yet set', function(assert) {
     const service = this.owner.lookup('service:router-scroll');
 
     service.update();
