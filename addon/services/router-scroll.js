@@ -1,6 +1,7 @@
 import Service from '@ember/service';
 import { getWithDefault, computed, set, get } from '@ember/object';
 import { typeOf } from '@ember/utils';
+import { assert } from '@ember/debug';
 import { getOwner } from '@ember/application';
 
 export default Service.extend({
@@ -78,11 +79,14 @@ export default Service.extend({
 
     if (config && config.routerScroll) {
       const scrollElement = config.routerScroll.scrollElement;
+      const targetElement = config.routerScroll.targetElement;
+
+      assert('You defined both scrollElement and targetElement in your config. We currently only support definining one of them', !(scrollElement && targetElement));
+
       if ('string' === typeOf(scrollElement)) {
         set(this, 'scrollElement', scrollElement);
       }
 
-      const targetElement = config.routerScroll.targetElement;
       if ('string' === typeOf(targetElement)) {
         set(this, 'targetElement', targetElement);
       }
