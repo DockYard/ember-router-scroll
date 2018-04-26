@@ -121,9 +121,9 @@ Add `preserveScrollPosition` as a queryParam in the controller for the route tha
 Example:
 
 ```javascript
-import Ember from 'ember';
+import Controller from '@ember/controller';
 
-export default Ember.Controller.extend({
+export default Controller.extend({
   queryParams: [
     'preserveScrollPosition',
   ],
@@ -151,9 +151,9 @@ In this example we have `preserveScrollPosition` initially set to false so that 
 Example:
 
 ```javascript
-import Ember from 'ember';
+import Controller from '@ember/controller';
 
-export default Ember.Controller.extend({
+export default Controller.extend({
   queryParams: ['filter'],
 
   preserveScrollPosition: false,
@@ -172,9 +172,9 @@ export default Ember.Controller.extend({
 If your controller is changing the preserveScrollPosition property, you'll probably need to reset `preserveScrollPosition` back to the default behavior whenever the controller is reset. This is not necceary on routes where `preserveScrollPosition` is always set to true.
 
 ```javascript
-import Ember from 'ember';
+import Router from '@ember/routing/route';
 
-export default Ember.Route.extend({
+export default Route.extend({
   resetController(controller) {
     controller.set('preserveScrollPosition', false);
   }
