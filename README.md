@@ -90,7 +90,7 @@ historySupportMiddleware: true,
 
 This location type inherits from Ember's `HistoryLocation`.
 
-4. Tests
+4. If using old style QUnit tests. If tests based on [RFC](https://github.com/emberjs/rfcs/pull/232), you can ignore this.
 In your router and controller tests, add `'service:router-scroll'` and `'service:scheduler'` as dependencies in the `needs: []` block:
 
 ```js
