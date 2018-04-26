@@ -9,7 +9,7 @@ const defaultScrollMap = {
   }
 };
 
-module('service:router-scroll', (hooks) => {
+module('service:router-scroll', function(hooks) {
   setupTest(hooks);
 
   test('it inits `scrollMap` and `key`', function init (assert) {
