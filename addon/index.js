@@ -64,7 +64,7 @@ export default Mixin.create({
       const scrollElement = get(this, 'service.scrollElement');
       const targetElement = get(this, 'service.targetElement');
 
-      if (targetElement && '#' === targetElement.charAt(0)) {
+      if (targetElement) {
         window.scrollTo(scrollPosition.x, scrollPosition.y);
       } else if ('window' === scrollElement) {
         window.scrollTo(scrollPosition.x, scrollPosition.y);

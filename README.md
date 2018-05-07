@@ -11,17 +11,17 @@ ember install ember-router-scroll
 ```
 
 ### Options
-You can specify the id of an element for which the scroll position is saved and set. Default is `window` for using the scroll position of the whole viewport. You can pass an options object in your application's `config/environment.js` file.
+If you need to scroll to the top of an area that generates a vertical scroll bar, you can specify the id of an element of the scrollable area. Default is `window` for using the scroll position of the whole viewport. You can pass an options object in your application's `config/environment.js` file.
 
 ```javascript
 ENV['routerScroll'] = {
   scrollElement: '#mainScrollElement'
 };
 
-If your viewport is not a scrollable area, you can still scroll to an element on the page.  This is particularly useful if instead of scrolling to the top of the window, you want to scroll to the top of the main content area.
+If you want to scroll to a target element on the page, you can specify the id or class of the element on the page.  This is particularly useful if instead of scrolling to the top of the window, you want to scroll to the top of the main content area (that does not generate a vertical scrollbar).
 
 ENV['routerScroll'] = {
-  targetElement: '#mainTargetElement'
+  targetElement: '#main-target-element' // or .main-target-element
 };
 
 Moreover, if your route breaks up render into multiple phases, you may need to delay scrollTop functionality until after the First Meaningful Paint using `delayScrollTop: true` in your config.  `delayScrollTop` defaults to `false`.

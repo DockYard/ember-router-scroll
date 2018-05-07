@@ -29,12 +29,12 @@ export default Service.extend({
     let x;
     let y;
 
-    if (targetElement && '#' === targetElement.charAt(0)) {
+    if (targetElement) {
       if (get(this, 'isFastBoot')) {
         return;
       }
 
-      let element = document.getElementById(targetElement.substring(1));
+      let element = document.querySelector(targetElement);
       if (element) {
         x = element.offsetLeft;
         y = element.offsetTop;
