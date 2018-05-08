@@ -58,6 +58,7 @@
     "start": "ember serve",
     "test": "ember test",
     "deploy": "ember github-pages:commit --message \"Deploy gh-pages from commit $(git rev-parse HEAD)\"; git push; git checkout -",
+    "postpublish": "git tag $npm_package_version && git push origin --tags",
     "test:all": "ember try:each"
   },
   "dependencies": {
