@@ -1,6 +1,6 @@
 {
   "name": "ember-router-scroll",
-  "version": "0.5.0",
+  "version": "0.6.1",
   "description": "Scroll to top with preserved browser history scroll position",
   "keywords": [
     "ember-addon",
@@ -58,6 +58,7 @@
     "start": "ember serve",
     "test": "ember test",
     "deploy": "ember github-pages:commit --message \"Deploy gh-pages from commit $(git rev-parse HEAD)\"; git push; git checkout -",
+    "postpublish": "git tag $npm_package_version && git push origin --tags",
     "test:all": "ember try:each"
   },
   "dependencies": {
@@ -96,15 +97,5 @@
   "ember-addon": {
     "configPath": "tests/dummy/config",
     "demoURL": "https://dollarshaveclub.github.io/ember-router-scroll/"
-  },
-  "changelog": {
-    "repo": "dollarshaveclub/ember-router-scroll",
-    "labels": {
-      "breaking": ":boom: Breaking Change",
-      "enhancement": ":rocket: Enhancement",
-      "bug": ":bug: Bug Fix",
-      "documentation": ":memo: Documentation",
-      "internal": ":house: Internal"
-    }
   }
 }
