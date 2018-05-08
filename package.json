@@ -97,15 +97,5 @@
   "ember-addon": {
     "configPath": "tests/dummy/config",
     "demoURL": "https://dollarshaveclub.github.io/ember-router-scroll/"
-  },
-  "changelog": {
-    "repo": "dollarshaveclub/ember-router-scroll",
-    "labels": {
-      "breaking": ":boom: Breaking Change",
-      "enhancement": ":rocket: Enhancement",
-      "bug": ":bug: Bug Fix",
-      "documentation": ":memo: Documentation",
-      "internal": ":house: Internal"
-    }
   }
 }
