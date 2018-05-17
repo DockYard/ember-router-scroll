@@ -39,7 +39,7 @@ export default Mixin.create({
     }
   },
 
-  updateScrollPosition (transitions) {
+  updateScrollPosition(transitions) {
     const lastTransition = transitions[transitions.length - 1];
 
     let routerPath
@@ -58,12 +58,15 @@ export default Mixin.create({
     } else {
       scrollPosition = get(this, 'service.position');
     }
-    const scrollElement = get(this, 'service.scrollElement');
-
     const preserveScrollPosition = get(lastTransition, 'handler.controller.preserveScrollPosition');
 
     if (!preserveScrollPosition) {
-      if ('window' === scrollElement) {
+      const scrollElement = get(this, 'service.scrollElement');
+      const targetElement = get(this, 'service.targetElement');
+
+      if (targetElement) {
+        window.scrollTo(scrollPosition.x, scrollPosition.y);
+      } else if ('window' === scrollElement) {
         window.scrollTo(scrollPosition.x, scrollPosition.y);
       } else if ('#' === scrollElement.charAt(0)) {
         const element = document.getElementById(scrollElement.substring(1));

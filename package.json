@@ -1,6 +1,6 @@
 {
   "name": "ember-router-scroll",
-  "version": "0.6.1",
+  "version": "0.7.0",
   "description": "Scroll to top with preserved browser history scroll position",
   "keywords": [
     "ember-addon",
@@ -62,7 +62,7 @@
     "test:all": "ember try:each"
   },
   "dependencies": {
-    "ember-app-scheduler": "^0.2.0",
+    "ember-app-scheduler": "^0.2.2",
     "ember-cli-babel": "^6.6.0",
     "ember-getowner-polyfill": "^2.0.1"
   },

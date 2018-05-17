@@ -1,6 +1,7 @@
 import Service from '@ember/service';
 import { getWithDefault, computed, set, get } from '@ember/object';
 import { typeOf } from '@ember/utils';
+import { assert } from '@ember/debug';
 import { getOwner } from '@ember/application';
 
 export default Service.extend({
@@ -10,23 +11,39 @@ export default Service.extend({
   }),
 
   scrollElement: 'window',
+  targetElement: null,
   delayScrollTop: false,
 
   init(...args) {
     this._super(...args);
     this._loadConfig();
-    set(this, 'scrollMap', {});
+    set(this, 'scrollMap', { default: { x: 0, y: 0 }});
     set(this, 'key', null);
   },
 
   update() {
     const scrollElement = get(this, 'scrollElement');
+    const targetElement = get(this, 'targetElement');
     const scrollMap = get(this, 'scrollMap');
     const key = get(this, 'key');
     let x;
     let y;
 
-    if ('window' === scrollElement) {
+    if (targetElement) {
+      if (get(this, 'isFastBoot')) {
+        return;
+      }
+
+      let element = document.querySelector(targetElement);
+      if (element) {
+        x = element.offsetLeft;
+        y = element.offsetTop;
+
+        // if we are looking to where to transition to next, we need to set the default to the position
+        // of the targetElement on screen
+        set(scrollMap, 'default', { x, y });
+      }
+    } else if ('window' === scrollElement) {
       x = window.scrollX;
       y = window.scrollY;
     } else if ('#' === scrollElement.charAt(0)) {
@@ -54,17 +71,24 @@ export default Service.extend({
     set(this, 'key', stateUuid); // eslint-disable-line ember/no-side-effects
     const key = getWithDefault(this, 'key', '-1');
 
-    return getWithDefault(scrollMap, key, { x: 0, y: 0 });
+    return getWithDefault(scrollMap, key, scrollMap.default);
   }).volatile(),
 
   _loadConfig() {
     const config = getOwner(this).resolveRegistration('config:environment');
 
-    if (config && config.routerScroll && config.routerScroll.scrollElement) {
+    if (config && config.routerScroll) {
       const scrollElement = config.routerScroll.scrollElement;
+      const targetElement = config.routerScroll.targetElement;
+
+      assert('You defined both scrollElement and targetElement in your config. We currently only support definining one of them', !(scrollElement && targetElement));
 
       if ('string' === typeOf(scrollElement)) {
         set(this, 'scrollElement', scrollElement);
+      }
+
+      if ('string' === typeOf(targetElement)) {
+        set(this, 'targetElement', targetElement);
       }
 
       const delayScrollTop = config.routerScroll.delayScrollTop;

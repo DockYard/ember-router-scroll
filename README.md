@@ -11,11 +11,17 @@ ember install ember-router-scroll
 ```
 
 ### Options
-You can specify the id of an element for which the scroll position is saved and set. Default is `window` for using the scroll position of the whole viewport. You can pass an options object in your application's `config/environment.js` file.
+If you need to scroll to the top of an area that generates a vertical scroll bar, you can specify the id of an element of the scrollable area. Default is `window` for using the scroll position of the whole viewport. You can pass an options object in your application's `config/environment.js` file.
 
 ```javascript
 ENV['routerScroll'] = {
   scrollElement: '#mainScrollElement'
+};
+
+If you want to scroll to a target element on the page, you can specify the id or class of the element on the page.  This is particularly useful if instead of scrolling to the top of the window, you want to scroll to the top of the main content area (that does not generate a vertical scrollbar).
+
+ENV['routerScroll'] = {
+  targetElement: '#main-target-element' // or .main-target-element
 };
 
 Moreover, if your route breaks up render into multiple phases, you may need to delay scrollTop functionality until after the First Meaningful Paint using `delayScrollTop: true` in your config.  `delayScrollTop` defaults to `false`.
@@ -84,21 +90,12 @@ historySupportMiddleware: true,
 
 This location type inherits from Ember's `HistoryLocation`.
 
-4. Tests
+4. If using old style QUnit tests. If tests based on [RFC](https://github.com/emberjs/rfcs/pull/232), you can ignore this.
 In your router and controller tests, add `'service:router-scroll'` and `'service:scheduler'` as dependencies in the `needs: []` block:
 
 ```js
 //{your-app}}/tests/unit/routes/{{your-route}}.js
 needs:[ 'service:router-scroll', 'service:scheduler' ],
-```
-
-### Options
-You can specify the id of an element for which the scroll position is saved and set. Default is `window` for using the scroll position of the whole viewport. You can pass an options object in your application's `config/environment.js` file.
-
-```javascript
-ENV['routerScroll'] = {
-  scrollElement: '#mainScrollElement'
-};
 ```
 
 ## Issues with nested routes
@@ -124,9 +121,9 @@ Add `preserveScrollPosition` as a queryParam in the controller for the route tha
 Example:
 
 ```javascript
-import Ember from 'ember';
+import Controller from '@ember/controller';
 
-export default Ember.Controller.extend({
+export default Controller.extend({
   queryParams: [
     'preserveScrollPosition',
   ],
@@ -154,9 +151,9 @@ In this example we have `preserveScrollPosition` initially set to false so that 
 Example:
 
 ```javascript
-import Ember from 'ember';
+import Controller from '@ember/controller';
 
-export default Ember.Controller.extend({
+export default Controller.extend({
   queryParams: ['filter'],
 
   preserveScrollPosition: false,
@@ -175,9 +172,9 @@ export default Ember.Controller.extend({
 If your controller is changing the preserveScrollPosition property, you'll probably need to reset `preserveScrollPosition` back to the default behavior whenever the controller is reset. This is not necceary on routes where `preserveScrollPosition` is always set to true.
 
 ```javascript
-import Ember from 'ember';
+import Router from '@ember/routing/route';
 
-export default Ember.Route.extend({
+export default Route.extend({
   resetController(controller) {
     controller.set('preserveScrollPosition', false);
   }
