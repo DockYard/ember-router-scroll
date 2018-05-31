@@ -1823,9 +1823,9 @@ electron-to-chromium@^1.3.47:
   version "1.3.48"
   resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.48.tgz#d3b0d8593814044e092ece2108fc3ac9aea4b900"
 
-ember-app-scheduler@ember-app-scheduler/ember-app-scheduler:
-  version "1.0.0-beta.5"
-  resolved "https://codeload.github.com/ember-app-scheduler/ember-app-scheduler/tar.gz/eb8ce255c53bd39aace995e6cb8080efaf20bcb0"
+ember-app-scheduler@~1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/ember-app-scheduler/-/ember-app-scheduler-1.0.0.tgz#999fe204fa73fbc09c544b538f02f9ac05aaa187"
   dependencies:
     ember-cli-babel "^6.3.0"
 
