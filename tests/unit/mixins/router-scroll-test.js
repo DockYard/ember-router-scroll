@@ -1,5 +1,6 @@
 import { run, next } from '@ember/runloop';
 import EmberObject from '@ember/object';
+import Evented from '@ember/object/evented';
 import RouterScroll from 'ember-router-scroll';
 import { module, test } from 'qunit';
 
@@ -13,14 +14,6 @@ module('mixin:router-scroll', function(hooks) {
   hooks.afterEach(function() {
     window.scrollTo = scrollTo;
   });
-
-  function getSchedulerMock() {
-    return {
-      scheduleWork: (eventName, callback) => {
-        callback();
-      },
-    };
-  }
 
   function getTransitionsMock (URL, isPreserveScroll, hasIntimateRouterAPI) {
     return [
@@ -41,10 +34,9 @@ module('mixin:router-scroll', function(hooks) {
     assert.expect(1);
 
     const done = assert.async();
-    const RouterScrollObject = EmberObject.extend(RouterScroll);
+    const RouterScrollObject = EmberObject.extend(Evented, RouterScroll);
     const subject = RouterScrollObject.create({
       isFastBoot: true,
-      scheduler: getSchedulerMock(),
       updateScrollPosition() {
         assert.notOk(true, 'it should not call updateScrollPosition.');
         done();
@@ -64,10 +56,9 @@ module('mixin:router-scroll', function(hooks) {
     assert.expect(1);
 
     const done = assert.async();
-    const RouterScrollObject = EmberObject.extend(RouterScroll);
+    const RouterScrollObject = EmberObject.extend(Evented, RouterScroll);
     const subject = RouterScrollObject.create({
       isFastBoot: false,
-      scheduler: getSchedulerMock(),
       service: {
         delayScrollTop: false,
       },
@@ -86,10 +77,9 @@ module('mixin:router-scroll', function(hooks) {
     assert.expect(1);
 
     const done = assert.async();
-    const RouterScrollObject = EmberObject.extend(RouterScroll);
+    const RouterScrollObject = EmberObject.extend(Evented, RouterScroll);
     const subject = RouterScrollObject.create({
       isFastBoot: false,
-      scheduler: getSchedulerMock(),
       service: {
         targetElement: '#myElement',
       },
@@ -108,10 +98,9 @@ module('mixin:router-scroll', function(hooks) {
     assert.expect(1);
 
     const done = assert.async();
-    const RouterScrollObject = EmberObject.extend(RouterScroll);
+    const RouterScrollObject = EmberObject.extend(Evented, RouterScroll);
     const subject = RouterScrollObject.create({
       isFastBoot: false,
-      scheduler: getSchedulerMock(),
       service: {
         delayScrollTop: true,
       },
@@ -132,10 +121,9 @@ module('mixin:router-scroll', function(hooks) {
 
     window.scrollTo = () => assert.ok(false, 'Scroll To should not be called');
 
-    const RouterScrollObject = EmberObject.extend(RouterScroll);
+    const RouterScrollObject = EmberObject.extend(Evented, RouterScroll);
     const subject = RouterScrollObject.create({
       isFastBoot: false,
-      scheduler: getSchedulerMock(),
       service: {
         position: null,
         scrollElement: 'window',
@@ -158,10 +146,9 @@ module('mixin:router-scroll', function(hooks) {
     window.scrollTo = (x, y) =>
       assert.ok(x === elem.offsetLeft && y === elem.offsetTop, 'Scroll to called with correct offsets');
 
-    const RouterScrollObject = EmberObject.extend(RouterScroll);
+    const RouterScrollObject = EmberObject.extend(Evented, RouterScroll);
     const subject = RouterScrollObject.create({
       isFastBoot: false,
-      scheduler: getSchedulerMock(),
       service: {
         position: null,
         scrollElement: 'window',
@@ -184,10 +171,9 @@ module('mixin:router-scroll', function(hooks) {
     window.scrollTo = (x, y) =>
       assert.ok(x === elem.offsetLeft && y === elem.offsetTop, 'Scroll to called with correct offsets');
 
-    const RouterScrollObject = EmberObject.extend(RouterScroll);
+    const RouterScrollObject = EmberObject.extend(Evented, RouterScroll);
     const subject = RouterScrollObject.create({
       isFastBoot: false,
-      scheduler: getSchedulerMock(),
       service: {
         position: null,
         scrollElement: 'window',
@@ -207,10 +193,9 @@ module('mixin:router-scroll', function(hooks) {
     window.scrollTo = (x, y) =>
       assert.ok(x === 1 && y === 2, 'Scroll to called with correct offsets');
 
-    const RouterScrollObject = EmberObject.extend(RouterScroll);
+    const RouterScrollObject = EmberObject.extend(Evented, RouterScroll);
     const subject = RouterScrollObject.create({
       isFastBoot: false,
-      scheduler: getSchedulerMock(),
       service: {
         position: { x: 1, y: 2 },
         scrollElement: 'window',
@@ -233,10 +218,9 @@ module('mixin:router-scroll', function(hooks) {
     window.scrollTo = (x, y) =>
       assert.ok(x === 1 && y === 2, 'Scroll to called with correct offsets');
 
-    const RouterScrollObject = EmberObject.extend(RouterScroll);
+    const RouterScrollObject = EmberObject.extend(Evented, RouterScroll);
     const subject = RouterScrollObject.create({
       isFastBoot: false,
-      scheduler: getSchedulerMock(),
       service: {
         position: { x: 1, y: 2 },
         scrollElement: 'window',
@@ -256,10 +240,9 @@ module('mixin:router-scroll', function(hooks) {
     window.scrollTo = (x, y) =>
       assert.ok(x === 1 && y === 2, 'Scroll to was called with correct offsets');
 
-    const RouterScrollObject = EmberObject.extend(RouterScroll);
+    const RouterScrollObject = EmberObject.extend(Evented, RouterScroll);
     const subject = RouterScrollObject.create({
       isFastBoot: false,
-      scheduler: getSchedulerMock(),
       service: {
         position: { x: 1, y: 2 },
         scrollElement: 'window',
