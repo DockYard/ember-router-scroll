@@ -91,11 +91,11 @@ historySupportMiddleware: true,
 This location type inherits from Ember's `HistoryLocation`.
 
 4. If using old style QUnit tests. If tests based on [RFC](https://github.com/emberjs/rfcs/pull/232), you can ignore this.
-In your router and controller tests, add `'service:router-scroll'` and `'service:scheduler'` as dependencies in the `needs: []` block:
+In your router and controller tests, add `'service:router-scroll'` as a dependency in the `needs: []` block:
 
 ```js
 //{your-app}}/tests/unit/routes/{{your-route}}.js
-needs:[ 'service:router-scroll', 'service:scheduler' ],
+needs:[ 'service:router-scroll' ],
 ```
 
 ## Issues with nested routes
