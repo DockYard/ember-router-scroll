@@ -1,5 +1,9 @@
 @import url(https://fonts.googleapis.com/css?family=VT323);
 
+body {
+  margin: 0;
+}
+
 #death-star {
   position:absolute;
   margin: 1550px auto 0 60%;
@@ -52,6 +56,12 @@ div {
   margin: 12% 10% -200px 10%;
 }
 
+#nav {
+  height: 44px;
+  background-color: white;
+  color: black;
+}
+
 .depth {
   font-size: 26px;
 }
@@ -74,6 +84,6 @@ div {
 .left {
     margin: 300px 0 0 10%;
 }
- .right {
-     margin: 300px 0 0 75%;
- }
+.right {
+  margin: 300px 0 0 75%;
+}
