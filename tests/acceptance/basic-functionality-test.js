@@ -1,6 +1,11 @@
 import { module, test } from 'qunit';
 import { setupApplicationTest } from 'ember-qunit';
-import { visit, click, currentURL, triggerEvent } from '@ember/test-helpers';
+import {
+  visit,
+  click,
+  currentURL,
+  triggerEvent
+} from '@ember/test-helpers';
 import config from 'dummy/config/environment';
 
 module('Acceptance | basic functionality', function(hooks) {
