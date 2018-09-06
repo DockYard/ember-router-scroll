@@ -4,7 +4,7 @@ import Evented from '@ember/object/evented';
 import RouterScroll from 'ember-router-scroll';
 import { module, test } from 'qunit';
 
-let scrollTo;
+let scrollTo, subject;
 
 module('mixin:router-scroll', function(hooks) {
   hooks.beforeEach(function() {
@@ -15,16 +15,15 @@ module('mixin:router-scroll', function(hooks) {
     window.scrollTo = scrollTo;
   });
 
-  function getTransitionsMock (URL, isPreserveScroll, hasIntimateRouterAPI) {
+  function getTransitionsMock (URL, isPreserveScroll) {
+    subject.set('currentURL', URL || 'Hello/World');
+
     return [
       {
         handler: {
           controller: {
             preserveScrollPosition: isPreserveScroll || false,
-          },
-          [hasIntimateRouterAPI ? '_router' : 'router']: {
-            currentURL: URL || 'Hello/World',
-          },
+          }
         },
       },
     ];
@@ -35,7 +34,7 @@ module('mixin:router-scroll', function(hooks) {
 
     const done = assert.async();
     const RouterScrollObject = EmberObject.extend(Evented, RouterScroll);
-    const subject = RouterScrollObject.create({
+    subject = RouterScrollObject.create({
       isFastBoot: true,
       updateScrollPosition() {
         assert.notOk(true, 'it should not call updateScrollPosition.');
@@ -57,7 +56,7 @@ module('mixin:router-scroll', function(hooks) {
 
     const done = assert.async();
     const RouterScrollObject = EmberObject.extend(Evented, RouterScroll);
-    const subject = RouterScrollObject.create({
+    subject = RouterScrollObject.create({
       isFastBoot: false,
       service: {
         delayScrollTop: false,
@@ -78,7 +77,7 @@ module('mixin:router-scroll', function(hooks) {
 
     const done = assert.async();
     const RouterScrollObject = EmberObject.extend(Evented, RouterScroll);
-    const subject = RouterScrollObject.create({
+    subject = RouterScrollObject.create({
       isFastBoot: false,
       service: {
         targetElement: '#myElement',
@@ -99,7 +98,7 @@ module('mixin:router-scroll', function(hooks) {
 
     const done = assert.async();
     const RouterScrollObject = EmberObject.extend(Evented, RouterScroll);
-    const subject = RouterScrollObject.create({
+    subject = RouterScrollObject.create({
       isFastBoot: false,
       service: {
         delayScrollTop: true,
@@ -122,7 +121,7 @@ module('mixin:router-scroll', function(hooks) {
     window.scrollTo = () => assert.ok(false, 'Scroll To should not be called');
 
     const RouterScrollObject = EmberObject.extend(Evented, RouterScroll);
-    const subject = RouterScrollObject.create({
+    subject = RouterScrollObject.create({
       isFastBoot: false,
       service: {
         position: null,
@@ -147,7 +146,7 @@ module('mixin:router-scroll', function(hooks) {
       assert.ok(x === elem.offsetLeft && y === elem.offsetTop, 'Scroll to called with correct offsets');
 
     const RouterScrollObject = EmberObject.extend(Evented, RouterScroll);
-    const subject = RouterScrollObject.create({
+    subject = RouterScrollObject.create({
       isFastBoot: false,
       service: {
         position: null,
@@ -156,7 +155,7 @@ module('mixin:router-scroll', function(hooks) {
     });
 
     run(() => {
-      subject.didTransition(getTransitionsMock('Hello/#World', false, false));
+      subject.didTransition(getTransitionsMock('Hello/#World', false));
       done();
     });
   });
@@ -172,7 +171,7 @@ module('mixin:router-scroll', function(hooks) {
       assert.ok(x === elem.offsetLeft && y === elem.offsetTop, 'Scroll to called with correct offsets');
 
     const RouterScrollObject = EmberObject.extend(Evented, RouterScroll);
-    const subject = RouterScrollObject.create({
+    subject = RouterScrollObject.create({
       isFastBoot: false,
       service: {
         position: null,
@@ -181,7 +180,7 @@ module('mixin:router-scroll', function(hooks) {
     });
 
     run(() => {
-      subject.didTransition(getTransitionsMock('Hello/#World', false, true));
+      subject.didTransition(getTransitionsMock('Hello/#World', false));
       done();
     });
   });
@@ -194,7 +193,7 @@ module('mixin:router-scroll', function(hooks) {
       assert.ok(x === 1 && y === 2, 'Scroll to called with correct offsets');
 
     const RouterScrollObject = EmberObject.extend(Evented, RouterScroll);
-    const subject = RouterScrollObject.create({
+    subject = RouterScrollObject.create({
       isFastBoot: false,
       service: {
         position: { x: 1, y: 2 },
@@ -219,7 +218,7 @@ module('mixin:router-scroll', function(hooks) {
       assert.ok(x === 1 && y === 2, 'Scroll to called with correct offsets');
 
     const RouterScrollObject = EmberObject.extend(Evented, RouterScroll);
-    const subject = RouterScrollObject.create({
+    subject = RouterScrollObject.create({
       isFastBoot: false,
       service: {
         position: { x: 1, y: 2 },
@@ -241,7 +240,7 @@ module('mixin:router-scroll', function(hooks) {
       assert.ok(x === 1 && y === 2, 'Scroll to was called with correct offsets');
 
     const RouterScrollObject = EmberObject.extend(Evented, RouterScroll);
-    const subject = RouterScrollObject.create({
+    subject = RouterScrollObject.create({
       isFastBoot: false,
       service: {
         position: { x: 1, y: 2 },
