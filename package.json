@@ -69,7 +69,7 @@
   },
   "devDependencies": {
     "broccoli-asset-rev": "^3.0.0",
-    "ember-cli": "~3.4.2",
+    "ember-cli": "~3.5.0",
     "ember-cli-dependency-checker": "^3.0.0",
     "ember-cli-eslint": "^4.2.1",
     "ember-cli-github-pages": "^0.2.0",
