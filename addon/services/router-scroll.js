@@ -23,7 +23,7 @@ export default Service.extend({
   },
 
   update() {
-    if (get(this, 'fastboot') || get(this, 'isFirstLoad')) {
+    if (get(this, 'isFastBoot') || get(this, 'isFirstLoad')) {
       return;
     }
 
