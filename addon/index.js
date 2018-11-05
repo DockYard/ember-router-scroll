@@ -1,5 +1,5 @@
 import Mixin from '@ember/object/mixin';
-import { get, computed } from '@ember/object';
+import { get, computed, set } from '@ember/object';
 import { inject } from '@ember/service';
 import { getOwner } from '@ember/application';
 import { scheduleOnce } from '@ember/runloop';
@@ -41,7 +41,7 @@ export default Mixin.create({
     const delayScrollTop = get(this, 'service.delayScrollTop');
 
     if (!delayScrollTop) {
-      scheduleOnce('render', this, () => this.updateScrollPosition(transitions));
+      scheduleOnce('afterRender', this, () => this.updateScrollPosition(transitions));
     } else {
       // as described in ember-app-scheduler, this addon can be used to delay rendering until after First Meaningful Paint.
       // If you loading your routes progressively, this may be a good option to delay scrollTop until the remaining DOM elements are painted.
@@ -54,6 +54,11 @@ export default Mixin.create({
   updateScrollPosition(transitions) {
     const url = get(this, 'currentURL');
     const hashElement = url ? document.getElementById(url.split('#').pop()) : null
+
+    if (get(this, 'service.isFirstLoad')) {
+      set(this, 'service.isFirstLoad', false);
+      return;
+    }
 
     let scrollPosition;
 
