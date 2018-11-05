@@ -22,6 +22,10 @@ export default Service.extend({
     set(this, 'scrollMap', { default: { x: 0, y: 0 }});
   },
 
+  unsetFirstLoad() {
+    set(this, 'isFirstLoad', false);
+  },
+
   update() {
     if (get(this, 'isFastBoot') || get(this, 'isFirstLoad')) {
       return;

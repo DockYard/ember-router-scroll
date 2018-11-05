@@ -1,5 +1,5 @@
 import Mixin from '@ember/object/mixin';
-import { get, computed, set } from '@ember/object';
+import { get, computed } from '@ember/object';
 import { inject } from '@ember/service';
 import { getOwner } from '@ember/application';
 import { scheduleOnce } from '@ember/runloop';
@@ -56,7 +56,7 @@ export default Mixin.create({
     const hashElement = url ? document.getElementById(url.split('#').pop()) : null
 
     if (get(this, 'service.isFirstLoad')) {
-      set(this, 'service.isFirstLoad', false);
+      get(this, 'service').unsetFirstLoad();
       return;
     }
 
