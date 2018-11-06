@@ -10,18 +10,27 @@ export default Service.extend({
     return fastboot ? fastboot.get('isFastBoot') : false;
   }),
 
+  key: null,
   scrollElement: 'window',
   targetElement: null,
   delayScrollTop: false,
+  isFirstLoad: true,
 
   init(...args) {
     this._super(...args);
     this._loadConfig();
     set(this, 'scrollMap', { default: { x: 0, y: 0 }});
-    set(this, 'key', null);
+  },
+
+  unsetFirstLoad() {
+    set(this, 'isFirstLoad', false);
   },
 
   update() {
+    if (get(this, 'isFastBoot') || get(this, 'isFirstLoad')) {
+      return;
+    }
+
     const scrollElement = get(this, 'scrollElement');
     const targetElement = get(this, 'targetElement');
     const scrollMap = get(this, 'scrollMap');
@@ -30,10 +39,6 @@ export default Service.extend({
     let y;
 
     if (targetElement) {
-      if (get(this, 'isFastBoot')) {
-        return;
-      }
-
       let element = document.querySelector(targetElement);
       if (element) {
         x = element.offsetLeft;
@@ -47,10 +52,6 @@ export default Service.extend({
       x = window.scrollX;
       y = window.scrollY;
     } else if ('#' === scrollElement.charAt(0)) {
-      if (get(this, 'isFastBoot')) {
-        return;
-      }
-
       let element = document.getElementById(scrollElement.substring(1));
 
       if (element) {
@@ -59,6 +60,7 @@ export default Service.extend({
       }
     }
 
+    // only a `key` present after first load
     if (key && 'number' === typeOf(x) && 'number' === typeOf(y)) {
       set(scrollMap, key, { x, y });
     }

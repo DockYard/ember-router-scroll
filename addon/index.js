@@ -55,6 +55,11 @@ export default Mixin.create({
     const url = get(this, 'currentURL');
     const hashElement = url ? document.getElementById(url.split('#').pop()) : null
 
+    if (get(this, 'service.isFirstLoad')) {
+      get(this, 'service').unsetFirstLoad();
+      return;
+    }
+
     let scrollPosition;
 
     if(url && url.indexOf('#') > -1 && hashElement) {
