@@ -32,7 +32,7 @@ module('service:router-scroll', function(hooks) {
   });
 
   test('updating will set `scrollMap` to the current scroll position', function(assert) {
-    const service = this.owner.lookup('service:router-scroll');
+    const service = this.owner.factoryFor('service:router-scroll').create({ isFirstLoad: false });
 
     const expected = { x: window.scrollX, y: window.scrollY };
     set(service, 'key', '123');
@@ -91,7 +91,7 @@ module('service:router-scroll', function(hooks) {
     otherElem.setAttribute('id', 'other-elem');
     const testing = document.querySelector('#ember-testing');
     testing.appendChild(otherElem);
-    const service = this.owner.factoryFor('service:router-scroll').create({ scrollElement: '#other-elem' });
+    const service = this.owner.factoryFor('service:router-scroll').create({ isFirstLoad: false, scrollElement: '#other-elem' });
     window.history.replaceState({ uuid: '123' }, null);
 
     let expected = { x: 0, y: 0 };
@@ -107,7 +107,7 @@ module('service:router-scroll', function(hooks) {
     otherElem.style.top = '100px';
     const testing = document.querySelector('#ember-testing');
     testing.appendChild(otherElem);
-    const service = this.owner.factoryFor('service:router-scroll').create({ targetElement: '#other-elem' });
+    const service = this.owner.factoryFor('service:router-scroll').create({ isFirstLoad: false, targetElement: '#other-elem' });
     window.history.replaceState({ uuid: '123' }, null);
 
     let expected = { x: 0, y: 0 };
