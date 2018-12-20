@@ -54,6 +54,7 @@
   "homepage": "https://dollarshaveclub.github.io/ember-router-scroll/",
   "scripts": {
     "build": "ember build",
+    "lint:hbs": "ember-template-lint .",
     "lint:js": "eslint ./*.js addon app config tests",
     "start": "ember serve",
     "test": "ember test",
