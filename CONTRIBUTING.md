@@ -18,6 +18,13 @@
 * `ember test --server` – Runs the test suite in "watch mode"
 * `ember try:each` – Runs the test suite against multiple Ember versions
 
+## Automation
+
+* `git checkout <greenkeeper-pull-request>`
+* `nvm i`
+* `yarn`
+* `yarn update`
+
 ## Running the dummy application
 
 * `ember serve`

@@ -221,3 +221,15 @@ export default Route.extend({
 * `npm test` (Runs `ember try:testall` to test your addon against multiple Ember versions)
 * `ember test`
 * `ember test --server`
+
+## Automatic Updates
+
+This repository uses [Greenkeeper](https://greenkeeper.io/) to manage dependencies.
+Before doing manual updates to dependencies, please check if a Greenkeeper pull request for the update already exists.
+
+Greenkeeper updates are updated and merged following the steps listed below.
+
+* `git checkout <greenkeeper-pull-request>`
+* `nvm i`
+* `yarn`
+* `yarn update`
