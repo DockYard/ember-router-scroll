@@ -55,7 +55,7 @@
   "scripts": {
     "build": "ember build",
     "lint:hbs": "ember-template-lint .",
-    "lint:js": "eslint ./*.js addon app config tests",
+    "lint:js": "eslint .",
     "start": "ember serve",
     "test": "ember test",
     "deploy": "ember github-pages:commit --message \"Deploy gh-pages from commit $(git rev-parse HEAD)\"; git push; git checkout -",
@@ -69,15 +69,15 @@
     "ember-getowner-polyfill": "^2.2.0"
   },
   "devDependencies": {
+    "@ember/optional-features": "^0.6.3",
     "broccoli-asset-rev": "^3.0.0",
-    "ember-cli": "~3.6.0",
+    "ember-cli": "~3.7.1",
     "ember-cli-dependency-checker": "^3.0.0",
     "ember-cli-eslint": "^5.0.0",
     "ember-cli-github-pages": "^0.2.0",
     "ember-cli-htmlbars": "^3.0.0",
     "ember-cli-htmlbars-inline-precompile": "^2.1.0",
     "ember-cli-inject-live-reload": "^2.0.1",
-    "ember-cli-qunit": "^4.4.0",
     "ember-cli-shims": "^1.2.0",
     "ember-cli-sri": "^2.1.0",
     "ember-cli-uglify": "^2.1.0",
@@ -86,16 +86,18 @@
     "ember-export-application-global": "^2.0.0",
     "ember-load-initializers": "^2.0.0",
     "ember-maybe-import-regenerator": "^0.1.6",
+    "ember-qunit": "^3.4.1",
     "ember-resolver": "^5.0.1",
-    "ember-source": "~3.6.1",
+    "ember-source": "~3.7.0",
     "ember-source-channel-url": "^1.1.0",
-    "ember-try": "^1.0.0-beta.2",
+    "ember-try": "^1.0.0",
     "eslint-plugin-ember": "^6.1.0",
     "eslint-plugin-node": "^8.0.0",
-    "loader.js": "^4.7.0"
+    "loader.js": "^4.7.0",
+    "qunit-dom": "^0.8.0"
   },
   "engines": {
-    "node": "^4.5 || 6.* || >= 7.*"
+    "node": "6.* || 8.* || >= 10.*"
   },
   "ember-addon": {
     "configPath": "tests/dummy/config",
