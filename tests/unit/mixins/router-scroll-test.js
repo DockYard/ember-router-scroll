@@ -15,18 +15,16 @@ module('mixin:router-scroll', function(hooks) {
     window.scrollTo = scrollTo;
   });
 
-  function getTransitionsMock (URL, isPreserveScroll) {
+  function getTransitionsMock(URL, isPreserveScroll) {
     subject.set('currentURL', URL || 'Hello/World');
 
-    return [
-      {
-        handler: {
-          controller: {
-            preserveScrollPosition: isPreserveScroll || false,
-          }
-        },
-      },
-    ];
+    return {
+      handler: {
+        controller: {
+          preserveScrollPosition: isPreserveScroll || false
+        }
+      }
+    };
   }
 
   test('when the application is FastBooted', (assert) => {
@@ -39,11 +37,11 @@ module('mixin:router-scroll', function(hooks) {
       updateScrollPosition() {
         assert.notOk(true, 'it should not call updateScrollPosition.');
         done();
-      },
+      }
     });
 
     run(() => {
-      subject.didTransition();
+      subject.trigger('routeDidChange');
       next(() => {
         assert.ok(true, 'it should not call updateScrollPosition.');
         done();
@@ -59,16 +57,16 @@ module('mixin:router-scroll', function(hooks) {
     subject = RouterScrollObject.create({
       isFastBoot: false,
       service: {
-        delayScrollTop: false,
+        delayScrollTop: false
       },
-      updateScrollPosition () {
+      updateScrollPosition() {
         assert.ok(true, 'it should call updateScrollPosition.');
         done();
-      },
+      }
     });
 
     run(() => {
-      subject.didTransition();
+      subject.trigger('routeDidChange');
     });
   });
 
@@ -80,16 +78,16 @@ module('mixin:router-scroll', function(hooks) {
     subject = RouterScrollObject.create({
       isFastBoot: false,
       service: {
-        targetElement: '#myElement',
+        targetElement: '#myElement'
       },
-      updateScrollPosition () {
+      updateScrollPosition() {
         assert.ok(true, 'it should call updateScrollPosition.');
         done();
-      },
+      }
     });
 
     run(() => {
-      subject.didTransition();
+      subject.trigger('routeDidChange');
     });
   });
 
@@ -101,16 +99,16 @@ module('mixin:router-scroll', function(hooks) {
     subject = RouterScrollObject.create({
       isFastBoot: false,
       service: {
-        delayScrollTop: true,
+        delayScrollTop: true
       },
-      updateScrollPosition () {
+      updateScrollPosition() {
         assert.ok(true, 'it should call updateScrollPosition.');
         done();
-      },
+      }
     });
 
     run(() => {
-      subject.didTransition();
+      subject.trigger('routeDidChange');
     });
   });
 
@@ -125,12 +123,12 @@ module('mixin:router-scroll', function(hooks) {
       isFastBoot: false,
       service: {
         position: null,
-        scrollElement: 'window',
-      },
+        scrollElement: 'window'
+      }
     });
 
     run(() => {
-      subject.didTransition(getTransitionsMock('Hello/World', true));
+      subject.trigger('routeDidChange', getTransitionsMock('Hello/World', true));
       done();
     });
   });
@@ -150,12 +148,12 @@ module('mixin:router-scroll', function(hooks) {
       isFastBoot: false,
       service: {
         position: null,
-        scrollElement: 'window',
-      },
+        scrollElement: 'window'
+      }
     });
 
     run(() => {
-      subject.didTransition(getTransitionsMock('Hello/#World', false));
+      subject.trigger('routeDidChange', getTransitionsMock('Hello/#World', false));
       done();
     });
   });
@@ -175,12 +173,12 @@ module('mixin:router-scroll', function(hooks) {
       isFastBoot: false,
       service: {
         position: null,
-        scrollElement: 'window',
-      },
+        scrollElement: 'window'
+      }
     });
 
     run(() => {
-      subject.didTransition(getTransitionsMock('Hello/#World', false));
+      subject.trigger('routeDidChange', getTransitionsMock('Hello/#World', false));
       done();
     });
   });
@@ -197,12 +195,12 @@ module('mixin:router-scroll', function(hooks) {
       isFastBoot: false,
       service: {
         position: { x: 1, y: 2 },
-        scrollElement: 'window',
-      },
+        scrollElement: 'window'
+      }
     });
 
     run(() => {
-      subject.didTransition(getTransitionsMock('Hello/#'));
+      subject.trigger('routeDidChange', getTransitionsMock('Hello/#'));
       done();
     });
   });
@@ -222,12 +220,12 @@ module('mixin:router-scroll', function(hooks) {
       isFastBoot: false,
       service: {
         position: { x: 1, y: 2 },
-        scrollElement: 'window',
-      },
+        scrollElement: 'window'
+      }
     });
 
     run(() => {
-      subject.didTransition(getTransitionsMock('Hello/#Bar'));
+      subject.trigger('routeDidChange', getTransitionsMock('Hello/#Bar'));
       done();
     });
   });
@@ -244,12 +242,12 @@ module('mixin:router-scroll', function(hooks) {
       isFastBoot: false,
       service: {
         position: { x: 1, y: 2 },
-        scrollElement: 'window',
-      },
+        scrollElement: 'window'
+      }
     });
 
     run(() => {
-      subject.didTransition(getTransitionsMock('Hello/World'));
+      subject.trigger('routeDidChange', getTransitionsMock('Hello/World'));
       next(() => {
         done();
       });

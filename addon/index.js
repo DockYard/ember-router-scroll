@@ -17,6 +17,32 @@ export default Mixin.create({
     this._super(...arguments);
 
     setupRouter(this);
+
+    this.on('routeWillChange', () => {
+      if (get(this, 'isFastBoot')) {
+        return;
+      }
+
+      get(this, 'service').update();
+    });
+
+    this.on('routeDidChange', transition => {
+      if (get(this, 'isFastBoot')) {
+        return;
+      }
+
+      const delayScrollTop = get(this, 'service.delayScrollTop');
+
+      if (!delayScrollTop) {
+        scheduleOnce('render', this, () => this.updateScrollPosition(transition));
+      } else {
+        // as described in ember-app-scheduler, this addon can be used to delay rendering until after First Meaningful Paint.
+        // If you loading your routes progressively, this may be a good option to delay scrollTop until the remaining DOM elements are painted.
+        whenRouteIdle().then(() => {
+          this.updateScrollPosition(transition);
+        });
+      }
+    });
   },
 
   destroy() {
@@ -25,35 +51,9 @@ export default Mixin.create({
     this._super(...arguments);
   },
 
-  willTransition(...args) {
-    this._super(...args);
-
-    if (get(this, 'isFastBoot')) { return; }
-
-    get(this, 'service').update();
-  },
-
-  didTransition(transitions, ...args) {
-    this._super(transitions, ...args);
-
-    if (get(this, 'isFastBoot')) { return; }
-
-    const delayScrollTop = get(this, 'service.delayScrollTop');
-
-    if (!delayScrollTop) {
-      scheduleOnce('render', this, () => this.updateScrollPosition(transitions));
-    } else {
-      // as described in ember-app-scheduler, this addon can be used to delay rendering until after First Meaningful Paint.
-      // If you loading your routes progressively, this may be a good option to delay scrollTop until the remaining DOM elements are painted.
-      whenRouteIdle().then(() => {
-        this.updateScrollPosition(transitions);
-      });
-    }
-  },
-
-  updateScrollPosition(transitions) {
+  updateScrollPosition(transition) {
     const url = get(this, 'currentURL');
-    const hashElement = url ? document.getElementById(url.split('#').pop()) : null
+    const hashElement = url ? document.getElementById(url.split('#').pop()) : null;
 
     if (get(this, 'service.isFirstLoad')) {
       get(this, 'service').unsetFirstLoad();
@@ -62,13 +62,13 @@ export default Mixin.create({
 
     let scrollPosition;
 
-    if(url && url.indexOf('#') > -1 && hashElement) {
+    if (url && url.indexOf('#') > -1 && hashElement) {
       scrollPosition = { x: hashElement.offsetLeft, y: hashElement.offsetTop };
     } else {
       scrollPosition = get(this, 'service.position');
     }
 
-    const preserveScrollPosition = transitions.some((transition) => get(transition, 'handler.controller.preserveScrollPosition'));
+    const preserveScrollPosition = get(transition, 'handler.controller.preserveScrollPosition');
 
     if (!preserveScrollPosition) {
       const scrollElement = get(this, 'service.scrollElement');
