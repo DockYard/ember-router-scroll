@@ -3332,6 +3332,7 @@ ember-cli@~3.7.1:
 ember-compatibility-helpers@^1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/ember-compatibility-helpers/-/ember-compatibility-helpers-1.1.2.tgz#ae0ee4a7a2858b5ffdf79b428c23aee85c47d93d"
+  integrity sha512-yN163MzERpotO8M0b+q+kXs4i3Nx6aIriiZHWv+yXQzr2TAtYlVwg9V7/3+jcurOa3oDEYDpN7y9UZ6q3mnoTg==
   dependencies:
     babel-plugin-debug-macros "^0.2.0"
     ember-cli-version-checker "^2.1.1"

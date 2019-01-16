@@ -66,6 +66,7 @@
   "dependencies": {
     "ember-app-scheduler": "^1.0.5",
     "ember-cli-babel": "^7.1.2",
+    "ember-compatibility-helpers": "^1.1.2",
     "ember-getowner-polyfill": "^2.2.0"
   },
   "devDependencies": {

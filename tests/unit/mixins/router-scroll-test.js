@@ -3,6 +3,7 @@ import EmberObject from '@ember/object';
 import Evented from '@ember/object/evented';
 import RouterScroll from 'ember-router-scroll';
 import { module, test } from 'qunit';
+import { gte } from 'ember-compatibility-helpers';
 
 let scrollTo, subject;
 
@@ -18,13 +19,15 @@ module('mixin:router-scroll', function(hooks) {
   function getTransitionsMock(URL, isPreserveScroll) {
     subject.set('currentURL', URL || 'Hello/World');
 
-    return {
+    const transition = {
       handler: {
         controller: {
           preserveScrollPosition: isPreserveScroll || false
         }
       }
     };
+
+    return gte('3.6.0-beta.1') ? transition : [transition];
   }
 
   test('when the application is FastBooted', (assert) => {
@@ -41,7 +44,11 @@ module('mixin:router-scroll', function(hooks) {
     });
 
     run(() => {
-      subject.trigger('routeDidChange');
+      if(gte('3.6.0-beta.1')) {
+        subject.trigger('routeDidChange');
+      } else {
+        subject.didTransition();
+      }
       next(() => {
         assert.ok(true, 'it should not call updateScrollPosition.');
         done();
@@ -66,7 +73,11 @@ module('mixin:router-scroll', function(hooks) {
     });
 
     run(() => {
-      subject.trigger('routeDidChange');
+      if(gte('3.6.0-beta.1')) {
+        subject.trigger('routeDidChange');
+      } else {
+        subject.didTransition();
+      }
     });
   });
 
@@ -87,7 +98,11 @@ module('mixin:router-scroll', function(hooks) {
     });
 
     run(() => {
-      subject.trigger('routeDidChange');
+      if(gte('3.6.0-beta.1')) {
+        subject.trigger('routeDidChange');
+      } else {
+        subject.didTransition();
+      }
     });
   });
 
@@ -108,7 +123,11 @@ module('mixin:router-scroll', function(hooks) {
     });
 
     run(() => {
-      subject.trigger('routeDidChange');
+      if(gte('3.6.0-beta.1')) {
+        subject.trigger('routeDidChange');
+      } else {
+        subject.didTransition();
+      }
     });
   });
 
@@ -128,7 +147,11 @@ module('mixin:router-scroll', function(hooks) {
     });
 
     run(() => {
-      subject.trigger('routeDidChange', getTransitionsMock('Hello/World', true));
+      if(gte('3.6.0-beta.1')) {
+        subject.trigger('routeDidChange', getTransitionsMock('Hello/World', true));
+      } else {
+        subject.didTransition(getTransitionsMock('Hello/World', true));
+      }
       done();
     });
   });
@@ -153,7 +176,11 @@ module('mixin:router-scroll', function(hooks) {
     });
 
     run(() => {
-      subject.trigger('routeDidChange', getTransitionsMock('Hello/#World', false));
+      if(gte('3.6.0-beta.1')) {
+        subject.trigger('routeDidChange', getTransitionsMock('Hello/#World', false));
+      } else {
+        subject.didTransition(getTransitionsMock('Hello/#World', false));
+      }
       done();
     });
   });
@@ -178,7 +205,11 @@ module('mixin:router-scroll', function(hooks) {
     });
 
     run(() => {
-      subject.trigger('routeDidChange', getTransitionsMock('Hello/#World', false));
+      if(gte('3.6.0-beta.1')) {
+        subject.trigger('routeDidChange', getTransitionsMock('Hello/World', false));
+      } else {
+        subject.didTransition(getTransitionsMock('Hello/#World', false));
+      }
       done();
     });
   });
@@ -200,7 +231,11 @@ module('mixin:router-scroll', function(hooks) {
     });
 
     run(() => {
-      subject.trigger('routeDidChange', getTransitionsMock('Hello/#'));
+      if(gte('3.6.0-beta.1')) {
+        subject.trigger('routeDidChange', getTransitionsMock('Hello/#'));
+      } else {
+        subject.didTransition(getTransitionsMock('Hello/#'));
+      }
       done();
     });
   });
@@ -225,7 +260,11 @@ module('mixin:router-scroll', function(hooks) {
     });
 
     run(() => {
-      subject.trigger('routeDidChange', getTransitionsMock('Hello/#Bar'));
+      if(gte('3.6.0-beta.1')) {
+        subject.trigger('routeDidChange', getTransitionsMock('Hello/#Bar'));
+      } else {
+        subject.didTransition(getTransitionsMock('Hello/#Bar'));
+      }
       done();
     });
   });
@@ -247,7 +286,11 @@ module('mixin:router-scroll', function(hooks) {
     });
 
     run(() => {
-      subject.trigger('routeDidChange', getTransitionsMock('Hello/World'));
+      if(gte('3.6.0-beta.1')) {
+        subject.trigger('routeDidChange', getTransitionsMock('Hello/World'));
+      } else {
+        subject.didTransition(getTransitionsMock('Hello/World'));
+      }
       next(() => {
         done();
       });
