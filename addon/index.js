@@ -6,7 +6,7 @@ import { scheduleOnce } from '@ember/runloop';
 import { setupRouter, reset, whenRouteIdle } from 'ember-app-scheduler';
 import { gte } from 'ember-compatibility-helpers';
 
-export default Mixin.create({
+let RouterScrollMixin = Mixin.create({
   service: inject('router-scroll'),
 
   isFastBoot: computed(function() {
@@ -27,18 +27,6 @@ export default Mixin.create({
       this.on('routeDidChange', (transition) => {
         this._routeDidChange(transition);
       });
-    } else {
-      this.willTransition = (...args) => {
-        this._super(...args);
-
-        this._routeWillChange();
-      };
-
-      this.didTransition = (transitions, ...args) => {
-        this._super(transitions, ...args);
-
-        this._routeDidChange(transitions);
-      };
     }
   },
 
@@ -122,3 +110,21 @@ export default Mixin.create({
     }
   }
 });
+
+if (!gte('3.6.0-beta.1')) {
+  RouterScrollMixin = Mixin.create(RouterScrollMixin, {
+    willTransition(...args) {
+      this._super(...args);
+
+      this._routeWillChange();
+    },
+
+    didTransition(transitions, ...args) {
+      this._super(transitions, ...args);
+
+      this._routeDidChange(transitions);
+    }
+  });
+}
+
+export default RouterScrollMixin;
