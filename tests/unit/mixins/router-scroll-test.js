@@ -206,7 +206,7 @@ module('mixin:router-scroll', function(hooks) {
 
     run(() => {
       if(gte('3.6.0-beta.1')) {
-        subject.trigger('routeDidChange', getTransitionsMock('Hello/World', false));
+        subject.trigger('routeDidChange', getTransitionsMock('Hello/#World', false));
       } else {
         subject.didTransition(getTransitionsMock('Hello/#World', false));
       }
