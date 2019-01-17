@@ -3,6 +3,7 @@ import EmberObject from '@ember/object';
 import Evented from '@ember/object/evented';
 import RouterScroll from 'ember-router-scroll';
 import { module, test } from 'qunit';
+import { gte } from 'ember-compatibility-helpers';
 
 let scrollTo, subject;
 
@@ -15,18 +16,18 @@ module('mixin:router-scroll', function(hooks) {
     window.scrollTo = scrollTo;
   });
 
-  function getTransitionsMock (URL, isPreserveScroll) {
+  function getTransitionsMock(URL, isPreserveScroll) {
     subject.set('currentURL', URL || 'Hello/World');
 
-    return [
-      {
-        handler: {
-          controller: {
-            preserveScrollPosition: isPreserveScroll || false,
-          }
-        },
-      },
-    ];
+    const transition = {
+      handler: {
+        controller: {
+          preserveScrollPosition: isPreserveScroll || false
+        }
+      }
+    };
+
+    return gte('3.6.0-beta.1') ? transition : [transition];
   }
 
   test('when the application is FastBooted', (assert) => {
@@ -39,11 +40,15 @@ module('mixin:router-scroll', function(hooks) {
       updateScrollPosition() {
         assert.notOk(true, 'it should not call updateScrollPosition.');
         done();
-      },
+      }
     });
 
     run(() => {
-      subject.didTransition();
+      if(gte('3.6.0-beta.1')) {
+        subject.trigger('routeDidChange');
+      } else {
+        subject.didTransition();
+      }
       next(() => {
         assert.ok(true, 'it should not call updateScrollPosition.');
         done();
@@ -59,16 +64,20 @@ module('mixin:router-scroll', function(hooks) {
     subject = RouterScrollObject.create({
       isFastBoot: false,
       service: {
-        delayScrollTop: false,
+        delayScrollTop: false
       },
-      updateScrollPosition () {
+      updateScrollPosition() {
         assert.ok(true, 'it should call updateScrollPosition.');
         done();
-      },
+      }
     });
 
     run(() => {
-      subject.didTransition();
+      if(gte('3.6.0-beta.1')) {
+        subject.trigger('routeDidChange');
+      } else {
+        subject.didTransition();
+      }
     });
   });
 
@@ -80,16 +89,20 @@ module('mixin:router-scroll', function(hooks) {
     subject = RouterScrollObject.create({
       isFastBoot: false,
       service: {
-        targetElement: '#myElement',
+        targetElement: '#myElement'
       },
-      updateScrollPosition () {
+      updateScrollPosition() {
         assert.ok(true, 'it should call updateScrollPosition.');
         done();
-      },
+      }
     });
 
     run(() => {
-      subject.didTransition();
+      if(gte('3.6.0-beta.1')) {
+        subject.trigger('routeDidChange');
+      } else {
+        subject.didTransition();
+      }
     });
   });
 
@@ -101,16 +114,20 @@ module('mixin:router-scroll', function(hooks) {
     subject = RouterScrollObject.create({
       isFastBoot: false,
       service: {
-        delayScrollTop: true,
+        delayScrollTop: true
       },
-      updateScrollPosition () {
+      updateScrollPosition() {
         assert.ok(true, 'it should call updateScrollPosition.');
         done();
-      },
+      }
     });
 
     run(() => {
-      subject.didTransition();
+      if(gte('3.6.0-beta.1')) {
+        subject.trigger('routeDidChange');
+      } else {
+        subject.didTransition();
+      }
     });
   });
 
@@ -125,12 +142,16 @@ module('mixin:router-scroll', function(hooks) {
       isFastBoot: false,
       service: {
         position: null,
-        scrollElement: 'window',
-      },
+        scrollElement: 'window'
+      }
     });
 
     run(() => {
-      subject.didTransition(getTransitionsMock('Hello/World', true));
+      if(gte('3.6.0-beta.1')) {
+        subject.trigger('routeDidChange', getTransitionsMock('Hello/World', true));
+      } else {
+        subject.didTransition(getTransitionsMock('Hello/World', true));
+      }
       done();
     });
   });
@@ -150,12 +171,16 @@ module('mixin:router-scroll', function(hooks) {
       isFastBoot: false,
       service: {
         position: null,
-        scrollElement: 'window',
-      },
+        scrollElement: 'window'
+      }
     });
 
     run(() => {
-      subject.didTransition(getTransitionsMock('Hello/#World', false));
+      if(gte('3.6.0-beta.1')) {
+        subject.trigger('routeDidChange', getTransitionsMock('Hello/#World', false));
+      } else {
+        subject.didTransition(getTransitionsMock('Hello/#World', false));
+      }
       done();
     });
   });
@@ -175,12 +200,16 @@ module('mixin:router-scroll', function(hooks) {
       isFastBoot: false,
       service: {
         position: null,
-        scrollElement: 'window',
-      },
+        scrollElement: 'window'
+      }
     });
 
     run(() => {
-      subject.didTransition(getTransitionsMock('Hello/#World', false));
+      if(gte('3.6.0-beta.1')) {
+        subject.trigger('routeDidChange', getTransitionsMock('Hello/#World', false));
+      } else {
+        subject.didTransition(getTransitionsMock('Hello/#World', false));
+      }
       done();
     });
   });
@@ -197,12 +226,16 @@ module('mixin:router-scroll', function(hooks) {
       isFastBoot: false,
       service: {
         position: { x: 1, y: 2 },
-        scrollElement: 'window',
-      },
+        scrollElement: 'window'
+      }
     });
 
     run(() => {
-      subject.didTransition(getTransitionsMock('Hello/#'));
+      if(gte('3.6.0-beta.1')) {
+        subject.trigger('routeDidChange', getTransitionsMock('Hello/#'));
+      } else {
+        subject.didTransition(getTransitionsMock('Hello/#'));
+      }
       done();
     });
   });
@@ -222,12 +255,16 @@ module('mixin:router-scroll', function(hooks) {
       isFastBoot: false,
       service: {
         position: { x: 1, y: 2 },
-        scrollElement: 'window',
-      },
+        scrollElement: 'window'
+      }
     });
 
     run(() => {
-      subject.didTransition(getTransitionsMock('Hello/#Bar'));
+      if(gte('3.6.0-beta.1')) {
+        subject.trigger('routeDidChange', getTransitionsMock('Hello/#Bar'));
+      } else {
+        subject.didTransition(getTransitionsMock('Hello/#Bar'));
+      }
       done();
     });
   });
@@ -244,12 +281,16 @@ module('mixin:router-scroll', function(hooks) {
       isFastBoot: false,
       service: {
         position: { x: 1, y: 2 },
-        scrollElement: 'window',
-      },
+        scrollElement: 'window'
+      }
     });
 
     run(() => {
-      subject.didTransition(getTransitionsMock('Hello/World'));
+      if(gte('3.6.0-beta.1')) {
+        subject.trigger('routeDidChange', getTransitionsMock('Hello/World'));
+      } else {
+        subject.didTransition(getTransitionsMock('Hello/World'));
+      }
       next(() => {
         done();
       });

@@ -1,4 +1,5 @@
-# ember-router-scroll
+ember-router-scroll
+==============================================================================
 
 [![Build Status](https://travis-ci.org/dollarshaveclub/ember-router-scroll.svg?branch=master)](https://travis-ci.org/dollarshaveclub/ember-router-scroll)
 [![Greenkeeper badge](https://badges.greenkeeper.io/dollarshaveclub/ember-router-scroll.svg)](https://greenkeeper.io/)
@@ -16,16 +17,25 @@ preserved when using the back or forward browser buttons.
 
 **ember-router-scroll** makes your single page application feel more like a regular website.
 
+Compatibility
+------------------------------------------------------------------------------
 
-## Installation & Usage
+* Ember.js v2.18 or above
+* Ember CLI v2.13 or above
 
-**1.** Install addon
 
-```bash
+Installation 
+------------------------------------------------------------------------------
+
+```
 ember install ember-router-scroll
 ```
 
-**2.** Import ember-router-scroll
+
+Usage
+------------------------------------------------------------------------------
+
+**1.** Import ember-router-scroll
 
 You need to import the mixin in your `app/router.js` file, so it will be injected in all your routes.
 Also, you have to add RouterScroll as an extension to your Router object:
@@ -40,7 +50,7 @@ const Router = EmberRouter.extend(PageTrackerMixin, RouterScroll, {
 });
 ```
 
-**3.** Update your app's `locationType`
+**2.** Update your app's `locationType`
 
 Edit `config/environment.js` and change `locationType`.
 Also add `historySupportMiddleware: true,` to get live-reload working in nested routes.
@@ -53,7 +63,7 @@ historySupportMiddleware: true,
 
 This location type inherits from Ember's `HistoryLocation`.
 
-**4.** If using old style QUnit tests. If tests based on [RFC](https://github.com/emberjs/rfcs/pull/232), you can
+**3.** If using old style QUnit tests. If tests based on [RFC](https://github.com/emberjs/rfcs/pull/232), you can
 ignore this.
 In your router and controller tests, add `'service:router-scroll'` and `'service:scheduler'` as dependencies in the
 `needs: []` block:
@@ -233,3 +243,8 @@ Greenkeeper updates are updated and merged following the steps listed below.
 * `nvm i`
 * `yarn`
 * `yarn update`
+
+License
+------------------------------------------------------------------------------
+
+This project is licensed under the [MIT License](LICENSE.md).
