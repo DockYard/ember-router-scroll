@@ -65,6 +65,10 @@ let RouterScrollMixin = Mixin.create({
       preserveScrollPosition = transition.some((t) => get(t, 'handler.controller.preserveScrollPosition'));
     }
 
+    if(!preserveScrollPosition) {
+      preserveScrollPosition = get(this, 'service.preserveScrollPosition')
+    }
+
     if (!preserveScrollPosition) {
       const scrollElement = get(this, 'service.scrollElement');
       const targetElement = get(this, 'service.targetElement');
