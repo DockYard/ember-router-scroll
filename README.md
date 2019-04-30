@@ -182,7 +182,6 @@ preserving scroll position is expected. Or you want a particular route to start 
 behavior but then preserve scroll position when query params change in response to user interaction. Using a controller
 property also allows the use of preserveScrollPosition without adding this to the query params.
 
-
 **1.** Add query param to controller
 
 Add `preserveScrollPosition` as a controller property for the route that needs to preserve the scroll position.
@@ -225,6 +224,37 @@ export default Route.extend({
 });
 ```
 
+
+### preserveScrollPosition via service
+
+You may need to programaically control `preserveScrollPosition` directly from a component. This can be achieved by toggling the `preserveScrollPosition` property on the `routerScroll` service.
+
+Note: if `preserveScrollPosition` is set to true on the service, it will override any values set on the current route's controller - whether query param or controller property.
+
+
+**1.** Manage preserveScrollPosition via service
+
+You may need to temporarily enable `preserveScrollPosition` before performing a transition. In this case ensure that you reset it after the transition completes so that subsequent transitions do not  `preserveScrollPosition`.
+
+Example:
+
+```javascript
+import Component from '@ember/component';
+import { inject as service } from '@ember/service';
+
+export default Component.extend({
+  routerScroll: service(),
+  router: service(),
+
+  actions: {
+    async performTransition(routePath) {
+      this.set('routerScroll.preserveScrollPosition', true);
+      await this.router.transitionTo(routePath);
+      this.set('routerScroll.preserveScrollPosition', false);
+    }
+  }
+});
+```
 
 ## Running Tests
 
