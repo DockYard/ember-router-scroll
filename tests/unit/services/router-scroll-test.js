@@ -1,4 +1,4 @@
-import { set, get } from '@ember/object';
+import EmberObject, { set, get } from '@ember/object';
 import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
 
@@ -63,7 +63,8 @@ module('service:router-scroll', function(hooks) {
     otherElem.setAttribute('id', 'other-elem');
     const testing = document.querySelector('#ember-testing');
     testing.appendChild(otherElem);
-    const service = this.owner.factoryFor('service:router-scroll').create({ scrollElement: '#other-elem', isFastBoot: true });
+    this.owner.register('service:fastboot', EmberObject.extend({ isFastBoot: true }));
+    const service = this.owner.factoryFor('service:router-scroll').create({ scrollElement: '#other-elem' });
     window.history.replaceState({ uuid: '123' }, null);
 
     let expected = { x: 0, y: 0 };
@@ -77,7 +78,8 @@ module('service:router-scroll', function(hooks) {
     otherElem.setAttribute('id', 'other-elem');
     const testing = document.querySelector('#ember-testing');
     testing.appendChild(otherElem);
-    const service = this.owner.factoryFor('service:router-scroll').create({ targetElement: '#other-elem', isFastBoot: true });
+    this.owner.register('service:fastboot', EmberObject.extend({ isFastBoot: true }));
+    const service = this.owner.factoryFor('service:router-scroll').create({ targetElement: '#other-elem' });
     window.history.replaceState({ uuid: '123' }, null);
 
     let expected = { x: 0, y: 0 };
