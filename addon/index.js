@@ -60,7 +60,7 @@ let RouterScrollMixin = Mixin.create({
 
     let preserveScrollPosition;
     if (gte('3.6.0-beta.1')) {
-      preserveScrollPosition = get(transition, 'handler.controller.preserveScrollPosition');
+      preserveScrollPosition = transition.intent.router.currentRouteInfos.some((routeInfo) => get(routeInfo, 'route.controller.preserveScrollPosition'));
     } else {
       preserveScrollPosition = transition.some((t) => get(t, 'handler.controller.preserveScrollPosition'));
     }

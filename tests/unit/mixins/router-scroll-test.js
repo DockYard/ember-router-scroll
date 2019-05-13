@@ -27,6 +27,19 @@ module('mixin:router-scroll', function(hooks) {
         controller: {
           preserveScrollPosition: isPreserveScroll || false
         }
+      },
+      intent: {
+        router: {
+          currentRouteInfos: [
+            {
+              route: {
+                controller: {
+                  preserveScrollPosition: isPreserveScroll || false
+                }
+              }
+            }
+          ]
+        }
       }
     };
 
