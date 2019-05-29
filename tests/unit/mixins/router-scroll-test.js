@@ -3,11 +3,14 @@ import EmberObject from '@ember/object';
 import Evented from '@ember/object/evented';
 import RouterScroll from 'ember-router-scroll';
 import { module, test } from 'qunit';
+import { setupTest } from 'ember-qunit';
 import { gte } from 'ember-compatibility-helpers';
 
 let scrollTo, subject;
 
 module('mixin:router-scroll', function(hooks) {
+  setupTest(hooks);
+
   hooks.beforeEach(function() {
     scrollTo = window.scrollTo;
   });
@@ -24,24 +27,38 @@ module('mixin:router-scroll', function(hooks) {
         controller: {
           preserveScrollPosition: isPreserveScroll || false
         }
+      },
+      intent: {
+        router: {
+          currentRouteInfos: [
+            {
+              route: {
+                controller: {
+                  preserveScrollPosition: isPreserveScroll || false
+                }
+              }
+            }
+          ]
+        }
       }
     };
 
     return gte('3.6.0-beta.1') ? transition : [transition];
   }
 
-  test('when the application is FastBooted', (assert) => {
+  test('when the application is FastBooted', function(assert) {
     assert.expect(1);
-
     const done = assert.async();
-    const RouterScrollObject = EmberObject.extend(Evented, RouterScroll);
-    subject = RouterScrollObject.create({
-      isFastBoot: true,
+
+    this.owner.register('service:fastboot', EmberObject.extend({ isFastBoot: true }));
+    this.owner.register('router:main', EmberObject.extend(Evented, RouterScroll, {
       updateScrollPosition() {
         assert.notOk(true, 'it should not call updateScrollPosition.');
         done();
       }
-    });
+    }));
+
+    subject = this.owner.factoryFor('router:main').create();
 
     run(() => {
       if(gte('3.6.0-beta.1')) {
@@ -56,21 +73,20 @@ module('mixin:router-scroll', function(hooks) {
     });
   });
 
-  test('when the application is not FastBooted', (assert) => {
+  test('when the application is not FastBooted', function(assert) {
     assert.expect(1);
-
     const done = assert.async();
-    const RouterScrollObject = EmberObject.extend(Evented, RouterScroll);
-    subject = RouterScrollObject.create({
-      isFastBoot: false,
-      service: {
-        delayScrollTop: false
-      },
+
+    this.owner.register('service:fastboot', EmberObject.extend({ isFastBoot: false }));
+    this.owner.register('service:router-scroll', EmberObject.extend({ delayScrollTop: false }));
+    this.owner.register('router:main', EmberObject.extend(Evented, RouterScroll, {
       updateScrollPosition() {
         assert.ok(true, 'it should call updateScrollPosition.');
         done();
       }
-    });
+    }));
+
+    subject = this.owner.factoryFor('router:main').create();
 
     run(() => {
       if(gte('3.6.0-beta.1')) {
@@ -81,21 +97,20 @@ module('mixin:router-scroll', function(hooks) {
     });
   });
 
-  test('when the application is not FastBooted with targetElement', (assert) => {
+  test('when the application is not FastBooted with targetElement', function(assert) {
     assert.expect(1);
-
     const done = assert.async();
-    const RouterScrollObject = EmberObject.extend(Evented, RouterScroll);
-    subject = RouterScrollObject.create({
-      isFastBoot: false,
-      service: {
-        targetElement: '#myElement'
-      },
+
+    this.owner.register('service:fastboot', EmberObject.extend({ isFastBoot: false }));
+    this.owner.register('service:router-scroll', EmberObject.extend({ targetElement: '#myElement' }));
+    this.owner.register('router:main', EmberObject.extend(Evented, RouterScroll, {
       updateScrollPosition() {
         assert.ok(true, 'it should call updateScrollPosition.');
         done();
       }
-    });
+    }));
+
+    subject = this.owner.factoryFor('router:main').create();
 
     run(() => {
       if(gte('3.6.0-beta.1')) {
@@ -106,21 +121,20 @@ module('mixin:router-scroll', function(hooks) {
     });
   });
 
-  test('when the application is not FastBooted with delayScrollTop', (assert) => {
+  test('when the application is not FastBooted with delayScrollTop', function(assert) {
     assert.expect(1);
-
     const done = assert.async();
-    const RouterScrollObject = EmberObject.extend(Evented, RouterScroll);
-    subject = RouterScrollObject.create({
-      isFastBoot: false,
-      service: {
-        delayScrollTop: true
-      },
+
+    this.owner.register('service:fastboot', EmberObject.extend({ isFastBoot: false }));
+    this.owner.register('service:router-scroll', EmberObject.extend({ delayScrollTop: true }));
+    this.owner.register('router:main', EmberObject.extend(Evented, RouterScroll, {
       updateScrollPosition() {
         assert.ok(true, 'it should call updateScrollPosition.');
         done();
       }
-    });
+    }));
+
+    subject = this.owner.factoryFor('router:main').create();
 
     run(() => {
       if(gte('3.6.0-beta.1')) {
@@ -131,20 +145,20 @@ module('mixin:router-scroll', function(hooks) {
     });
   });
 
-  test('Update Scroll Position: Position is preserved', (assert) => {
+  test('Update Scroll Position: Position is preserved', function(assert) {
     assert.expect(0);
     const done = assert.async();
 
     window.scrollTo = () => assert.ok(false, 'Scroll To should not be called');
 
-    const RouterScrollObject = EmberObject.extend(Evented, RouterScroll);
-    subject = RouterScrollObject.create({
-      isFastBoot: false,
-      service: {
-        position: null,
-        scrollElement: 'window'
-      }
-    });
+    this.owner.register('service:fastboot', EmberObject.extend({ isFastBoot: false }));
+    this.owner.register('service:router-scroll', EmberObject.extend({
+      position: null,
+      scrollElement: 'window'
+    }));
+    this.owner.register('router:main', EmberObject.extend(Evented, RouterScroll));
+
+    subject = this.owner.factoryFor('router:main').create();
 
     run(() => {
       if(gte('3.6.0-beta.1')) {
@@ -156,7 +170,7 @@ module('mixin:router-scroll', function(hooks) {
     });
   });
 
-  test('Update Scroll Position: Can preserve position using routerService', (assert) => {
+  test('Update Scroll Position: Can preserve position using routerService', function(assert) {
     assert.expect(0);
     const done = assert.async();
 
@@ -183,7 +197,7 @@ module('mixin:router-scroll', function(hooks) {
     });
   });
 
-  test('Update Scroll Position: URL is an anchor', (assert) => {
+  test('Update Scroll Position: URL is an anchor', function(assert) {
     assert.expect(1);
     const done = assert.async();
 
@@ -193,14 +207,14 @@ module('mixin:router-scroll', function(hooks) {
     window.scrollTo = (x, y) =>
       assert.ok(x === elem.offsetLeft && y === elem.offsetTop, 'Scroll to called with correct offsets');
 
-    const RouterScrollObject = EmberObject.extend(Evented, RouterScroll);
-    subject = RouterScrollObject.create({
-      isFastBoot: false,
-      service: {
-        position: null,
-        scrollElement: 'window'
-      }
-    });
+    this.owner.register('service:fastboot', EmberObject.extend({ isFastBoot: false }));
+    this.owner.register('service:router-scroll', EmberObject.extend({
+      position: null,
+      scrollElement: 'window'
+    }));
+    this.owner.register('router:main', EmberObject.extend(Evented, RouterScroll));
+
+    subject = this.owner.factoryFor('router:main').create();
 
     run(() => {
       if(gte('3.6.0-beta.1')) {
@@ -212,7 +226,7 @@ module('mixin:router-scroll', function(hooks) {
     });
   });
 
-  test('Ensure correct internal router intimate api is used: _router', (assert) => {
+  test('Ensure correct internal router intimate api is used: _router', function(assert) {
     assert.expect(1);
     const done = assert.async();
 
@@ -222,14 +236,14 @@ module('mixin:router-scroll', function(hooks) {
     window.scrollTo = (x, y) =>
       assert.ok(x === elem.offsetLeft && y === elem.offsetTop, 'Scroll to called with correct offsets');
 
-    const RouterScrollObject = EmberObject.extend(Evented, RouterScroll);
-    subject = RouterScrollObject.create({
-      isFastBoot: false,
-      service: {
-        position: null,
-        scrollElement: 'window'
-      }
-    });
+    this.owner.register('service:fastboot', EmberObject.extend({ isFastBoot: false }));
+    this.owner.register('service:router-scroll', EmberObject.extend({
+      position: null,
+      scrollElement: 'window'
+    }));
+    this.owner.register('router:main', EmberObject.extend(Evented, RouterScroll));
+
+    subject = this.owner.factoryFor('router:main').create();
 
     run(() => {
       if(gte('3.6.0-beta.1')) {
@@ -241,21 +255,23 @@ module('mixin:router-scroll', function(hooks) {
     });
   });
 
-  test('Update Scroll Position: URL has nothing after an anchor', (assert) => {
+  test('Update Scroll Position: URL has nothing after an anchor', function(assert) {
     assert.expect(1);
     const done = assert.async();
 
     window.scrollTo = (x, y) =>
       assert.ok(x === 1 && y === 2, 'Scroll to called with correct offsets');
 
-    const RouterScrollObject = EmberObject.extend(Evented, RouterScroll);
-    subject = RouterScrollObject.create({
-      isFastBoot: false,
-      service: {
-        position: { x: 1, y: 2 },
-        scrollElement: 'window'
-      }
-    });
+    this.owner.register('service:fastboot', EmberObject.extend({ isFastBoot: false }));
+    this.owner.register('service:router-scroll', EmberObject.extend({
+      get position() {
+        return { x: 1, y: 2 };
+      },
+      scrollElement: 'window'
+    }));
+    this.owner.register('router:main', EmberObject.extend(Evented, RouterScroll));
+
+    subject = this.owner.factoryFor('router:main').create();
 
     run(() => {
       if(gte('3.6.0-beta.1')) {
@@ -267,7 +283,7 @@ module('mixin:router-scroll', function(hooks) {
     });
   });
 
-  test('Update Scroll Position: URL has nonexistent element after anchor', (assert) => {
+  test('Update Scroll Position: URL has nonexistent element after anchor', function(assert) {
     assert.expect(1);
     const done = assert.async();
 
@@ -277,14 +293,16 @@ module('mixin:router-scroll', function(hooks) {
     window.scrollTo = (x, y) =>
       assert.ok(x === 1 && y === 2, 'Scroll to called with correct offsets');
 
-    const RouterScrollObject = EmberObject.extend(Evented, RouterScroll);
-    subject = RouterScrollObject.create({
-      isFastBoot: false,
-      service: {
-        position: { x: 1, y: 2 },
-        scrollElement: 'window'
-      }
-    });
+    this.owner.register('service:fastboot', EmberObject.extend({ isFastBoot: false }));
+    this.owner.register('service:router-scroll', EmberObject.extend({
+      get position() {
+        return { x: 1, y: 2 };
+      },
+      scrollElement: 'window'
+    }));
+    this.owner.register('router:main', EmberObject.extend(Evented, RouterScroll));
+
+    subject = this.owner.factoryFor('router:main').create();
 
     run(() => {
       if(gte('3.6.0-beta.1')) {
@@ -296,21 +314,23 @@ module('mixin:router-scroll', function(hooks) {
     });
   });
 
-  test('Update Scroll Position: Scroll Position is set by service', (assert) => {
+  test('Update Scroll Position: Scroll Position is set by service', function(assert) {
     assert.expect(1);
     const done = assert.async();
 
     window.scrollTo = (x, y) =>
       assert.ok(x === 1 && y === 2, 'Scroll to was called with correct offsets');
 
-    const RouterScrollObject = EmberObject.extend(Evented, RouterScroll);
-    subject = RouterScrollObject.create({
-      isFastBoot: false,
-      service: {
-        position: { x: 1, y: 2 },
-        scrollElement: 'window'
-      }
-    });
+    this.owner.register('service:fastboot', EmberObject.extend({ isFastBoot: false }));
+    this.owner.register('service:router-scroll', EmberObject.extend({
+      get position() {
+        return { x: 1, y: 2 };
+      },
+      scrollElement: 'window'
+    }));
+    this.owner.register('router:main', EmberObject.extend(Evented, RouterScroll));
+
+    subject = this.owner.factoryFor('router:main').create();
 
     run(() => {
       if(gte('3.6.0-beta.1')) {
