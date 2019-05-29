@@ -240,7 +240,7 @@ Note: if `preserveScrollPosition` is set to true on the service, it will overrid
 
 **1.** Manage preserveScrollPosition via service
 
-When you need to modify `preserveScrollPosition` on the service for a specific transition, you should always reset the value after teh transition occurs, otherwise all future transitions will use the same `preserveScrollPosition` value. 
+When you need to modify `preserveScrollPosition` on the service for a specific transition, you should always reset the value after the transition occurs, otherwise all future transitions will use the same `preserveScrollPosition` value. 
 
 Example:
 
