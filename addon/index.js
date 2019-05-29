@@ -65,6 +65,7 @@ let RouterScrollMixin = Mixin.create({
       preserveScrollPosition = transition.some((t) => get(t, 'handler.controller.preserveScrollPosition'));
     }
 
+    // If `preserveScrollPosition` was not set on the controller, attempt fallback to `preserveScrollPosition` which was set on the router service.
     if(!preserveScrollPosition) {
       preserveScrollPosition = get(this, 'service.preserveScrollPosition')
     }

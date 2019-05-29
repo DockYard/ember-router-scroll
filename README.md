@@ -227,14 +227,20 @@ export default Route.extend({
 
 ### preserveScrollPosition via service
 
-You may need to programaically control `preserveScrollPosition` directly from a component. This can be achieved by toggling the `preserveScrollPosition` property on the `routerScroll` service.
+You may need to programatically control `preserveScrollPosition` directly from a component. This can be achieved by toggling the `preserveScrollPosition` property on the `routerScroll` service.
+
+One common use case for this is when using query-param-based pagination on a page where `preserveScrollPosition` is expected to be false.
+
+For example, if a route should always scroll to top when loaded, `preserveScrollPosition` would be false. However, a user may then scroll down the page and paginate through some results (where each page is a query param). But because `preserveScrollPosition` is false, the page will scroll back to top on each of these paginations.
+
+This can be fixed by temporarily setting `preserveScrollPosition` to true on the service in the pagination transition action and then disabling `preserveScrollPosition` after the transition occurs.
 
 Note: if `preserveScrollPosition` is set to true on the service, it will override any values set on the current route's controller - whether query param or controller property.
 
 
 **1.** Manage preserveScrollPosition via service
 
-You may need to temporarily enable `preserveScrollPosition` before performing a transition. In this case ensure that you reset it after the transition completes so that subsequent transitions do not  `preserveScrollPosition`.
+When you need to modify `preserveScrollPosition` on the service for a specific transition, you should always reset the value after teh transition occurs, otherwise all future transitions will use the same `preserveScrollPosition` value. 
 
 Example:
 
@@ -247,9 +253,16 @@ export default Component.extend({
   router: service(),
 
   actions: {
-    async performTransition(routePath) {
+    async goToPaginationPage(pageNumber) {
       this.set('routerScroll.preserveScrollPosition', true);
-      await this.router.transitionTo(routePath);
+      await this.router.transitionTo(
+        this.router.currentRouteName,
+        {
+          queryParams: { page: pageNumber }
+        }
+      );
+
+      // Reset `preserveScrollPosition` after transition so future transitions behave as expected
       this.set('routerScroll.preserveScrollPosition', false);
     }
   }
