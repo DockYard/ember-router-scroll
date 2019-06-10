@@ -15,6 +15,7 @@ const RouterScroll = Service.extend({
   targetElement: null,
   delayScrollTop: false,
   isFirstLoad: true,
+  preserveScrollPosition: false,
 
   init(...args) {
     this._super(...args);

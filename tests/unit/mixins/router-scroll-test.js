@@ -170,6 +170,33 @@ module('mixin:router-scroll', function(hooks) {
     });
   });
 
+  test('Update Scroll Position: Can preserve position using routerService', function(assert) {
+    assert.expect(0);
+    const done = assert.async();
+
+    window.scrollTo = () => assert.ok(false, 'Scroll To should not be called');
+
+    const RouterScrollObject = EmberObject.extend(Evented, RouterScroll);
+    subject = RouterScrollObject.create({
+      isFastBoot: false,
+      service: {
+        position: null,
+        scrollElement: 'window',
+      }
+    });
+
+    run(() => {
+      subject.service.preserveScrollPosition = true;
+
+      if(gte('3.6.0-beta.1')) {
+        subject.trigger('routeDidChange', getTransitionsMock('Hello/World', false));
+      } else {
+        subject.didTransition(getTransitionsMock('Hello/World', false));
+      }
+      done();
+    });
+  });
+
   test('Update Scroll Position: URL is an anchor', function(assert) {
     assert.expect(1);
     const done = assert.async();
