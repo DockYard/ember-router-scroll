@@ -11,7 +11,7 @@ const uuid = () => 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) =
 export default HistoryLocation.extend({
   pushState(path) {
     deprecate(
-      `If you are overriding ember-router-scroll's implementation of "pushState", then you can import and override a new location object like so: import HistoryLocation from '@ember/routing/history-location';`,
+      `If you are overriding ember-router-scroll's implementation of "pushState", then you can subclass and override a new location object from: import HistoryLocation from '@ember/routing/history-location';`,
       false,
       {
         id: 'ember-router-scroll',
@@ -26,7 +26,7 @@ export default HistoryLocation.extend({
 
   replaceState(path) {
     deprecate(
-      `If you are overriding ember-router-scroll's implementation of "replaceState", then you can import and override a new location object like so: import HistoryLocation from '@ember/routing/history-location';`,
+      `If you are overriding ember-router-scroll's implementation of "replaceState", then you can subclass and override a new location object from: import HistoryLocation from '@ember/routing/history-location';`,
       false,
       {
         id: 'ember-router-scroll',
