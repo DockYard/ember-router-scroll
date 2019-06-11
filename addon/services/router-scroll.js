@@ -66,7 +66,7 @@ export default Service.extend({
     }
   },
 
-  position: computed(function position() {
+  get position() {
     const scrollMap = get(this, 'scrollMap');
     const stateUuid = get(window, 'history.state.uuid');
 
@@ -74,7 +74,7 @@ export default Service.extend({
     const key = getWithDefault(this, 'key', '-1');
 
     return getWithDefault(scrollMap, key, scrollMap.default);
-  }).volatile(),
+  },
 
   _loadConfig() {
     const config = getOwner(this).resolveRegistration('config:environment');
