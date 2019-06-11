@@ -67,6 +67,16 @@ const RouterScroll = Service.extend({
     }
   },
 
+  get position() {
+    const scrollMap = get(this, 'scrollMap');
+    const stateUuid = get(window, 'history.state.uuid');
+
+    set(this, 'key', stateUuid);
+    const key = getWithDefault(this, 'key', '-1');
+
+    return getWithDefault(scrollMap, key, scrollMap.default);
+  },
+
   _loadConfig() {
     const config = getOwner(this).resolveRegistration('config:environment');
 
@@ -89,18 +99,6 @@ const RouterScroll = Service.extend({
         set(this, 'delayScrollTop', true);
       }
     }
-  }
-});
-
-Object.defineProperty(RouterScroll.prototype, 'position', {
-  get() {
-    const scrollMap = get(this, 'scrollMap');
-    const stateUuid = get(window, 'history.state.uuid');
-
-    set(this, 'key', stateUuid);
-    const key = getWithDefault(this, 'key', '-1');
-
-    return getWithDefault(scrollMap, key, scrollMap.default);
   }
 });
 
