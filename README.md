@@ -1,8 +1,7 @@
 ember-router-scroll
 ==============================================================================
 
-[![Build Status](https://travis-ci.org/dollarshaveclub/ember-router-scroll.svg?branch=master)](https://travis-ci.org/dollarshaveclub/ember-router-scroll)
-[![Greenkeeper badge](https://badges.greenkeeper.io/dollarshaveclub/ember-router-scroll.svg)](https://greenkeeper.io/)
+[![Build Status](https://travis-ci.org/DockYard/ember-router-scroll.svg?branch=master)](https://travis-ci.org/DockYard/ember-router-scroll)
 
 > Scroll to page top on transition, like a non-SPA website. An alternative scroll behavior for Ember applications.
 
@@ -24,10 +23,10 @@ Compatibility
 * Ember CLI v2.13 or above
 
 
-Installation 
+Installation
 ------------------------------------------------------------------------------
 
-```
+```sh
 ember install ember-router-scroll
 ```
 
@@ -54,7 +53,7 @@ const Router = EmberRouter.extend(PageTrackerMixin, RouterScroll, {
 
 Edit `config/environment.js` and change `locationType`.
 Also add `historySupportMiddleware: true,` to get live-reload working in nested routes.
-(See [Issue #21](https://github.com/dollarshaveclub/ember-router-scroll/issues/21))
+(See [Issue #21](https://github.com/DockYard/ember-router-scroll/issues/21))
 
 ```javascript
 locationType: 'router-scroll',
@@ -240,7 +239,7 @@ Note: if `preserveScrollPosition` is set to true on the service, it will overrid
 
 **1.** Manage preserveScrollPosition via service
 
-When you need to modify `preserveScrollPosition` on the service for a specific transition, you should always reset the value after the transition occurs, otherwise all future transitions will use the same `preserveScrollPosition` value. 
+When you need to modify `preserveScrollPosition` on the service for a specific transition, you should always reset the value after the transition occurs, otherwise all future transitions will use the same `preserveScrollPosition` value.
 
 Example:
 
@@ -273,19 +272,7 @@ export default Component.extend({
 
 * `npm test` (Runs `ember try:testall` to test your addon against multiple Ember versions)
 * `ember test`
-* `ember test --server`
-
-## Automatic Updates
-
-This repository uses [Greenkeeper](https://greenkeeper.io/) to manage dependencies.
-Before doing manual updates to dependencies, please check if a Greenkeeper pull request for the update already exists.
-
-Greenkeeper updates are updated and merged following the steps listed below.
-
-* `git checkout <greenkeeper-pull-request>`
-* `nvm i`
-* `yarn`
-* `yarn update`
+* `ember test --serve
 
 License
 ------------------------------------------------------------------------------
