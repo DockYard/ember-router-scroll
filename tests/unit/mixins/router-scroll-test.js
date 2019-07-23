@@ -176,17 +176,17 @@ module('mixin:router-scroll', function(hooks) {
 
     window.scrollTo = () => assert.ok(false, 'Scroll To should not be called');
 
-    const RouterScrollObject = EmberObject.extend(Evented, RouterScroll);
-    subject = RouterScrollObject.create({
-      isFastBoot: false,
-      service: {
-        position: null,
-        scrollElement: 'window',
-      }
-    });
+    this.owner.register('service:fastboot', EmberObject.extend({ isFastBoot: false }));
+    this.owner.register('service:router-scroll', EmberObject.extend({
+      position: null,
+      scrollElement: 'window'
+    }));
+    this.owner.register('router:main', EmberObject.extend(Evented, RouterScroll));
+
+    subject = this.owner.factoryFor('router:main').create();
 
     run(() => {
-      subject.service.preserveScrollPosition = true;
+      subject.set('service.preserveScrollPosition', true);
 
       if(gte('3.6.0-beta.1')) {
         subject.trigger('routeDidChange', getTransitionsMock('Hello/World', false));
