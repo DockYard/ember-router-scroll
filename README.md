@@ -24,7 +24,7 @@ Compatibility
 * Ember CLI v2.13 or above
 
 
-Installation 
+Installation
 ------------------------------------------------------------------------------
 
 ```
@@ -50,14 +50,12 @@ const Router = EmberRouter.extend(PageTrackerMixin, RouterScroll, {
 });
 ```
 
-**2.** Update your app's `locationType`
+**2.** Enable `historySupportMiddleware` in your app
 
-Edit `config/environment.js` and change `locationType`.
-Also add `historySupportMiddleware: true,` to get live-reload working in nested routes.
+Edit `config/environment.js` and add `historySupportMiddleware: true,` to get live-reload working in nested routes.
 (See [Issue #21](https://github.com/dollarshaveclub/ember-router-scroll/issues/21))
 
 ```javascript
-locationType: 'router-scroll',
 historySupportMiddleware: true,
 ```
 
@@ -240,7 +238,7 @@ Note: if `preserveScrollPosition` is set to true on the service, it will overrid
 
 **1.** Manage preserveScrollPosition via service
 
-When you need to modify `preserveScrollPosition` on the service for a specific transition, you should always reset the value after the transition occurs, otherwise all future transitions will use the same `preserveScrollPosition` value. 
+When you need to modify `preserveScrollPosition` on the service for a specific transition, you should always reset the value after the transition occurs, otherwise all future transitions will use the same `preserveScrollPosition` value.
 
 Example:
 
