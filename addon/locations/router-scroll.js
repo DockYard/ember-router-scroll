@@ -13,7 +13,7 @@ export default HistoryLocation.extend({
     this._super(...arguments);
 
     deprecate(
-      `Setting \`locationType: 'router-scroll'\` in config/environment.js is deprecated, please remove it or change it to 'auto'. If you are overriding ember-router-scroll's implementation of "pushState" or "replaceState", then you can subclass and override a new location object from: import HistoryLocation from '@ember/routing/history-location';`,
+      `Setting 'locationType' to 'router-scroll' in config/environment.js is deprecated, please change it to 'auto'. If you are overriding ember-router-scroll's implementation of "pushState" or "replaceState", then you can subclass and override a new location object from: import HistoryLocation from '@ember/routing/history-location';`,
       false,
       {
         id: 'ember-router-scroll',

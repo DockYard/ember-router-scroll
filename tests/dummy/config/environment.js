@@ -5,6 +5,7 @@ module.exports = function(environment) {
     modulePrefix: 'dummy',
     environment,
     rootURL: '/',
+    locationType: 'auto',
     historySupportMiddleware: true,
     EmberENV: {
       FEATURES: {
