@@ -3,8 +3,7 @@ import { setupApplicationTest } from 'ember-qunit';
 import {
   visit,
   click,
-  currentURL,
-  triggerEvent
+  currentURL
 } from '@ember/test-helpers';
 import config from 'dummy/config/environment';
 
@@ -14,6 +13,7 @@ module('Acceptance | basic functionality', function(hooks) {
   hooks.beforeEach(function() {
     document.getElementById('ember-testing-container').scrollTop = 0;
   });
+
   hooks.afterEach(function() {
     config['routerScroll'] = {};
   });
@@ -30,12 +30,9 @@ module('Acceptance | basic functionality', function(hooks) {
     assert.equal(container.scrollTop, 0);
 
     document.getElementById('monster').scrollIntoView(false);
-    await triggerEvent(window, 'scroll');
-
     assert.ok(container.scrollTop > 0);
 
     await click('a[href="/next-page"]');
-
     assert.equal(currentURL(), '/next-page');
   });
 
@@ -54,7 +51,6 @@ module('Acceptance | basic functionality', function(hooks) {
     assert.ok(container.scrollTop > 0);
 
     await click('a[href="/target-next-page"]');
-
     assert.equal(currentURL(), '/target-next-page');
   });
 });
