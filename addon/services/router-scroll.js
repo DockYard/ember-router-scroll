@@ -93,6 +93,7 @@ const RouterScroll = Service.extend({
 });
 
 Object.defineProperty(RouterScroll.prototype, 'position', {
+  configurable: true,
   get() {
     const scrollMap = get(this, 'scrollMap');
     const stateUuid = get(window, 'history.state.uuid');
