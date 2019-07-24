@@ -53,4 +53,21 @@ module('Acceptance | basic functionality', function(hooks) {
     await click('a[href="/target-next-page"]');
     assert.equal(currentURL(), '/target-next-page');
   });
+
+  test('The application should work when just changing query params', async function(assert) {
+    config['routerScroll'] = {
+      scrollElement: '#ember-testing-container'
+    }
+
+    await visit('/');
+
+    let container = document.getElementById('ember-testing-container');
+    assert.equal(container.scrollTop, 0);
+
+    document.getElementById('monster').scrollIntoView(false);
+    assert.ok(container.scrollTop > 0);
+
+    await click('#change-size');
+    assert.ok(container.scrollTop > 0);
+  });
 });

@@ -2,7 +2,15 @@
   <div id="intro">
     Click on the submarine to launch!
   </div>
-  {{#link-to "next-page"}}<img src="/images/yellow_submarine.gif" alt="Submarine" id="submarine">{{/link-to}}
+
+  {{#link-to "application" (query-params small=(not this.small) preserveScrollPosition=true) id="change-size"}}
+    Click here to change the size of the submarine
+  {{/link-to}}
+
+  {{#link-to "next-page"}}
+    <img src="/images/yellow_submarine.gif" alt="Submarine" id="submarine" class={{if this.small "small"}}>
+  {{/link-to}}
+
   <div class="depth left">
     — 500 fathoms
   </div>
