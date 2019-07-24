@@ -3,8 +3,7 @@ import { setupApplicationTest } from 'ember-qunit';
 import {
   visit,
   click,
-  currentURL,
-  triggerEvent
+  currentURL
 } from '@ember/test-helpers';
 import config from 'dummy/config/environment';
 
@@ -14,6 +13,7 @@ module('Acceptance | basic functionality', function(hooks) {
   hooks.beforeEach(function() {
     document.getElementById('ember-testing-container').scrollTop = 0;
   });
+
   hooks.afterEach(function() {
     config['routerScroll'] = {};
   });
@@ -29,13 +29,10 @@ module('Acceptance | basic functionality', function(hooks) {
     let container = document.getElementById('ember-testing-container');
     assert.equal(container.scrollTop, 0);
 
-    await document.getElementById('monster').scrollIntoView(false);
-    await triggerEvent(window, 'scroll');
-
+    document.getElementById('monster').scrollIntoView(false);
     assert.ok(container.scrollTop > 0);
 
     await click('a[href="/next-page"]');
-
     assert.equal(currentURL(), '/next-page');
   });
 
@@ -50,11 +47,27 @@ module('Acceptance | basic functionality', function(hooks) {
     let container = document.getElementById('ember-testing-container');
     assert.equal(container.scrollTop, 0);
 
-    await document.getElementById('monster').scrollIntoView(false);
+    document.getElementById('monster').scrollIntoView(false);
     assert.ok(container.scrollTop > 0);
 
     await click('a[href="/target-next-page"]');
-
     assert.equal(currentURL(), '/target-next-page');
+  });
+
+  test('The application should work when just changing query params', async function(assert) {
+    config['routerScroll'] = {
+      scrollElement: '#ember-testing-container'
+    }
+
+    await visit('/');
+
+    let container = document.getElementById('ember-testing-container');
+    assert.equal(container.scrollTop, 0);
+
+    document.getElementById('monster').scrollIntoView(false);
+    assert.ok(container.scrollTop > 0);
+
+    await click('#change-size');
+    assert.ok(container.scrollTop > 0);
   });
 });
