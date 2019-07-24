@@ -29,7 +29,7 @@ module('Acceptance | basic functionality', function(hooks) {
     let container = document.getElementById('ember-testing-container');
     assert.equal(container.scrollTop, 0);
 
-    await document.getElementById('monster').scrollIntoView(false);
+    document.getElementById('monster').scrollIntoView(false);
     await triggerEvent(window, 'scroll');
 
     assert.ok(container.scrollTop > 0);
@@ -50,7 +50,7 @@ module('Acceptance | basic functionality', function(hooks) {
     let container = document.getElementById('ember-testing-container');
     assert.equal(container.scrollTop, 0);
 
-    await document.getElementById('monster').scrollIntoView(false);
+    document.getElementById('monster').scrollIntoView(false);
     assert.ok(container.scrollTop > 0);
 
     await click('a[href="/target-next-page"]');
