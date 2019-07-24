@@ -1,8 +1,7 @@
 ember-router-scroll
 ==============================================================================
 
-[![Build Status](https://travis-ci.org/dollarshaveclub/ember-router-scroll.svg?branch=master)](https://travis-ci.org/dollarshaveclub/ember-router-scroll)
-[![Greenkeeper badge](https://badges.greenkeeper.io/dollarshaveclub/ember-router-scroll.svg)](https://greenkeeper.io/)
+[![Build Status](https://travis-ci.org/DockYard/ember-router-scroll.svg?branch=master)](https://travis-ci.org/DockYard/ember-router-scroll)
 
 > Scroll to page top on transition, like a non-SPA website. An alternative scroll behavior for Ember applications.
 
@@ -53,7 +52,7 @@ const Router = EmberRouter.extend(PageTrackerMixin, RouterScroll, {
 **2.** Enable `historySupportMiddleware` in your app
 
 Edit `config/environment.js` and add `historySupportMiddleware: true,` to get live-reload working in nested routes.
-(See [Issue #21](https://github.com/dollarshaveclub/ember-router-scroll/issues/21))
+(See [Issue #21](https://github.com/dockyard/ember-router-scroll/issues/21))
 
 ```javascript
 historySupportMiddleware: true,
@@ -272,18 +271,6 @@ export default Component.extend({
 * `npm test` (Runs `ember try:testall` to test your addon against multiple Ember versions)
 * `ember test`
 * `ember test --server`
-
-## Automatic Updates
-
-This repository uses [Greenkeeper](https://greenkeeper.io/) to manage dependencies.
-Before doing manual updates to dependencies, please check if a Greenkeeper pull request for the update already exists.
-
-Greenkeeper updates are updated and merged following the steps listed below.
-
-* `git checkout <greenkeeper-pull-request>`
-* `nvm i`
-* `yarn`
-* `yarn update`
 
 License
 ------------------------------------------------------------------------------

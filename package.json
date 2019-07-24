@@ -1,6 +1,6 @@
 {
   "name": "ember-router-scroll",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Scroll to top with preserved browser history scroll position",
   "keywords": [
     "ember-addon",
@@ -12,20 +12,8 @@
   "author": "Jason Farmer <jacefarm@gmail.com> and Benny C. Wong <bwong337@gmail.com>",
   "contributors": [
     {
-      "name": "Benny Wong",
-      "email": "bwong337@gmail.com"
-    },
-    {
-      "name": "Jason Farmer",
-      "email": "jacefarm@gmail.com"
-    },
-    {
       "name": "Brian Cardarella",
       "url": "https://github.com/bcardarella"
-    },
-    {
-      "name": "Arjan Singh",
-      "url": "https://github.com/arjansingh"
     },
     {
       "name": "Brian Gonzalez",
@@ -46,10 +34,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/dollarshaveclub/ember-router-scroll.git"
+    "url": "https://github.com/dockyard/ember-router-scroll.git"
   },
   "bugs": {
-    "url": "https://github.com/dollarshaveclub/ember-router-scroll/issues"
+    "url": "https://github.com/dockyard/ember-router-scroll/issues"
   },
   "homepage": "https://dollarshaveclub.github.io/ember-router-scroll/",
   "scripts": {
