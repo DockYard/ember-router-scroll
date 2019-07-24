@@ -49,14 +49,12 @@ const Router = EmberRouter.extend(PageTrackerMixin, RouterScroll, {
 });
 ```
 
-**2.** Update your app's `locationType`
+**2.** Enable `historySupportMiddleware` in your app
 
-Edit `config/environment.js` and change `locationType`.
-Also add `historySupportMiddleware: true,` to get live-reload working in nested routes.
-(See [Issue #21](https://github.com/DockYard/ember-router-scroll/issues/21))
+Edit `config/environment.js` and add `historySupportMiddleware: true,` to get live-reload working in nested routes.
+(See [Issue #21](https://github.com/dockyard/ember-router-scroll/issues/21))
 
 ```javascript
-locationType: 'router-scroll',
 historySupportMiddleware: true,
 ```
 
