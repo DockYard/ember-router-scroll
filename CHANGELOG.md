@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.1
+* [#212](https://github.com/DockYard/ember-router-scroll/pull/212) Allow configure so consuming app can override
+* [#210](https://github.com/DockYard/ember-router-scroll/pull/210) Fix query-params-only transitions
+
 ## 1.2.0
 * [#209](https://github.com/DockYard/ember-router-scroll/pull/209) Restore necessary `locationType`
 * [#207](https://github.com/DockYard/ember-router-scroll/pull/207) Remove ember-getowner-polyfill
