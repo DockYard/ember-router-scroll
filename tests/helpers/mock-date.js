@@ -32,7 +32,7 @@ MockDate.prototype = _Date.prototype;
 function set(date) {
   const dateObj = new Date(date);
   if (isNaN(dateObj.getTime())) {
-    throw new TypeError('mockdate: The time set is an invalid date: ' + date)
+    throw new TypeError('invalid date -' + date)
   }
 
   Date = MockDate;
