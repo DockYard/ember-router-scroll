@@ -272,11 +272,13 @@ module('mixin:router-scroll', function(hooks) {
 
     subject = this.owner.factoryFor('router:main').create();
 
-    if(gte('3.6.0-beta.1')) {
-      subject.trigger('routeDidChange', getTransitionsMock('Hello/#'));
-    } else {
-      subject.didTransition(getTransitionsMock('Hello/#'));
-    }
+    run(() => {
+      if(gte('3.6.0-beta.1')) {
+        subject.trigger('routeDidChange', getTransitionsMock('Hello/#'));
+      } else {
+        subject.didTransition(getTransitionsMock('Hello/#'));
+      }
+    })
   });
 
   test('Update Scroll Position: URL has nonexistent element after anchor', function(assert) {
