@@ -10,6 +10,8 @@ const RouterScroll = Service.extend({
     return fastboot ? fastboot.get('isFastBoot') : false;
   }),
 
+  SCROLL_RESTORATION: 2000,
+
   key: null,
   scrollElement: 'window',
   targetElement: null,
@@ -47,7 +49,11 @@ const RouterScroll = Service.extend({
 
         // if we are looking to where to transition to next, we need to set the default to the position
         // of the targetElement on screen
-        set(scrollMap, 'default', { x, y });
+        set(scrollMap, 'default', {
+          x,
+          y,
+          lastTry: Date.now() + this.SCROLL_RESTORATION
+        });
       }
     } else if ('window' === scrollElement) {
       x = window.scrollX;
@@ -63,7 +69,11 @@ const RouterScroll = Service.extend({
 
     // only a `key` present after first load
     if (key && 'number' === typeOf(x) && 'number' === typeOf(y)) {
-      set(scrollMap, key, { x, y });
+      set(scrollMap, key, {
+        x,
+        y,
+        lastTry: Date.now() + this.SCROLL_RESTORATION
+      });
     }
   },
 

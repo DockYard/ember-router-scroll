@@ -6,6 +6,34 @@ import { scheduleOnce } from '@ember/runloop';
 import { setupRouter, reset, whenRouteIdle } from 'ember-app-scheduler';
 import { gte } from 'ember-compatibility-helpers';
 
+const TRY_TO_SCROLL_INTERVAL_MS = 50;
+let timeoutHandle = null;
+let scrollBarWidth = 0; //null;
+
+function tryScrollRecursively(fn, scrollHash) {
+  clearTimeout(timeoutHandle);
+
+  const body = document.body;
+  const html = document.documentElement;
+
+  const documentWidth = Math.max(body.scrollWidth, body.offsetWidth,
+    html.clientWidth, html.scrollWidth, html.offsetWidth);
+  const documentHeight = Math.max(body.scrollHeight, body.offsetHeight,
+    html.clientHeight, html.scrollHeight, html.offsetHeight);
+
+  if (
+      (documentWidth + scrollBarWidth - window.innerWidth >= scrollHash.x
+      && documentHeight + scrollBarWidth - window.innerHeight >= scrollHash.y)
+      || Date.now() > scrollHash.lastTry
+  ) {
+    fn.call(null, scrollHash.x, scrollHash.y);
+  } else {
+      timeoutHandle = setTimeout(() => {
+        tryScrollRecursively(fn, scrollHash)
+      }, TRY_TO_SCROLL_INTERVAL_MS);
+  }
+}
+
 let RouterScrollMixin = Mixin.create({
   service: inject('router-scroll'),
 
@@ -74,10 +102,8 @@ let RouterScrollMixin = Mixin.create({
       const scrollElement = get(this, 'service.scrollElement');
       const targetElement = get(this, 'service.targetElement');
 
-      if (targetElement) {
-        window.scrollTo(scrollPosition.x, scrollPosition.y);
-      } else if ('window' === scrollElement) {
-        window.scrollTo(scrollPosition.x, scrollPosition.y);
+      if (targetElement || 'window' === scrollElement) {
+        tryScrollRecursively(window.scrollTo, scrollPosition);
       } else if ('#' === scrollElement.charAt(0)) {
         const element = document.getElementById(scrollElement.substring(1));
 
