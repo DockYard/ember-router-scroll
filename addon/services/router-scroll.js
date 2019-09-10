@@ -111,6 +111,11 @@ Object.defineProperty(RouterScroll.prototype, 'position', {
     set(this, 'key', stateUuid);
     const key = getWithDefault(this, 'key', '-1');
 
+    if (scrollMap[key]) {
+      // update lastTry before finalizing scroll position before updating page
+      set(scrollMap[key], 'lastTry', Date.now() + this.SCROLL_RESTORATION);
+    }
+
     return getWithDefault(scrollMap, key, scrollMap.default);
   }
 });

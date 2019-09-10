@@ -6,7 +6,7 @@ import { scheduleOnce } from '@ember/runloop';
 import { setupRouter, reset, whenRouteIdle } from 'ember-app-scheduler';
 import { gte } from 'ember-compatibility-helpers';
 
-const TRY_TO_SCROLL_INTERVAL_MS = 50;
+const TRY_TO_SCROLL_INTERVAL_MS = 30;
 let timeoutHandle = null;
 let scrollBarWidth = 1; //null;
 
