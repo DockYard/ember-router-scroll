@@ -4,6 +4,7 @@ import { setupTest } from 'ember-qunit';
 
 const defaultScrollMap = {
   default: {
+    lastTry: Date.now(),
     x: 0,
     y: 0
   }

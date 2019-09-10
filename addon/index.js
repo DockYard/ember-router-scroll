@@ -8,7 +8,7 @@ import { gte } from 'ember-compatibility-helpers';
 
 const TRY_TO_SCROLL_INTERVAL_MS = 50;
 let timeoutHandle = null;
-let scrollBarWidth = 0; //null;
+let scrollBarWidth = 1; //null;
 
 function tryScrollRecursively(fn, scrollHash) {
   clearTimeout(timeoutHandle);
@@ -24,7 +24,7 @@ function tryScrollRecursively(fn, scrollHash) {
   if (
       (documentWidth + scrollBarWidth - window.innerWidth >= scrollHash.x
       && documentHeight + scrollBarWidth - window.innerHeight >= scrollHash.y)
-      || Date.now() > scrollHash.lastTry
+      || Date.now() > (scrollHash.lastTry || 0)
   ) {
     fn.call(null, scrollHash.x, scrollHash.y);
   } else {
