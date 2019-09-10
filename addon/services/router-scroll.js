@@ -22,7 +22,7 @@ const RouterScroll = Service.extend({
   init(...args) {
     this._super(...args);
     this._loadConfig();
-    set(this, 'scrollMap', { default: { x: 0, y: 0 }});
+    set(this, 'scrollMap', { default: { x: 0, y: 0, lastTry: Date.now() }});
   },
 
   unsetFirstLoad() {
