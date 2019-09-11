@@ -1,9 +1,10 @@
-import { run, next } from '@ember/runloop';
+import { run } from '@ember/runloop';
 import EmberObject from '@ember/object';
 import Evented from '@ember/object/evented';
 import RouterScroll from 'ember-router-scroll';
 import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
+import { settled } from '@ember/test-helpers';
 import { gte } from 'ember-compatibility-helpers';
 
 let scrollTo, subject;
@@ -44,7 +45,7 @@ module('mixin:router-scroll', function(hooks) {
     return gte('3.6.0-beta.1') ? transition : [transition];
   }
 
-  test('when the application is FastBooted', function(assert) {
+  test('when the application is FastBooted', async function(assert) {
     assert.expect(1);
     const done = assert.async();
 
@@ -58,17 +59,15 @@ module('mixin:router-scroll', function(hooks) {
 
     subject = this.owner.factoryFor('router:main').create();
 
-    run(() => {
-      if(gte('3.6.0-beta.1')) {
-        subject.trigger('routeDidChange');
-      } else {
-        subject.didTransition();
-      }
-      next(() => {
-        assert.ok(true, 'it should not call updateScrollPosition.');
-        done();
-      });
-    });
+    if(gte('3.6.0-beta.1')) {
+      subject.trigger('routeDidChange');
+    } else {
+      subject.didTransition();
+    }
+
+    assert.ok(true, 'it should not call updateScrollPosition.');
+    await settled();
+    done();
   });
 
   test('when the application is not FastBooted', function(assert) {
@@ -168,6 +167,30 @@ module('mixin:router-scroll', function(hooks) {
     });
   });
 
+  test('when the application is not FastBooted with scrollWhenPainted', function(assert) {
+    assert.expect(1);
+    const done = assert.async();
+
+    this.owner.register('service:fastboot', EmberObject.extend({ isFastBoot: false }));
+    this.owner.register('service:router-scroll', EmberObject.extend({ scrollWhenPainted: true }));
+    this.owner.register('router:main', EmberObject.extend(Evented, RouterScroll, {
+      updateScrollPosition() {
+        assert.ok(true, 'it should call updateScrollPosition.');
+        done();
+      }
+    }));
+
+    subject = this.owner.factoryFor('router:main').create();
+
+    run(() => {
+      if(gte('3.6.0-beta.1')) {
+        subject.trigger('routeDidChange');
+      } else {
+        subject.didTransition();
+      }
+    });
+  });
+
   test('Update Scroll Position: Can preserve position using routerService', function(assert) {
     assert.expect(0);
     const done = assert.async();
@@ -202,8 +225,10 @@ module('mixin:router-scroll', function(hooks) {
     const elem = document.createElement('div');
     elem.id = 'World';
     document.body.insertBefore(elem, null);
-    window.scrollTo = (x, y) =>
+    window.scrollTo = (x, y) => {
       assert.ok(x === elem.offsetLeft && y === elem.offsetTop, 'Scroll to called with correct offsets');
+      done()
+    }
 
     this.owner.register('service:fastboot', EmberObject.extend({ isFastBoot: false }));
     this.owner.register('service:router-scroll', EmberObject.extend({
@@ -220,7 +245,6 @@ module('mixin:router-scroll', function(hooks) {
       } else {
         subject.didTransition(getTransitionsMock('Hello/#World', false));
       }
-      done();
     });
   });
 
@@ -231,8 +255,10 @@ module('mixin:router-scroll', function(hooks) {
     const elem = document.createElement('div');
     elem.id = 'World';
     document.body.insertBefore(elem, null);
-    window.scrollTo = (x, y) =>
+    window.scrollTo = (x, y) => {
       assert.ok(x === elem.offsetLeft && y === elem.offsetTop, 'Scroll to called with correct offsets');
+      done();
+    }
 
     this.owner.register('service:fastboot', EmberObject.extend({ isFastBoot: false }));
     this.owner.register('service:router-scroll', EmberObject.extend({
@@ -249,7 +275,6 @@ module('mixin:router-scroll', function(hooks) {
       } else {
         subject.didTransition(getTransitionsMock('Hello/#World', false));
       }
-      done();
     });
   });
 
@@ -257,8 +282,10 @@ module('mixin:router-scroll', function(hooks) {
     assert.expect(1);
     const done = assert.async();
 
-    window.scrollTo = (x, y) =>
+    window.scrollTo = (x, y) => {
       assert.ok(x === 1 && y === 2, 'Scroll to called with correct offsets');
+      done();
+    }
 
     this.owner.register('service:fastboot', EmberObject.extend({ isFastBoot: false }));
     this.owner.register('service:router-scroll', EmberObject.extend({
@@ -277,8 +304,7 @@ module('mixin:router-scroll', function(hooks) {
       } else {
         subject.didTransition(getTransitionsMock('Hello/#'));
       }
-      done();
-    });
+    })
   });
 
   test('Update Scroll Position: URL has nonexistent element after anchor', function(assert) {
@@ -288,8 +314,10 @@ module('mixin:router-scroll', function(hooks) {
     const elem = document.createElement('div');
     elem.id = 'World';
     document.body.insertBefore(elem, null);
-    window.scrollTo = (x, y) =>
+    window.scrollTo = (x, y) => {
       assert.ok(x === 1 && y === 2, 'Scroll to called with correct offsets');
+      done();
+    }
 
     this.owner.register('service:fastboot', EmberObject.extend({ isFastBoot: false }));
     this.owner.register('service:router-scroll', EmberObject.extend({
@@ -308,7 +336,6 @@ module('mixin:router-scroll', function(hooks) {
       } else {
         subject.didTransition(getTransitionsMock('Hello/#Bar'));
       }
-      done();
     });
   });
 
@@ -316,13 +343,15 @@ module('mixin:router-scroll', function(hooks) {
     assert.expect(1);
     const done = assert.async();
 
-    window.scrollTo = (x, y) =>
-      assert.ok(x === 1 && y === 2, 'Scroll to was called with correct offsets');
+    window.scrollTo = (x, y) => {
+      assert.ok(x === 1 && y === 20, 'Scroll to was called with correct offsets');
+      done();
+    }
 
     this.owner.register('service:fastboot', EmberObject.extend({ isFastBoot: false }));
     this.owner.register('service:router-scroll', EmberObject.extend({
       get position() {
-        return { x: 1, y: 2 };
+        return { x: 1, y: 20 };
       },
       scrollElement: 'window'
     }));
@@ -336,9 +365,6 @@ module('mixin:router-scroll', function(hooks) {
       } else {
         subject.didTransition(getTransitionsMock('Hello/World'));
       }
-      next(() => {
-        done();
-      });
     });
   });
 });

@@ -99,7 +99,9 @@ module('service:router-scroll', function(hooks) {
     let expected = { x: 0, y: 0 };
     assert.deepEqual(get(service, 'position'), expected, 'position is defaulted');
     service.update();
-    assert.deepEqual(get(service, 'scrollMap'), { '123': expected, default: { x: 0, y: 0 } }, 'sets scrollMap');
+    assert.deepEqual(get(service, 'scrollMap'), {
+      '123': expected,
+      default: { x: 0, y: 0 } }, 'sets scrollMap');
   });
 
   test('updating will set default `scrollMap` if targetElement is defined', function(assert) {

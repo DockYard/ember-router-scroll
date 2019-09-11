@@ -73,6 +73,8 @@ needs:[ 'service:router-scroll', 'service:scheduler' ],
 
 ### Options
 
+#### Target Elements
+
 If you need to scroll to the top of an area that generates a vertical scroll bar, you can specify the id of an element
 of the scrollable area. Default is `window` for using the scroll position of the whole viewport. You can pass an options
 object in your application's `config/environment.js` file.
@@ -93,14 +95,30 @@ ENV['routerScroll'] = {
 };
 ```
 
-Moreover, if your route breaks up render into multiple phases, you may need to delay scrollTop functionality until after
-the First Meaningful Paint using `delayScrollTop: true` in your config.  `delayScrollTop` defaults to `false`.
+#### Scroll Timing
+
+You may want the default "out of the box" behaviour.  We schedule scroll after Ember's `render`.  This occurs on the tightest schedule between route transition start and end
+
+However, you have other options. You may need to delay scroll functionality until after
+the First Meaningful Paint using `scrollWhenPainted: true` in your config.  `scrollWhenPainted` defaults to `false`.
+
+Then next two config properties uses [`ember-app-scheduler`](https://github.com/ember-app-scheduler/ember-app-scheduler), so be sure to follow the instructions in the README.  We include the `setupRouter` and `reset`.  This all happens after `routeDidChange`.
+
+```javascript
+ENV['routerScroll'] = {
+  scrollWhenPainted: true
+};
+```
+
+Also, if you need to perform the logic when the route is idle or if your route breaks up render into multiple phases, add `delayScrollTop: true` in your config.  `delayScrollTop` defaults to `false`. This will be renamed to `scrollWhenIdle` in a major release.
 
 ```javascript
 ENV['routerScroll'] = {
   delayScrollTop: true
 };
 ```
+
+I would suggest trying all of them out and seeing which works best for your app!
 
 
 ## A working example
