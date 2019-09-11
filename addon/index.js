@@ -11,6 +11,7 @@ let scrollBarWidth = getScrollBarWidth();
 const body = document.body;
 const html = document.documentElement;
 let ATTEMPTS = 0;
+let requestId;
 
 /**
  * By default, we start checking to see if the document height is >= the last known `y` position
@@ -23,7 +24,7 @@ let ATTEMPTS = 0;
  * @void
  */
 function tryScrollRecursively(fn, scrollHash) {
-  window.requestAnimationFrame(() => {
+  requestId = window.requestAnimationFrame(() => {
     const documentWidth = Math.max(body.scrollWidth, body.offsetWidth,
       html.clientWidth, html.scrollWidth, html.offsetWidth);
     const documentHeight = Math.max(body.scrollHeight, body.offsetHeight,
@@ -67,6 +68,10 @@ let RouterScrollMixin = Mixin.create({
 
   destroy() {
     reset();
+
+    if (requestId) {
+      window.cancelAnimationFrame(requestId);
+    }
 
     this._super(...arguments);
   },
