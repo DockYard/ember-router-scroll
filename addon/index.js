@@ -19,7 +19,7 @@ let ATTEMPTS = 0;
  *
  * @method tryScrollRecursively
  * @param {Function} fn
- * @param {Object} srollHash
+ * @param {Object} scrollHash
  * @void
  */
 function tryScrollRecursively(fn, scrollHash) {
