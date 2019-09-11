@@ -104,8 +104,10 @@ let RouterScrollMixin = Mixin.create({
 
       if (targetElement || 'window' === scrollElement) {
         if (recursiveCheck) {
+          // our own implementation
           tryScrollRecursively(window.scrollTo, scrollPosition);
         } else {
+          // using ember-app-scheduler
           window.scrollTo(scrollPosition.x, scrollPosition.y);
         }
       } else if ('#' === scrollElement.charAt(0)) {
