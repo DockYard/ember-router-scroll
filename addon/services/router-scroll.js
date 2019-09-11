@@ -97,16 +97,14 @@ const RouterScroll = Service.extend({
         set(this, 'targetElement', targetElement);
       }
 
-      const { scrollWhenPainted, scrollWhenIdle, delayScrollTop } = config.routerScroll;
-      if (delayScrollTop === true) {
-        set(this, 'delayScrollTop', true);
-      }
-      if (scrollWhenPainted === true) {
-        set(this, 'scrollWhenPainted', true);
-      }
-      if (scrollWhenIdle === true) {
-        set(this, 'scrollWhenIdle', true);
-      }
+      const {
+        scrollWhenPainted = false,
+        scrollWhenIdle = false,
+        delayScrollTop = false
+      } = config.routerScroll;
+      set(this, 'delayScrollTop', delayScrollTop);
+      set(this, 'scrollWhenPainted', scrollWhenPainted);
+      set(this, 'scrollWhenIdle', scrollWhenIdle);
     }
   }
 });
