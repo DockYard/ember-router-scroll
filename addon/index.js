@@ -12,6 +12,16 @@ const body = document.body;
 const html = document.documentElement;
 let ATTEMPTS = 0;
 
+/**
+ * By default, we start checking to see if the document height is >= the last known `y` position
+ * we want to scroll to.  This is important for content heavy pages that might try to scrollTo
+ * before the content has painted
+ *
+ * @method tryScrollRecursively
+ * @param {Function} fn
+ * @param {Object} srollHash
+ * @void
+ */
 function tryScrollRecursively(fn, scrollHash) {
   window.requestAnimationFrame(() => {
     const documentWidth = Math.max(body.scrollWidth, body.offsetWidth,
