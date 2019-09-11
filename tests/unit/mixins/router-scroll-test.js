@@ -167,12 +167,12 @@ module('mixin:router-scroll', function(hooks) {
     });
   });
 
-  test('when the application is not FastBooted with afterPaint', function(assert) {
+  test('when the application is not FastBooted with whenPainted', function(assert) {
     assert.expect(1);
     const done = assert.async();
 
     this.owner.register('service:fastboot', EmberObject.extend({ isFastBoot: false }));
-    this.owner.register('service:router-scroll', EmberObject.extend({ afterPaint: true }));
+    this.owner.register('service:router-scroll', EmberObject.extend({ whenPainted: true }));
     this.owner.register('router:main', EmberObject.extend(Evented, RouterScroll, {
       updateScrollPosition() {
         assert.ok(true, 'it should call updateScrollPosition.');
