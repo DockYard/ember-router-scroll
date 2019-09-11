@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.3.0
+* [#217](https://github.com/DockYard/ember-router-scroll/pull/217) Recursively check document height before scrollTo
+
 ## 1.2.1
 * [#212](https://github.com/DockYard/ember-router-scroll/pull/212) Allow configure so consuming app can override
 * [#210](https://github.com/DockYard/ember-router-scroll/pull/210) Fix query-params-only transitions
