@@ -102,7 +102,7 @@ You may want the default out of the box behaviour.  We schedule an action after 
 However, you have other options. You may need to delay scroll functionality until after
 the First Meaningful Paint using `afterPaint: true` in your config.  `afterPaint` defaults to `false`.
 
-Then next two config properties uses [`ember-app-scheduler`](https://github.com/ember-app-scheduler/ember-app-scheduler), so be sure to follow the instructions in the README.
+Then next two config properties uses [`ember-app-scheduler`](https://github.com/ember-app-scheduler/ember-app-scheduler), so be sure to follow the instructions in the README.  This all happens after `routeDidChange`.
 
 ```javascript
 ENV['routerScroll'] = {
