@@ -97,7 +97,7 @@ ENV['routerScroll'] = {
 
 #### Scroll Timing
 
-You may want the default out of the box behaviour.  We schedule an action after Ember's `render`.
+You may want the default out of the box behaviour.  We schedule scroll after Ember's `render`.
 
 However, you have other options. You may need to delay scroll functionality until after
 the First Meaningful Paint using `afterPaint: true` in your config.  `afterPaint` defaults to `false`.
