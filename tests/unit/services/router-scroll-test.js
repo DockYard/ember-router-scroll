@@ -1,11 +1,7 @@
 import EmberObject, { set, get } from '@ember/object';
 import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
-import MockDate from '../../helpers/mock-date';
 
-MockDate.set('2000-01-01');
-
-// Date set by `mock-date`
 const defaultScrollMap = {
   default: {
     x: 0,
@@ -15,10 +11,6 @@ const defaultScrollMap = {
 
 module('service:router-scroll', function(hooks) {
   setupTest(hooks);
-
-  hooks.after(function() {
-    MockDate.reset();
-  })
 
   test('it inits `scrollMap` and `key`', function(assert) {
     const service = this.owner.lookup('service:router-scroll');
