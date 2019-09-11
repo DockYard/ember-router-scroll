@@ -283,14 +283,14 @@ module('mixin:router-scroll', function(hooks) {
     const done = assert.async();
 
     window.scrollTo = (x, y) => {
-      assert.ok(x === 1 && y === 20000, 'Scroll to called with correct offsets');
+      assert.ok(x === 1 && y === 2, 'Scroll to called with correct offsets');
       done();
     }
 
     this.owner.register('service:fastboot', EmberObject.extend({ isFastBoot: false }));
     this.owner.register('service:router-scroll', EmberObject.extend({
       get position() {
-        return { x: 1, y: 20000 };
+        return { x: 1, y: 2 };
       },
       scrollElement: 'window'
     }));
@@ -315,14 +315,14 @@ module('mixin:router-scroll', function(hooks) {
     elem.id = 'World';
     document.body.insertBefore(elem, null);
     window.scrollTo = (x, y) => {
-      assert.ok(x === 1 && y === 20000, 'Scroll to called with correct offsets');
+      assert.ok(x === 1 && y === 2, 'Scroll to called with correct offsets');
       done();
     }
 
     this.owner.register('service:fastboot', EmberObject.extend({ isFastBoot: false }));
     this.owner.register('service:router-scroll', EmberObject.extend({
       get position() {
-        return { x: 1, y: 20000 };
+        return { x: 1, y: 2 };
       },
       scrollElement: 'window'
     }));
@@ -344,14 +344,14 @@ module('mixin:router-scroll', function(hooks) {
     const done = assert.async();
 
     window.scrollTo = (x, y) => {
-      assert.ok(x === 1 && y === 200000, 'Scroll to was called with correct offsets');
+      assert.ok(x === 1 && y === 20, 'Scroll to was called with correct offsets');
       done();
     }
 
     this.owner.register('service:fastboot', EmberObject.extend({ isFastBoot: false }));
     this.owner.register('service:router-scroll', EmberObject.extend({
       get position() {
-        return { x: 1, y: 200000 };
+        return { x: 1, y: 20 };
       },
       scrollElement: 'window'
     }));
