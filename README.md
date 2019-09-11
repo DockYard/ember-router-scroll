@@ -97,20 +97,20 @@ ENV['routerScroll'] = {
 
 #### Scroll Timing
 
-You may want the default out of the box behaviour.  We schedule scroll after Ember's `render`.  This occurs on the tightest schedule between route transition start and end
+You may want the default "out of the box" behaviour.  We schedule scroll after Ember's `render`.  This occurs on the tightest schedule between route transition start and end
 
 However, you have other options. You may need to delay scroll functionality until after
-the First Meaningful Paint using `whenPainted: true` in your config.  `whenPainted` defaults to `false`.
+the First Meaningful Paint using `scrollWhenPainted: true` in your config.  `scrollWhenPainted` defaults to `false`.
 
 Then next two config properties uses [`ember-app-scheduler`](https://github.com/ember-app-scheduler/ember-app-scheduler), so be sure to follow the instructions in the README.  We include the `setupRouter` and `reset`.  This all happens after `routeDidChange`.
 
 ```javascript
 ENV['routerScroll'] = {
-  whenPainted: true
+  scrollWhenPainted: true
 };
 ```
 
-Also, if you need to perform the logic when the route is idle or if your route breaks up render into multiple phases, add `delayScrollTop: true` in your config.  `delayScrollTop` defaults to `false`. This will be renamed to `whenIdle` in a major release.
+Also, if you need to perform the logic when the route is idle or if your route breaks up render into multiple phases, add `delayScrollTop: true` in your config.  `delayScrollTop` defaults to `false`. This will be renamed to `scrollWhenIdle` in a major release.
 
 ```javascript
 ENV['routerScroll'] = {

@@ -17,13 +17,17 @@ const RouterScroll = Service.extend({
   preserveScrollPosition: false,
   delayScrollTop: false,
   // ember-app-scheduler properties
-  whenPainted: false,
-  whenIdle: false,
+  scrollWhenPainted: false,
+  scrollWhenIdle: false,
 
   init(...args) {
     this._super(...args);
     this._loadConfig();
-    set(this, 'scrollMap', { default: { x: 0, y: 0 } });
+    set(this, 'scrollMap', {
+      default: {
+        x: 0, y: 0
+      }
+    });
   },
 
   unsetFirstLoad() {
@@ -93,15 +97,15 @@ const RouterScroll = Service.extend({
         set(this, 'targetElement', targetElement);
       }
 
-      const { whenPainted, whenIdle, delayScrollTop } = config.routerScroll;
+      const { scrollWhenPainted, scrollWhenIdle, delayScrollTop } = config.routerScroll;
       if (delayScrollTop === true) {
         set(this, 'delayScrollTop', true);
       }
-      if (whenPainted === true) {
-        set(this, 'whenPainted', true);
+      if (scrollWhenPainted === true) {
+        set(this, 'scrollWhenPainted', true);
       }
-      if (whenIdle === true) {
-        set(this, 'whenIdle', true);
+      if (scrollWhenIdle === true) {
+        set(this, 'scrollWhenIdle', true);
       }
     }
   }

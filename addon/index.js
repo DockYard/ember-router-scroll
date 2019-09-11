@@ -11,6 +11,7 @@ let scrollBarWidth = getScrollBarWidth();
 const body = document.body;
 const html = document.documentElement;
 let ATTEMPTS = 0;
+const MAX_ATTEMPTS = 100; // rAF runs every 16ms ideally, so 60x a second
 let requestId;
 
 /**
@@ -32,7 +33,7 @@ function tryScrollRecursively(fn, scrollHash) {
 
     if (documentWidth + scrollBarWidth - window.innerWidth >= scrollHash.x
         && documentHeight + scrollBarWidth - window.innerHeight >= scrollHash.y
-        || ATTEMPTS >= 60) {
+        || ATTEMPTS >= MAX_ATTEMPTS) {
       ATTEMPTS = 0;
       fn.call(null, scrollHash.x, scrollHash.y);
     } else {
@@ -78,11 +79,10 @@ let RouterScrollMixin = Mixin.create({
 
   /**
    * Updates the scroll position
-   * @param {transition|transition[]} transition If before Ember 3.6, this will be an array of transitions, otherwise
    * it will be a single transition
    * @method updateScrollPosition
-   * @param {Object} transition
-   * @param {Boolean} recursiveCheck - if check until document height is same or lger than than  y
+   * @param {transition|transition[]} transition If before Ember 3.6, this will be an array of transitions, otherwise
+   * @param {Boolean} recursiveCheck -  if "true", check until document height is >= y. `y` is the last coordinate the target page was on
    */
   updateScrollPosition(transition, recursiveCheck) {
     const url = get(this, 'currentURL');
@@ -150,13 +150,13 @@ let RouterScrollMixin = Mixin.create({
     }
 
     const delayScrollTop = get(this, 'service.delayScrollTop');
-    const whenPainted = get(this, 'service.whenPainted');
-    const whenIdle = get(this, 'service.whenIdle');
+    const scrollWhenPainted = get(this, 'service.scrollWhenPainted');
+    const scrollWhenIdle = get(this, 'service.scrollWhenIdle');
 
-    if (!delayScrollTop && !whenPainted && !whenIdle) {
+    if (!delayScrollTop && !scrollWhenPainted && !scrollWhenIdle) {
       // out of the 3 options, this happens on the tightest schedule
       scheduleOnce('render', this, () => this.updateScrollPosition(transition, true));
-    } else if (whenPainted) {
+    } else if (scrollWhenPainted) {
       // as described in ember-app-scheduler, this addon can be used to delay rendering until after First Meaningful Paint.
       // If you loading your routes progressively, this may be a good option to delay scrollTop until the remaining DOM elements are painted.
       whenRoutePainted().then(() => {
