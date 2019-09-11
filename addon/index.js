@@ -139,6 +139,7 @@ let RouterScrollMixin = Mixin.create({
     const afterIdle = get(this, 'service.afterIdle');
 
     if (!delayScrollTop && !afterPaint && !afterIdle) {
+      // out of the 3 options, this happens on the tightest schedule
       scheduleOnce('render', this, () => this.updateScrollPosition(transition, true));
     } else if (afterPaint) {
       // as described in ember-app-scheduler, this addon can be used to delay rendering until after First Meaningful Paint.
