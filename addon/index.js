@@ -67,7 +67,7 @@ let RouterScrollMixin = Mixin.create({
    * it will be a single transition
    * @method updateScrollPosition
    * @param {Object} transition
-   * @param {Boolean} recursiveCheck - if check until window height is same or lger than than  y``
+   * @param {Boolean} recursiveCheck - if check until document height is same or lger than than  y
    */
   updateScrollPosition(transition, recursiveCheck) {
     const url = get(this, 'currentURL');
