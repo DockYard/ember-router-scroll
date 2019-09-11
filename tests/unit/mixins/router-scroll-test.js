@@ -167,6 +167,30 @@ module('mixin:router-scroll', function(hooks) {
     });
   });
 
+  test('when the application is not FastBooted with afterPaint', function(assert) {
+    assert.expect(1);
+    const done = assert.async();
+
+    this.owner.register('service:fastboot', EmberObject.extend({ isFastBoot: false }));
+    this.owner.register('service:router-scroll', EmberObject.extend({ afterPaint: true }));
+    this.owner.register('router:main', EmberObject.extend(Evented, RouterScroll, {
+      updateScrollPosition() {
+        assert.ok(true, 'it should call updateScrollPosition.');
+        done();
+      }
+    }));
+
+    subject = this.owner.factoryFor('router:main').create();
+
+    run(() => {
+      if(gte('3.6.0-beta.1')) {
+        subject.trigger('routeDidChange');
+      } else {
+        subject.didTransition();
+      }
+    });
+  });
+
   test('Update Scroll Position: Can preserve position using routerService', function(assert) {
     assert.expect(0);
     const done = assert.async();
@@ -201,8 +225,10 @@ module('mixin:router-scroll', function(hooks) {
     const elem = document.createElement('div');
     elem.id = 'World';
     document.body.insertBefore(elem, null);
-    window.scrollTo = (x, y) =>
+    window.scrollTo = (x, y) => {
       assert.ok(x === elem.offsetLeft && y === elem.offsetTop, 'Scroll to called with correct offsets');
+      done()
+    }
 
     this.owner.register('service:fastboot', EmberObject.extend({ isFastBoot: false }));
     this.owner.register('service:router-scroll', EmberObject.extend({
@@ -219,7 +245,6 @@ module('mixin:router-scroll', function(hooks) {
       } else {
         subject.didTransition(getTransitionsMock('Hello/#World', false));
       }
-      done();
     });
   });
 
@@ -230,8 +255,10 @@ module('mixin:router-scroll', function(hooks) {
     const elem = document.createElement('div');
     elem.id = 'World';
     document.body.insertBefore(elem, null);
-    window.scrollTo = (x, y) =>
+    window.scrollTo = (x, y) => {
       assert.ok(x === elem.offsetLeft && y === elem.offsetTop, 'Scroll to called with correct offsets');
+      done();
+    }
 
     this.owner.register('service:fastboot', EmberObject.extend({ isFastBoot: false }));
     this.owner.register('service:router-scroll', EmberObject.extend({
@@ -248,7 +275,6 @@ module('mixin:router-scroll', function(hooks) {
       } else {
         subject.didTransition(getTransitionsMock('Hello/#World', false));
       }
-      done();
     });
   });
 

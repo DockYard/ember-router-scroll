@@ -10,8 +10,6 @@ const RouterScroll = Service.extend({
     return fastboot ? fastboot.get('isFastBoot') : false;
   }),
 
-  SCROLL_RESTORATION: 2000,
-
   key: null,
   scrollElement: 'window',
   targetElement: null,
@@ -22,7 +20,7 @@ const RouterScroll = Service.extend({
   init(...args) {
     this._super(...args);
     this._loadConfig();
-    set(this, 'scrollMap', { default: { x: 0, y: 0, lastTry: Date.now() }});
+    set(this, 'scrollMap', { default: { x: 0, y: 0 } });
   },
 
   unsetFirstLoad() {
@@ -51,8 +49,7 @@ const RouterScroll = Service.extend({
         // of the targetElement on screen
         set(scrollMap, 'default', {
           x,
-          y,
-          lastTry: Date.now() + this.SCROLL_RESTORATION
+          y
         });
       }
     } else if ('window' === scrollElement) {
@@ -71,8 +68,7 @@ const RouterScroll = Service.extend({
     if (key && 'number' === typeOf(x) && 'number' === typeOf(y)) {
       set(scrollMap, key, {
         x,
-        y,
-        lastTry: Date.now() + this.SCROLL_RESTORATION
+        y
       });
     }
   },
@@ -110,11 +106,6 @@ Object.defineProperty(RouterScroll.prototype, 'position', {
 
     set(this, 'key', stateUuid);
     const key = getWithDefault(this, 'key', '-1');
-
-    if (scrollMap[key]) {
-      // update lastTry before finalizing scroll position before updating page
-      set(scrollMap[key], 'lastTry', Date.now() + this.SCROLL_RESTORATION);
-    }
 
     return getWithDefault(scrollMap, key, scrollMap.default);
   }

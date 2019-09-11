@@ -8,7 +8,6 @@ MockDate.set('2000-01-01');
 // Date set by `mock-date`
 const defaultScrollMap = {
   default: {
-    lastTry: Date.now(),
     x: 0,
     y: 0
   }
@@ -43,17 +42,17 @@ module('service:router-scroll', function(hooks) {
   test('updating will set `scrollMap` to the current scroll position', function(assert) {
     const service = this.owner.factoryFor('service:router-scroll').create({ isFirstLoad: false });
 
-    const expected = { x: window.scrollX, y: window.scrollY, lastTry: Date.now() + service.SCROLL_RESTORATION };
+    const expected = { x: window.scrollX, y: window.scrollY };
     set(service, 'key', '123');
     service.update();
-    assert.deepEqual(get(service, 'scrollMap'), { 123: expected, default: { x: 0, y: 0, lastTry: Date.now()  } });
+    assert.deepEqual(get(service, 'scrollMap'), { 123: expected, default: { x: 0, y: 0 } });
   });
 
   test('updating will not set `scrollMap` if scrollElement is defined and element is not found', function(assert) {
     const service = this.owner.factoryFor('service:router-scroll').create({ scrollElement: '#other-elem' });
 
     service.update();
-    const expected = { x: 0, y: 0, lastTry: Date.now() };
+    const expected = { x: 0, y: 0 };
     assert.deepEqual(get(service, 'position'), expected);
     assert.deepEqual(get(service, 'scrollMap'), defaultScrollMap);
   });
@@ -62,7 +61,7 @@ module('service:router-scroll', function(hooks) {
     const service = this.owner.factoryFor('service:router-scroll').create({ targetElement: '#other-elem' });
 
     service.update();
-    const expected = { x: 0, y: 0, lastTry: Date.now() };
+    const expected = { x: 0, y: 0 };
     assert.deepEqual(get(service, 'position'), expected);
     assert.deepEqual(get(service, 'scrollMap'), defaultScrollMap);
   });
@@ -76,7 +75,7 @@ module('service:router-scroll', function(hooks) {
     const service = this.owner.factoryFor('service:router-scroll').create({ scrollElement: '#other-elem' });
     window.history.replaceState({ uuid: '123' }, null);
 
-    let expected = { x: 0, y: 0, lastTry: Date.now() };
+    let expected = { x: 0, y: 0 };
     assert.deepEqual(get(service, 'position'), expected, 'position is defaulted');
     service.update();
     assert.deepEqual(get(service, 'scrollMap'), defaultScrollMap, 'does not set scrollMap b/c in fastboot');
@@ -91,7 +90,7 @@ module('service:router-scroll', function(hooks) {
     const service = this.owner.factoryFor('service:router-scroll').create({ targetElement: '#other-elem' });
     window.history.replaceState({ uuid: '123' }, null);
 
-    let expected = { x: 0, y: 0, lastTry: Date.now() };
+    let expected = { x: 0, y: 0 };
     assert.deepEqual(get(service, 'position'), expected, 'position is defaulted');
     service.update();
     assert.deepEqual(get(service, 'scrollMap'), defaultScrollMap, 'does not set scrollMap b/c in fastboot');
@@ -105,12 +104,12 @@ module('service:router-scroll', function(hooks) {
     const service = this.owner.factoryFor('service:router-scroll').create({ isFirstLoad: false, scrollElement: '#other-elem' });
     window.history.replaceState({ uuid: '123' }, null);
 
-    let expected = { x: 0, y: 0, lastTry: Date.now() };
+    let expected = { x: 0, y: 0 };
     assert.deepEqual(get(service, 'position'), expected, 'position is defaulted');
     service.update();
     assert.deepEqual(get(service, 'scrollMap'), {
-      '123': Object.assign({}, expected, { lastTry: Date.now() + service.SCROLL_RESTORATION }),
-      default: { x: 0, y: 0, lastTry: Date.now() } }, 'sets scrollMap');
+      '123': expected,
+      default: { x: 0, y: 0 } }, 'sets scrollMap');
   });
 
   test('updating will set default `scrollMap` if targetElement is defined', function(assert) {
@@ -123,17 +122,17 @@ module('service:router-scroll', function(hooks) {
     const service = this.owner.factoryFor('service:router-scroll').create({ isFirstLoad: false, targetElement: '#other-elem' });
     window.history.replaceState({ uuid: '123' }, null);
 
-    let expected = { x: 0, y: 0, lastTry: Date.now() };
+    let expected = { x: 0, y: 0 };
     assert.deepEqual(get(service, 'position'), expected, 'position is defaulted');
     service.update();
-    assert.deepEqual(get(service, 'scrollMap'), { '123': { x: 0, y: 100, lastTry: Date.now() + service.SCROLL_RESTORATION }, default: { x: 0, y: 100, lastTry: Date.now() + service.SCROLL_RESTORATION } }, 'sets scrollMap');
+    assert.deepEqual(get(service, 'scrollMap'), { '123': { x: 0, y: 100 }, default: { x: 0, y: 100 } }, 'sets scrollMap');
   });
 
   test('computing the position for an existing state uuid return the coords', function(assert) {
     const service = this.owner.lookup('service:router-scroll');
     window.history.replaceState({ uuid: '123' }, null);
 
-    const expected = { x: 1, y: 1, lastTry: Date.now() };
+    const expected = { x: 1, y: 1 };
     set(service, 'scrollMap.123', expected);
     assert.deepEqual(get(service, 'position'), expected);
   });
@@ -143,7 +142,7 @@ module('service:router-scroll', function(hooks) {
     const state = window.history.state;
     window.history.replaceState({ uuid: '123' }, null);
 
-    const expected = { x: 0, y: 0, lastTry: Date.now() };
+    const expected = { x: 0, y: 0 };
     assert.deepEqual(get(service, 'position'), expected);
     window.history.replaceState(state, null);
   });
@@ -151,7 +150,7 @@ module('service:router-scroll', function(hooks) {
   test('computing the position for a non-existant state returns default', function(assert) {
     const service = this.owner.lookup('service:router-scroll');
 
-    const expected = { x: 0, y: 0, lastTry: Date.now() };
+    const expected = { x: 0, y: 0 };
     assert.deepEqual(get(service, 'position'), expected);
   });
 });

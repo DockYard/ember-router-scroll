@@ -10,6 +10,7 @@ import { getScrollBarWidth } from './utils/scrollbar-width';
 let scrollBarWidth = getScrollBarWidth();
 const body = document.body;
 const html = document.documentElement;
+let ATTEMPTS = 0;
 
 function tryScrollRecursively(fn, scrollHash) {
   window.requestAnimationFrame(() => {
@@ -18,13 +19,13 @@ function tryScrollRecursively(fn, scrollHash) {
     const documentHeight = Math.max(body.scrollHeight, body.offsetHeight,
       html.clientHeight, html.scrollHeight, html.offsetHeight);
 
-    if (
-        (documentWidth + scrollBarWidth - window.innerWidth >= scrollHash.x
-        && documentHeight + scrollBarWidth - window.innerHeight >= scrollHash.y)
-        || Date.now() > (scrollHash.lastTry || 0)
-    ) {
+    if (documentWidth + scrollBarWidth - window.innerWidth >= scrollHash.x
+        && documentHeight + scrollBarWidth - window.innerHeight >= scrollHash.y
+        || ATTEMPTS >= 60) {
+      ATTEMPTS = 0;
       fn.call(null, scrollHash.x, scrollHash.y);
     } else {
+        ATTEMPTS++;
         tryScrollRecursively(fn, scrollHash)
     }
   })
@@ -133,8 +134,9 @@ let RouterScrollMixin = Mixin.create({
 
     const delayScrollTop = get(this, 'service.delayScrollTop');
     const afterPaint = get(this, 'service.afterPaint');
+    const afterIdle = get(this, 'service.afterIdle');
 
-    if (!delayScrollTop) {
+    if (!delayScrollTop && !afterPaint && !afterIdle) {
       scheduleOnce('render', this, () => this.updateScrollPosition(transition, true));
     } else if (afterPaint) {
       whenRoutePainted().then(() => {
