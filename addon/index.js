@@ -141,12 +141,13 @@ let RouterScrollMixin = Mixin.create({
     if (!delayScrollTop && !afterPaint && !afterIdle) {
       scheduleOnce('render', this, () => this.updateScrollPosition(transition, true));
     } else if (afterPaint) {
+      // as described in ember-app-scheduler, this addon can be used to delay rendering until after First Meaningful Paint.
+      // If you loading your routes progressively, this may be a good option to delay scrollTop until the remaining DOM elements are painted.
       whenRoutePainted().then(() => {
         this.updateScrollPosition(transition);
       });
     } else {
-      // as described in ember-app-scheduler, this addon can be used to delay rendering until after First Meaningful Paint.
-      // If you loading your routes progressively, this may be a good option to delay scrollTop until the remaining DOM elements are painted.
+      // as described in ember-app-scheduler, this addon can be used to delay rendering until after the route is idle
       whenRouteIdle().then(() => {
         this.updateScrollPosition(transition);
       });
