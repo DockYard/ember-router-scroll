@@ -3,35 +3,31 @@ import { get, getWithDefault, computed } from '@ember/object';
 import { inject } from '@ember/service';
 import { getOwner } from '@ember/application';
 import { scheduleOnce } from '@ember/runloop';
-import { setupRouter, reset, whenRouteIdle } from 'ember-app-scheduler';
+import { setupRouter, reset, whenRouteIdle, whenRoutePainted } from 'ember-app-scheduler';
 import { gte } from 'ember-compatibility-helpers';
+import { getScrollBarWidth } from './utils/scrollbar-width';
 
-const TRY_TO_SCROLL_INTERVAL_MS = 30;
-let timeoutHandle = null;
-let scrollBarWidth = 1; //null;
+let scrollBarWidth = getScrollBarWidth();
+const body = document.body;
+const html = document.documentElement;
 
 function tryScrollRecursively(fn, scrollHash) {
-  clearTimeout(timeoutHandle);
+  window.requestAnimationFrame(() => {
+    const documentWidth = Math.max(body.scrollWidth, body.offsetWidth,
+      html.clientWidth, html.scrollWidth, html.offsetWidth);
+    const documentHeight = Math.max(body.scrollHeight, body.offsetHeight,
+      html.clientHeight, html.scrollHeight, html.offsetHeight);
 
-  const body = document.body;
-  const html = document.documentElement;
-
-  const documentWidth = Math.max(body.scrollWidth, body.offsetWidth,
-    html.clientWidth, html.scrollWidth, html.offsetWidth);
-  const documentHeight = Math.max(body.scrollHeight, body.offsetHeight,
-    html.clientHeight, html.scrollHeight, html.offsetHeight);
-
-  if (
-      (documentWidth + scrollBarWidth - window.innerWidth >= scrollHash.x
-      && documentHeight + scrollBarWidth - window.innerHeight >= scrollHash.y)
-      || Date.now() > (scrollHash.lastTry || 0)
-  ) {
-    fn.call(null, scrollHash.x, scrollHash.y);
-  } else {
-      timeoutHandle = setTimeout(() => {
+    if (
+        (documentWidth + scrollBarWidth - window.innerWidth >= scrollHash.x
+        && documentHeight + scrollBarWidth - window.innerHeight >= scrollHash.y)
+        || Date.now() > (scrollHash.lastTry || 0)
+    ) {
+      fn.call(null, scrollHash.x, scrollHash.y);
+    } else {
         tryScrollRecursively(fn, scrollHash)
-      }, TRY_TO_SCROLL_INTERVAL_MS);
-  }
+    }
+  })
 }
 
 let RouterScrollMixin = Mixin.create({
@@ -68,8 +64,11 @@ let RouterScrollMixin = Mixin.create({
    * Updates the scroll position
    * @param {transition|transition[]} transition If before Ember 3.6, this will be an array of transitions, otherwise
    * it will be a single transition
+   * @method updateScrollPosition
+   * @param {Object} transition
+   * @param {Boolean} recursiveCheck - if check until window height is same or lger than than  y``
    */
-  updateScrollPosition(transition) {
+  updateScrollPosition(transition, recursiveCheck) {
     const url = get(this, 'currentURL');
     const hashElement = url ? document.getElementById(url.split('#').pop()) : null;
 
@@ -103,7 +102,11 @@ let RouterScrollMixin = Mixin.create({
       const targetElement = get(this, 'service.targetElement');
 
       if (targetElement || 'window' === scrollElement) {
-        tryScrollRecursively(window.scrollTo, scrollPosition);
+        if (recursiveCheck) {
+          tryScrollRecursively(window.scrollTo, scrollPosition);
+        } else {
+          window.scrollTo(scrollPosition.x, scrollPosition.y);
+        }
       } else if ('#' === scrollElement.charAt(0)) {
         const element = document.getElementById(scrollElement.substring(1));
 
@@ -129,9 +132,14 @@ let RouterScrollMixin = Mixin.create({
     }
 
     const delayScrollTop = get(this, 'service.delayScrollTop');
+    const afterPaint = get(this, 'service.afterPaint');
 
     if (!delayScrollTop) {
-      scheduleOnce('render', this, () => this.updateScrollPosition(transition));
+      scheduleOnce('render', this, () => this.updateScrollPosition(transition, true));
+    } else if (afterPaint) {
+      whenRoutePainted().then(() => {
+        this.updateScrollPosition(transition);
+      });
     } else {
       // as described in ember-app-scheduler, this addon can be used to delay rendering until after First Meaningful Paint.
       // If you loading your routes progressively, this may be a good option to delay scrollTop until the remaining DOM elements are painted.
