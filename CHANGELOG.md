@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.3.1
+* [#217](https://github.com/DockYard/ember-router-scroll/pull/219) Dont batch reads and writes in same rAF
+
 ## 1.3.0
 * [#217](https://github.com/DockYard/ember-router-scroll/pull/217) Recursively check document height before scrollTo
 
