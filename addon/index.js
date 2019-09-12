@@ -25,14 +25,18 @@ let requestId;
  * @void
  */
 function tryScrollRecursively(fn, scrollHash) {
-  requestId = window.requestAnimationFrame(() => {
-    const documentWidth = Math.max(body.scrollWidth, body.offsetWidth,
-      html.clientWidth, html.scrollWidth, html.offsetWidth);
-    const documentHeight = Math.max(body.scrollHeight, body.offsetHeight,
-      html.clientHeight, html.scrollHeight, html.offsetHeight);
+  // read DOM outside of rAF
+  const documentWidth = Math.max(body.scrollWidth, body.offsetWidth,
+    html.clientWidth, html.scrollWidth, html.offsetWidth);
+  const documentHeight = Math.max(body.scrollHeight, body.offsetHeight,
+    html.clientHeight, html.scrollHeight, html.offsetHeight);
+  const innerWidth = window.innerWidth;
+  const innerHeight = window.innerHeight;
 
-    if (documentWidth + scrollBarWidth - window.innerWidth >= scrollHash.x
-        && documentHeight + scrollBarWidth - window.innerHeight >= scrollHash.y
+  requestId = window.requestAnimationFrame(() => {
+    // write DOM (scrollTo causes reflow)
+    if (documentWidth + scrollBarWidth - innerWidth >= scrollHash.x
+        && documentHeight + scrollBarWidth - innerHeight >= scrollHash.y
         || ATTEMPTS >= MAX_ATTEMPTS) {
       ATTEMPTS = 0;
       fn.call(null, scrollHash.x, scrollHash.y);
