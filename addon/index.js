@@ -30,8 +30,7 @@ function tryScrollRecursively(fn, scrollHash) {
     html.clientWidth, html.scrollWidth, html.offsetWidth);
   const documentHeight = Math.max(body.scrollHeight, body.offsetHeight,
     html.clientHeight, html.scrollHeight, html.offsetHeight);
-  const innerWidth = window.innerWidth;
-  const innerHeight = window.innerHeight;
+  const { innerHeight, innerWidth } = window;
 
   requestId = window.requestAnimationFrame(() => {
     // write DOM (scrollTo causes reflow)
