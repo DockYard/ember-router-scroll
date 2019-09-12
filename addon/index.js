@@ -7,12 +7,12 @@ import { setupRouter, reset, whenRouteIdle, whenRoutePainted } from 'ember-app-s
 import { gte } from 'ember-compatibility-helpers';
 import { getScrollBarWidth } from './utils/scrollbar-width';
 
-let scrollBarWidth = getScrollBarWidth();
 const body = document.body;
 const html = document.documentElement;
 let ATTEMPTS = 0;
 const MAX_ATTEMPTS = 100; // rAF runs every 16ms ideally, so 60x a second
 let requestId;
+let scrollBarWidth = 0;
 
 /**
  * By default, we start checking to see if the document height is >= the last known `y` position
@@ -67,6 +67,9 @@ let RouterScrollMixin = Mixin.create({
       this.on('routeDidChange', (transition) => {
         this._routeDidChange(transition);
       });
+    }
+    if (!get(this, 'isFastBoot')) {
+      scrollBarWidth = getScrollBarWidth();
     }
   },
 
