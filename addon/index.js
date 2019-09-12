@@ -7,12 +7,12 @@ import { setupRouter, reset, whenRouteIdle, whenRoutePainted } from 'ember-app-s
 import { gte } from 'ember-compatibility-helpers';
 import { getScrollBarWidth } from './utils/scrollbar-width';
 
-let scrollBarWidth = getScrollBarWidth();
 const body = document.body;
 const html = document.documentElement;
 let ATTEMPTS = 0;
 const MAX_ATTEMPTS = 100; // rAF runs every 16ms ideally, so 60x a second
 let requestId;
+let scrollBarWidth = 0;
 
 /**
  * By default, we start checking to see if the document height is >= the last known `y` position
@@ -25,14 +25,17 @@ let requestId;
  * @void
  */
 function tryScrollRecursively(fn, scrollHash) {
-  requestId = window.requestAnimationFrame(() => {
-    const documentWidth = Math.max(body.scrollWidth, body.offsetWidth,
-      html.clientWidth, html.scrollWidth, html.offsetWidth);
-    const documentHeight = Math.max(body.scrollHeight, body.offsetHeight,
-      html.clientHeight, html.scrollHeight, html.offsetHeight);
+  // read DOM outside of rAF
+  const documentWidth = Math.max(body.scrollWidth, body.offsetWidth,
+    html.clientWidth, html.scrollWidth, html.offsetWidth);
+  const documentHeight = Math.max(body.scrollHeight, body.offsetHeight,
+    html.clientHeight, html.scrollHeight, html.offsetHeight);
+  const { innerHeight, innerWidth } = window;
 
-    if (documentWidth + scrollBarWidth - window.innerWidth >= scrollHash.x
-        && documentHeight + scrollBarWidth - window.innerHeight >= scrollHash.y
+  requestId = window.requestAnimationFrame(() => {
+    // write DOM (scrollTo causes reflow)
+    if (documentWidth + scrollBarWidth - innerWidth >= scrollHash.x
+        && documentHeight + scrollBarWidth - innerHeight >= scrollHash.y
         || ATTEMPTS >= MAX_ATTEMPTS) {
       ATTEMPTS = 0;
       fn.call(null, scrollHash.x, scrollHash.y);
@@ -64,6 +67,9 @@ let RouterScrollMixin = Mixin.create({
       this.on('routeDidChange', (transition) => {
         this._routeDidChange(transition);
       });
+    }
+    if (!get(this, 'isFastBoot')) {
+      scrollBarWidth = getScrollBarWidth();
     }
   },
 
