@@ -7,8 +7,6 @@ import { setupRouter, reset, whenRouteIdle, whenRoutePainted } from 'ember-app-s
 import { gte } from 'ember-compatibility-helpers';
 import { getScrollBarWidth } from './utils/scrollbar-width';
 
-const body = document.body;
-const html = document.documentElement;
 let ATTEMPTS = 0;
 const MAX_ATTEMPTS = 100; // rAF runs every 16ms ideally, so 60x a second
 let requestId;
@@ -25,6 +23,8 @@ let scrollBarWidth = 0;
  * @void
  */
 function tryScrollRecursively(fn, scrollHash) {
+  const body = document.body;
+  const html = document.documentElement;
   // read DOM outside of rAF
   const documentWidth = Math.max(body.scrollWidth, body.offsetWidth,
     html.clientWidth, html.scrollWidth, html.offsetWidth);
