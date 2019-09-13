@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.3.2
+* [#222](https://github.com/DockYard/ember-router-scroll/pull/222) Fix FastBoot
+
 ## 1.3.1
 * [#217](https://github.com/DockYard/ember-router-scroll/pull/219) Dont batch reads and writes in same rAF
 
