@@ -44,7 +44,7 @@ Also, you have to add RouterScroll as an extension to your Router object:
 
 import RouterScroll from 'ember-router-scroll';
 
-const Router = EmberRouter.extend(PageTrackerMixin, RouterScroll, {
+const Router = EmberRouter.extend(RouterScroll, {
   ...
 });
 ```
