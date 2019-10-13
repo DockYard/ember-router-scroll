@@ -96,7 +96,6 @@ let RouterScrollMixin = Mixin.create({
 
     if (get(this, 'service.isFirstLoad')) {
       get(this, 'service').unsetFirstLoad();
-      return;
     }
 
     let scrollPosition;
