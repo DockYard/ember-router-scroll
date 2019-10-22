@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.3.3
+* [#225](https://github.com/DockYard/ember-router-scroll/pull/225) Allow recording position with users first page visit
+* [#223](https://github.com/DockYard/ember-router-scroll/pull/223) Remove unnecessary part of code sample
+
 ## 1.3.2
 * [#222](https://github.com/DockYard/ember-router-scroll/pull/222) Fix FastBoot
 
