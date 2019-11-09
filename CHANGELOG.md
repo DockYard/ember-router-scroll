@@ -1,5 +1,33 @@
 # Changelog
 
+## 1.3.3
+* [#225](https://github.com/DockYard/ember-router-scroll/pull/225) Allow recording position with users first page visit
+* [#223](https://github.com/DockYard/ember-router-scroll/pull/223) Remove unnecessary part of code sample
+
+## 1.3.2
+* [#222](https://github.com/DockYard/ember-router-scroll/pull/222) Fix FastBoot
+
+## 1.3.1
+* [#217](https://github.com/DockYard/ember-router-scroll/pull/219) Dont batch reads and writes in same rAF
+
+## 1.3.0
+* [#217](https://github.com/DockYard/ember-router-scroll/pull/217) Recursively check document height before scrollTo
+
+## 1.2.1
+* [#212](https://github.com/DockYard/ember-router-scroll/pull/212) Allow configure so consuming app can override
+* [#210](https://github.com/DockYard/ember-router-scroll/pull/210) Fix query-params-only transitions
+
+## 1.2.0
+* [#209](https://github.com/DockYard/ember-router-scroll/pull/209) Restore necessary `locationType`
+* [#207](https://github.com/DockYard/ember-router-scroll/pull/207) Remove ember-getowner-polyfill
+* [#206](https://github.com/DockYard/ember-router-scroll/pull/206) Improve the deprecation notice
+* [#198](https://github.com/DockYard/ember-router-scroll/pull/198) fix preserveScrollPosition for ember 3.6+
+* [#195](https://github.com/DockYard/ember-router-scroll/pull/195) Router scroll service
+* [#191](https://github.com/DockYard/ember-router-scroll/pull/191) Ember 3.9 deprecation fixes
+* [#187](https://github.com/DockYard/ember-router-scroll/pull/187) 1.1.0 minor version bump
+* [#183](https://github.com/DockYard/ember-router-scroll/pull/183) Fix router event deprecations, update to Ember 3.7
+* [#178](https://github.com/DockYard/ember-router-scroll/pull/178) Update to 3.6 + bump ember-app-scheduler to fix deprecations
+
 ## Unreleased (2017-11-20)
 
 #### :house: Internal

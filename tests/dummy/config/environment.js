@@ -5,7 +5,7 @@ module.exports = function(environment) {
     modulePrefix: 'dummy',
     environment,
     rootURL: '/',
-    locationType: 'router-scroll',
+    locationType: 'auto',
     historySupportMiddleware: true,
     EmberENV: {
       FEATURES: {
@@ -50,7 +50,6 @@ module.exports = function(environment) {
 
   if (environment === 'production') {
     ENV.rootURL = '/ember-router-scroll/';
-
   }
 
   return ENV;

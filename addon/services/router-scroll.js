@@ -13,14 +13,21 @@ const RouterScroll = Service.extend({
   key: null,
   scrollElement: 'window',
   targetElement: null,
-  delayScrollTop: false,
   isFirstLoad: true,
   preserveScrollPosition: false,
+  delayScrollTop: false,
+  // ember-app-scheduler properties
+  scrollWhenPainted: false,
+  scrollWhenIdle: false,
 
   init(...args) {
     this._super(...args);
     this._loadConfig();
-    set(this, 'scrollMap', { default: { x: 0, y: 0 }});
+    set(this, 'scrollMap', {
+      default: {
+        x: 0, y: 0
+      }
+    });
   },
 
   unsetFirstLoad() {
@@ -47,7 +54,10 @@ const RouterScroll = Service.extend({
 
         // if we are looking to where to transition to next, we need to set the default to the position
         // of the targetElement on screen
-        set(scrollMap, 'default', { x, y });
+        set(scrollMap, 'default', {
+          x,
+          y
+        });
       }
     } else if ('window' === scrollElement) {
       x = window.scrollX;
@@ -63,7 +73,10 @@ const RouterScroll = Service.extend({
 
     // only a `key` present after first load
     if (key && 'number' === typeOf(x) && 'number' === typeOf(y)) {
-      set(scrollMap, key, { x, y });
+      set(scrollMap, key, {
+        x,
+        y
+      });
     }
   },
 
@@ -94,12 +107,14 @@ const RouterScroll = Service.extend({
         set(this, 'targetElement', targetElement);
       }
 
-      const delayScrollTop = config.routerScroll.delayScrollTop;
-      if (delayScrollTop === true) {
-        set(this, 'delayScrollTop', true);
-      }
+      const {
+        scrollWhenPainted = false,
+        scrollWhenIdle = false,
+        delayScrollTop = false
+      } = config.routerScroll;
+      set(this, 'delayScrollTop', delayScrollTop);
+      set(this, 'scrollWhenPainted', scrollWhenPainted);
+      set(this, 'scrollWhenIdle', scrollWhenIdle);
     }
   }
 });
-
-export default RouterScroll;
