@@ -1,5 +1,5 @@
 import Mixin from '@ember/object/mixin';
-import { get, getWithDefault, computed } from '@ember/object';
+import { get, computed } from '@ember/object';
 import { inject } from '@ember/service';
 import { getOwner } from '@ember/application';
 import { scheduleOnce } from '@ember/runloop';
@@ -108,7 +108,7 @@ let RouterScrollMixin = Mixin.create({
 
     let preserveScrollPosition;
     if (gte('3.6.0-beta.1')) {
-      preserveScrollPosition = getWithDefault(transition, 'router.currentRouteInfos', []).some((routeInfo) => get(routeInfo, 'route.controller.preserveScrollPosition'));
+      preserveScrollPosition = (get(transition, 'router.currentRouteInfos') || []).some((routeInfo) => get(routeInfo, 'route.controller.preserveScrollPosition'));
     } else {
       preserveScrollPosition = transition.some((t) => get(t, 'handler.controller.preserveScrollPosition'));
     }

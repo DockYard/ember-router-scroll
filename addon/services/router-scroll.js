@@ -1,5 +1,5 @@
 import Service from '@ember/service';
-import { getWithDefault, computed, set, get } from '@ember/object';
+import { computed, set, get } from '@ember/object';
 import { typeOf } from '@ember/utils';
 import { assert } from '@ember/debug';
 import { getOwner } from '@ember/application';
@@ -116,9 +116,9 @@ Object.defineProperty(RouterScroll.prototype, 'position', {
     const stateUuid = get(window, 'history.state.uuid');
 
     set(this, 'key', stateUuid);
-    const key = getWithDefault(this, 'key', '-1');
+    const key = get(this, 'key') ||  '-1';
 
-    return getWithDefault(scrollMap, key, scrollMap.default);
+    return get(scrollMap, key) || scrollMap.default;
   }
 });
 

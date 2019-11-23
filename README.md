@@ -26,7 +26,7 @@ Compatibility
 Installation
 ------------------------------------------------------------------------------
 
-```
+```sh
 ember install ember-router-scroll
 ```
 
@@ -52,7 +52,7 @@ const Router = EmberRouter.extend(RouterScroll, {
 **2.** Enable `historySupportMiddleware` in your app
 
 Edit `config/environment.js` and add `historySupportMiddleware: true,` to get live-reload working in nested routes.
-(See [Issue #21](https://github.com/dockyard/ember-router-scroll/issues/21))
+(See [Issue #21](https://github.com/DockYard/ember-router-scroll/issues/21))
 
 ```javascript
 historySupportMiddleware: true,
@@ -288,7 +288,7 @@ export default Component.extend({
 
 * `npm test` (Runs `ember try:testall` to test your addon against multiple Ember versions)
 * `ember test`
-* `ember test --server`
+* `ember test --serve
 
 License
 ------------------------------------------------------------------------------
