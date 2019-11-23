@@ -4,7 +4,7 @@ import { typeOf } from '@ember/utils';
 import { assert } from '@ember/debug';
 import { getOwner } from '@ember/application';
 
-const RouterScroll = Service.extend({
+export default Service.extend({
   isFastBoot: computed(function() {
     const fastboot = getOwner(this).lookup('service:fastboot');
     return fastboot ? fastboot.get('isFastBoot') : false;
