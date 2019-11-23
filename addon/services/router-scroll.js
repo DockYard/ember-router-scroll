@@ -4,7 +4,7 @@ import { typeOf } from '@ember/utils';
 import { assert } from '@ember/debug';
 import { getOwner } from '@ember/application';
 
-export default Service.extend({
+const RouterScroll = Service.extend({
   isFastBoot: computed(function() {
     const fastboot = getOwner(this).lookup('service:fastboot');
     return fastboot ? fastboot.get('isFastBoot') : false;
@@ -80,16 +80,6 @@ export default Service.extend({
     }
   },
 
-  get position() {
-    const scrollMap = get(this, 'scrollMap');
-    const stateUuid = get(window, 'history.state.uuid');
-
-    set(this, 'key', stateUuid);
-    const key = get(this, 'key') ||  '-1';
-
-    return get(scrollMap, key) || scrollMap.default;
-  },
-
   _loadConfig() {
     const config = getOwner(this).resolveRegistration('config:environment');
 
@@ -118,3 +108,18 @@ export default Service.extend({
     }
   }
 });
+
+Object.defineProperty(RouterScroll.prototype, 'position', {
+  configurable: true,
+  get() {
+    const scrollMap = get(this, 'scrollMap');
+    const stateUuid = get(window, 'history.state.uuid');
+
+    set(this, 'key', stateUuid);
+    const key = get(this, 'key') ||  '-1';
+
+    return get(scrollMap, key) || scrollMap.default;
+  }
+});
+
+export default RouterScroll;
