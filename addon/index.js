@@ -1,4 +1,4 @@
-import Mixin from '@ember/object/mixin';
+import EmberRouter from '@ember/routing/router';
 import { get, computed } from '@ember/object';
 import { inject } from '@ember/service';
 import { getOwner } from '@ember/application';
@@ -46,16 +46,17 @@ function tryScrollRecursively(fn, scrollHash) {
   })
 }
 
-let RouterScrollMixin = Mixin.create({
-  service: inject('router-scroll'),
+class RouterScroll extends EmberRouter {
+  @inject('router-scroll') service;
 
-  isFastBoot: computed(function() {
+  @computed
+  get isFastBoot() {
     const fastboot = getOwner(this).lookup('service:fastboot');
     return fastboot ? fastboot.get('isFastBoot') : false;
-  }),
+  }
 
   init() {
-    this._super(...arguments);
+    super.init(...arguments);
 
     setupRouter(this);
 
@@ -71,7 +72,7 @@ let RouterScrollMixin = Mixin.create({
     if (!get(this, 'isFastBoot')) {
       scrollBarWidth = getScrollBarWidth();
     }
-  },
+  }
 
   destroy() {
     reset();
@@ -81,7 +82,7 @@ let RouterScrollMixin = Mixin.create({
     }
 
     this._super(...arguments);
-  },
+  }
 
   /**
    * Updates the scroll position
@@ -139,7 +140,7 @@ let RouterScrollMixin = Mixin.create({
         }
       }
     }
-  },
+  }
 
   _routeWillChange() {
     if (get(this, 'isFastBoot')) {
@@ -147,7 +148,7 @@ let RouterScrollMixin = Mixin.create({
     }
 
     get(this, 'service').update();
-  },
+  }
 
   _routeDidChange(transition) {
     if (get(this, 'isFastBoot')) {
@@ -174,22 +175,6 @@ let RouterScrollMixin = Mixin.create({
       });
     }
   }
-});
-
-if (!gte('3.6.0-beta.1')) {
-  RouterScrollMixin = Mixin.create(RouterScrollMixin, {
-    willTransition(...args) {
-      this._super(...args);
-
-      this._routeWillChange();
-    },
-
-    didTransition(transitions, ...args) {
-      this._super(transitions, ...args);
-
-      this._routeDidChange(transitions);
-    }
-  });
 }
 
-export default RouterScrollMixin;
+export default RouterScroll;

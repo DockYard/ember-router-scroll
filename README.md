@@ -44,9 +44,9 @@ Also, you have to add RouterScroll as an extension to your Router object:
 
 import RouterScroll from 'ember-router-scroll';
 
-const Router = EmberRouter.extend(RouterScroll, {
+class Router extends RouterScroll {
   ...
-});
+}
 ```
 
 **2.** Enable `historySupportMiddleware` in your app
