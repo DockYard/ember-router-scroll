@@ -12,8 +12,8 @@ class RouterScroll extends Service {
   }
 
   key;
+  targetElement;
   scrollElement = 'window';
-  targetElement = null;
   isFirstLoad = true;
   preserveScrollPosition = false;
   delayScrollTop = false;

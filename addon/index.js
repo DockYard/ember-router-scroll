@@ -81,7 +81,7 @@ class RouterScroll extends EmberRouter {
       window.cancelAnimationFrame(requestId);
     }
 
-    this._super(...arguments);
+    super.destroy(...arguments);
   }
 
   /**
