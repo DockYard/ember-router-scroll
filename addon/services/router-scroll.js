@@ -23,6 +23,7 @@ class RouterScroll extends Service {
 
   init(...args) {
     super.init(...args);
+
     this._loadConfig();
     set(this, 'scrollMap', {
       default: {

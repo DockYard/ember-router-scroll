@@ -220,12 +220,14 @@ module('router-scroll', function(hooks) {
 
   test('Update Scroll Position: URL is an anchor', async function(assert) {
     assert.expect(1);
+    const done = assert.async();
 
     const elem = document.createElement('div');
     elem.id = 'World';
     document.body.insertBefore(elem, null);
     window.scrollTo = (x, y) => {
       assert.ok(x === elem.offsetLeft && y === elem.offsetTop, 'Scroll to called with correct offsets');
+      done();
     }
 
     this.owner.register('service:fastboot', EmberObject.extend({ isFastBoot: false }));
@@ -237,8 +239,9 @@ module('router-scroll', function(hooks) {
 
     subject = this.owner.factoryFor('router:main').create();
 
-    subject.trigger('routeDidChange', getTransitionsMock('Hello/#World', false));
-    await settled();
+    run(() => {
+      subject.trigger('routeDidChange', getTransitionsMock('Hello/#World', false));
+    });
   });
 
   test('Ensure correct internal router intimate api is used: _router', function(assert) {
@@ -263,11 +266,7 @@ module('router-scroll', function(hooks) {
     subject = this.owner.factoryFor('router:main').create();
 
     run(() => {
-      if(gte('3.6.0-beta.1')) {
-        subject.trigger('routeDidChange', getTransitionsMock('Hello/#World', false));
-      } else {
-        subject.didTransition(getTransitionsMock('Hello/#World', false));
-      }
+      subject.trigger('routeDidChange', getTransitionsMock('Hello/#World', false));
     });
   });
 
@@ -292,11 +291,7 @@ module('router-scroll', function(hooks) {
     subject = this.owner.factoryFor('router:main').create();
 
     run(() => {
-      if(gte('3.6.0-beta.1')) {
-        subject.trigger('routeDidChange', getTransitionsMock('Hello/#'));
-      } else {
-        subject.didTransition(getTransitionsMock('Hello/#'));
-      }
+      subject.trigger('routeDidChange', getTransitionsMock('Hello/#'));
     })
   });
 
@@ -324,11 +319,7 @@ module('router-scroll', function(hooks) {
     subject = this.owner.factoryFor('router:main').create();
 
     run(() => {
-      if(gte('3.6.0-beta.1')) {
-        subject.trigger('routeDidChange', getTransitionsMock('Hello/#Bar'));
-      } else {
-        subject.didTransition(getTransitionsMock('Hello/#Bar'));
-      }
+      subject.trigger('routeDidChange', getTransitionsMock('Hello/#Bar'));
     });
   });
 
@@ -353,11 +344,7 @@ module('router-scroll', function(hooks) {
     subject = this.owner.factoryFor('router:main').create();
 
     run(() => {
-      if(gte('3.6.0-beta.1')) {
-        subject.trigger('routeDidChange', getTransitionsMock('Hello/World'));
-      } else {
-        subject.didTransition(getTransitionsMock('Hello/World'));
-      }
+      subject.trigger('routeDidChange', getTransitionsMock('Hello/World'));
     });
   });
 });
