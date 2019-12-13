@@ -46,7 +46,7 @@ function tryScrollRecursively(fn, scrollHash) {
   })
 }
 
-class RouterScroll extends EmberRouter {
+class EmberRouterScroll extends EmberRouter {
   @inject('router-scroll') service;
 
   @computed
@@ -161,7 +161,10 @@ class RouterScroll extends EmberRouter {
 
     if (!delayScrollTop && !scrollWhenPainted && !scrollWhenIdle) {
       // out of the 3 options, this happens on the tightest schedule
-      scheduleOnce('render', this, () => this.updateScrollPosition(transition, true));
+      const callback = function() {
+        this.updateScrollPosition(transition, true);
+      }
+      scheduleOnce('render', this, callback);
     } else if (scrollWhenPainted) {
       // as described in ember-app-scheduler, this addon can be used to delay rendering until after First Meaningful Paint.
       // If you loading your routes progressively, this may be a good option to delay scrollTop until the remaining DOM elements are painted.
@@ -177,4 +180,4 @@ class RouterScroll extends EmberRouter {
   }
 }
 
-export default RouterScroll;
+export default EmberRouterScroll;
