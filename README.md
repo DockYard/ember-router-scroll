@@ -36,15 +36,14 @@ Usage
 
 **1.** Import ember-router-scroll
 
-You need to import the mixin in your `app/router.js` file, so it will be injected in all your routes.
-Also, you have to add RouterScroll as an extension to your Router object:
+Add RouterScroll as an extension to your Router object.  This class extends EmberRouter.
 
 ```javascript
 // app/router.js
 
-import RouterScroll from 'ember-router-scroll';
+import EmberRouterScroll from 'ember-router-scroll';
 
-class Router extends RouterScroll {
+class Router extends EmberRouterScroll {
   ...
 }
 ```
