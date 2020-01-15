@@ -4,7 +4,6 @@ import { inject } from '@ember/service';
 import { getOwner } from '@ember/application';
 import { scheduleOnce } from '@ember/runloop';
 import { setupRouter, reset, whenRouteIdle, whenRoutePainted } from 'ember-app-scheduler';
-import { gte } from 'ember-compatibility-helpers';
 import { getScrollBarWidth } from './utils/scrollbar-width';
 
 let ATTEMPTS = 0;
@@ -60,15 +59,14 @@ class EmberRouterScroll extends EmberRouter {
 
     setupRouter(this);
 
-    if (gte('3.6.0-beta.1')) {
-      this.on('routeWillChange', () => {
-        this._routeWillChange();
-      });
+    this.on('routeWillChange', () => {
+      this._routeWillChange();
+    });
 
-      this.on('routeDidChange', (transition) => {
-        this._routeDidChange(transition);
-      });
-    }
+    this.on('routeDidChange', (transition) => {
+      this._routeDidChange(transition);
+    });
+
     if (!get(this, 'isFastBoot')) {
       scrollBarWidth = getScrollBarWidth();
     }
@@ -107,12 +105,7 @@ class EmberRouterScroll extends EmberRouter {
       scrollPosition = get(this, 'service.position');
     }
 
-    let preserveScrollPosition;
-    if (gte('3.6.0-beta.1')) {
-      preserveScrollPosition = (get(transition, 'router.currentRouteInfos') || []).some((routeInfo) => get(routeInfo, 'route.controller.preserveScrollPosition'));
-    } else {
-      preserveScrollPosition = transition.some((t) => get(t, 'handler.controller.preserveScrollPosition'));
-    }
+    let preserveScrollPosition = (get(transition, 'router.currentRouteInfos') || []).some((routeInfo) => get(routeInfo, 'route.controller.preserveScrollPosition'));
 
     // If `preserveScrollPosition` was not set on the controller, attempt fallback to `preserveScrollPosition` which was set on the router service.
     if(!preserveScrollPosition) {
