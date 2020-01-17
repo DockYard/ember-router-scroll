@@ -4,35 +4,37 @@ import { typeOf } from '@ember/utils';
 import { assert } from '@ember/debug';
 import { getOwner } from '@ember/application';
 
-const RouterScroll = Service.extend({
-  isFastBoot: computed(function() {
+class RouterScroll extends Service {
+  @computed
+  get isFastBoot() {
     const fastboot = getOwner(this).lookup('service:fastboot');
     return fastboot ? fastboot.get('isFastBoot') : false;
-  }),
+  }
 
-  key: null,
-  scrollElement: 'window',
-  targetElement: null,
-  isFirstLoad: true,
-  preserveScrollPosition: false,
-  delayScrollTop: false,
+  key;
+  targetElement;
+  scrollElement = 'window';
+  isFirstLoad = true;
+  preserveScrollPosition = false;
+  delayScrollTop = false;
   // ember-app-scheduler properties
-  scrollWhenPainted: false,
-  scrollWhenIdle: false,
+  scrollWhenPainted = false;
+  scrollWhenIdle = false;
 
   init(...args) {
-    this._super(...args);
+    super.init(...args);
+
     this._loadConfig();
     set(this, 'scrollMap', {
       default: {
         x: 0, y: 0
       }
     });
-  },
+  }
 
   unsetFirstLoad() {
     set(this, 'isFirstLoad', false);
-  },
+  }
 
   update() {
     if (get(this, 'isFastBoot') || get(this, 'isFirstLoad')) {
@@ -78,7 +80,7 @@ const RouterScroll = Service.extend({
         y
       });
     }
-  },
+  }
 
   _loadConfig() {
     const config = getOwner(this).resolveRegistration('config:environment');
@@ -107,7 +109,7 @@ const RouterScroll = Service.extend({
       set(this, 'scrollWhenIdle', scrollWhenIdle);
     }
   }
-});
+}
 
 Object.defineProperty(RouterScroll.prototype, 'position', {
   configurable: true,

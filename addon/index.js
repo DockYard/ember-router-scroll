@@ -1,10 +1,9 @@
-import Mixin from '@ember/object/mixin';
+import EmberRouter from '@ember/routing/router';
 import { get, computed } from '@ember/object';
 import { inject } from '@ember/service';
 import { getOwner } from '@ember/application';
 import { scheduleOnce } from '@ember/runloop';
 import { setupRouter, reset, whenRouteIdle, whenRoutePainted } from 'ember-app-scheduler';
-import { gte } from 'ember-compatibility-helpers';
 import { getScrollBarWidth } from './utils/scrollbar-width';
 
 let ATTEMPTS = 0;
@@ -46,32 +45,32 @@ function tryScrollRecursively(fn, scrollHash) {
   })
 }
 
-let RouterScrollMixin = Mixin.create({
-  service: inject('router-scroll'),
+class EmberRouterScroll extends EmberRouter {
+  @inject('router-scroll') service;
 
-  isFastBoot: computed(function() {
+  @computed
+  get isFastBoot() {
     const fastboot = getOwner(this).lookup('service:fastboot');
     return fastboot ? fastboot.get('isFastBoot') : false;
-  }),
+  }
 
   init() {
-    this._super(...arguments);
+    super.init(...arguments);
 
     setupRouter(this);
 
-    if (gte('3.6.0-beta.1')) {
-      this.on('routeWillChange', () => {
-        this._routeWillChange();
-      });
+    this.on('routeWillChange', () => {
+      this._routeWillChange();
+    });
 
-      this.on('routeDidChange', (transition) => {
-        this._routeDidChange(transition);
-      });
-    }
+    this.on('routeDidChange', (transition) => {
+      this._routeDidChange(transition);
+    });
+
     if (!get(this, 'isFastBoot')) {
       scrollBarWidth = getScrollBarWidth();
     }
-  },
+  }
 
   destroy() {
     reset();
@@ -80,8 +79,8 @@ let RouterScrollMixin = Mixin.create({
       window.cancelAnimationFrame(requestId);
     }
 
-    this._super(...arguments);
-  },
+    super.destroy(...arguments);
+  }
 
   /**
    * Updates the scroll position
@@ -106,12 +105,7 @@ let RouterScrollMixin = Mixin.create({
       scrollPosition = get(this, 'service.position');
     }
 
-    let preserveScrollPosition;
-    if (gte('3.6.0-beta.1')) {
-      preserveScrollPosition = (get(transition, 'router.currentRouteInfos') || []).some((routeInfo) => get(routeInfo, 'route.controller.preserveScrollPosition'));
-    } else {
-      preserveScrollPosition = transition.some((t) => get(t, 'handler.controller.preserveScrollPosition'));
-    }
+    let preserveScrollPosition = (get(transition, 'router.currentRouteInfos') || []).some((routeInfo) => get(routeInfo, 'route.controller.preserveScrollPosition'));
 
     // If `preserveScrollPosition` was not set on the controller, attempt fallback to `preserveScrollPosition` which was set on the router service.
     if(!preserveScrollPosition) {
@@ -139,7 +133,7 @@ let RouterScrollMixin = Mixin.create({
         }
       }
     }
-  },
+  }
 
   _routeWillChange() {
     if (get(this, 'isFastBoot')) {
@@ -147,7 +141,7 @@ let RouterScrollMixin = Mixin.create({
     }
 
     get(this, 'service').update();
-  },
+  }
 
   _routeDidChange(transition) {
     if (get(this, 'isFastBoot')) {
@@ -160,7 +154,10 @@ let RouterScrollMixin = Mixin.create({
 
     if (!delayScrollTop && !scrollWhenPainted && !scrollWhenIdle) {
       // out of the 3 options, this happens on the tightest schedule
-      scheduleOnce('render', this, () => this.updateScrollPosition(transition, true));
+      const callback = function() {
+        this.updateScrollPosition(transition, true);
+      }
+      scheduleOnce('render', this, callback);
     } else if (scrollWhenPainted) {
       // as described in ember-app-scheduler, this addon can be used to delay rendering until after First Meaningful Paint.
       // If you loading your routes progressively, this may be a good option to delay scrollTop until the remaining DOM elements are painted.
@@ -174,22 +171,6 @@ let RouterScrollMixin = Mixin.create({
       });
     }
   }
-});
-
-if (!gte('3.6.0-beta.1')) {
-  RouterScrollMixin = Mixin.create(RouterScrollMixin, {
-    willTransition(...args) {
-      this._super(...args);
-
-      this._routeWillChange();
-    },
-
-    didTransition(transitions, ...args) {
-      this._super(transitions, ...args);
-
-      this._routeDidChange(transitions);
-    }
-  });
 }
 
-export default RouterScrollMixin;
+export default EmberRouterScroll;

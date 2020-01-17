@@ -15,13 +15,13 @@ module('service:router-scroll', function(hooks) {
   test('it inits `scrollMap` and `key`', function(assert) {
     const service = this.owner.lookup('service:router-scroll');
     assert.deepEqual(get(service, 'scrollMap'), defaultScrollMap);
-    assert.deepEqual(get(service, 'key'), null);
+    assert.deepEqual(get(service, 'key'), undefined);
   });
 
   test('it inits `scrollMap` and `key` with scrollElement other than window', function(assert) {
     const service = this.owner.factoryFor('service:router-scroll').create({ scrollElement: '#other-elem' });
     assert.deepEqual(get(service, 'scrollMap'), defaultScrollMap);
-    assert.deepEqual(get(service, 'key'), null);
+    assert.deepEqual(get(service, 'key'), undefined);
   });
 
   test('updating will not set `scrollMap` to the current scroll position if `key` is not yet set', function(assert) {
