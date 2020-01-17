@@ -48,6 +48,18 @@ class Router extends EmberRouterScroll {
 }
 ```
 
+In version prior to  v2.0, you can import the mixin and use it like so.  This is necessary if your application does not support JavaScript classes yet.
+
+```javascript
+// app/router.js
+
+import RouterScroll from 'ember-router-scroll';
+
+const Router = EmberRouter.extend(RouterScroll, {
+  ...
+});
+```
+
 **2.** Enable `historySupportMiddleware` in your app
 
 Edit `config/environment.js` and add `historySupportMiddleware: true,` to get live-reload working in nested routes.
