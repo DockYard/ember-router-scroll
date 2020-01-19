@@ -39,7 +39,7 @@
   "bugs": {
     "url": "https://github.com/dockyard/ember-router-scroll/issues"
   },
-  "homepage": "https://dollarshaveclub.github.io/ember-router-scroll/",
+  "homepage": "https://github.com/DockYard/ember-router-scroll",
   "scripts": {
     "build": "ember build",
     "lint:hbs": "ember-template-lint .",
