@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.0
+* [#234](https://github.com/DockYard/ember-router-scroll/pull/234) [MAJOR] Class based elements
+* [#202](https://github.com/DockYard/ember-router-scroll/pull/202) Update to 3.12
+
 ## 1.3.3
 * [#225](https://github.com/DockYard/ember-router-scroll/pull/225) Allow recording position with users first page visit
 * [#223](https://github.com/DockYard/ember-router-scroll/pull/223) Remove unnecessary part of code sample
