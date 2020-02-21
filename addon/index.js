@@ -7,7 +7,6 @@ import { setupRouter, reset, whenRouteIdle, whenRoutePainted } from 'ember-app-s
 import { getScrollBarWidth } from './utils/scrollbar-width';
 
 let requestId;
-let scrollBarWidth = 0;
 
 class EmberRouterScroll extends EmberRouter {
   @inject('router-scroll') service;
