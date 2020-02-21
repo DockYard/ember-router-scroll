@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.0.1
+* [#237](https://github.com/DockYard/ember-router-scroll/pull/237) Remove recursive scroll check
+
 ## 2.0.0
 * [#234](https://github.com/DockYard/ember-router-scroll/pull/234) [MAJOR] Class based elements
 * [#202](https://github.com/DockYard/ember-router-scroll/pull/202) Update to 3.12
