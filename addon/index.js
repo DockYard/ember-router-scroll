@@ -4,7 +4,6 @@ import { inject } from '@ember/service';
 import { getOwner } from '@ember/application';
 import { scheduleOnce } from '@ember/runloop';
 import { setupRouter, reset, whenRouteIdle, whenRoutePainted } from 'ember-app-scheduler';
-import { getScrollBarWidth } from './utils/scrollbar-width';
 
 let requestId;
 
@@ -29,10 +28,6 @@ class EmberRouterScroll extends EmberRouter {
     this.on('routeDidChange', (transition) => {
       this._routeDidChange(transition);
     });
-
-    if (!get(this, 'isFastBoot')) {
-      scrollBarWidth = getScrollBarWidth();
-    }
   }
 
   destroy() {
