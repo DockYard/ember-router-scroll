@@ -82,7 +82,6 @@ class EmberRouterScroll extends EmberRouter {
       const targetElement = get(this, 'service.targetElement');
 
       if (targetElement || 'window' === scrollElement) {
-        // using ember-app-scheduler
         window.scrollTo(scrollPosition.x, scrollPosition.y);
       } else if ('#' === scrollElement.charAt(0)) {
         const element = document.getElementById(scrollElement.substring(1));
