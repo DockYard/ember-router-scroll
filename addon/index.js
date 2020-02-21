@@ -6,8 +6,6 @@ import { scheduleOnce } from '@ember/runloop';
 import { setupRouter, reset, whenRouteIdle, whenRoutePainted } from 'ember-app-scheduler';
 import { getScrollBarWidth } from './utils/scrollbar-width';
 
-let ATTEMPTS = 0;
-const MAX_ATTEMPTS = 100; // rAF runs every 16ms ideally, so 60x a second
 let requestId;
 let scrollBarWidth = 0;
 
