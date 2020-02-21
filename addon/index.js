@@ -4,46 +4,8 @@ import { inject } from '@ember/service';
 import { getOwner } from '@ember/application';
 import { scheduleOnce } from '@ember/runloop';
 import { setupRouter, reset, whenRouteIdle, whenRoutePainted } from 'ember-app-scheduler';
-import { getScrollBarWidth } from './utils/scrollbar-width';
 
-let ATTEMPTS = 0;
-const MAX_ATTEMPTS = 100; // rAF runs every 16ms ideally, so 60x a second
 let requestId;
-let scrollBarWidth = 0;
-
-/**
- * By default, we start checking to see if the document height is >= the last known `y` position
- * we want to scroll to.  This is important for content heavy pages that might try to scrollTo
- * before the content has painted
- *
- * @method tryScrollRecursively
- * @param {Function} fn
- * @param {Object} scrollHash
- * @void
- */
-function tryScrollRecursively(fn, scrollHash) {
-  const body = document.body;
-  const html = document.documentElement;
-  // read DOM outside of rAF
-  const documentWidth = Math.max(body.scrollWidth, body.offsetWidth,
-    html.clientWidth, html.scrollWidth, html.offsetWidth);
-  const documentHeight = Math.max(body.scrollHeight, body.offsetHeight,
-    html.clientHeight, html.scrollHeight, html.offsetHeight);
-  const { innerHeight, innerWidth } = window;
-
-  requestId = window.requestAnimationFrame(() => {
-    // write DOM (scrollTo causes reflow)
-    if (documentWidth + scrollBarWidth - innerWidth >= scrollHash.x
-        && documentHeight + scrollBarWidth - innerHeight >= scrollHash.y
-        || ATTEMPTS >= MAX_ATTEMPTS) {
-      ATTEMPTS = 0;
-      fn.call(null, scrollHash.x, scrollHash.y);
-    } else {
-        ATTEMPTS++;
-        tryScrollRecursively(fn, scrollHash)
-    }
-  })
-}
 
 class EmberRouterScroll extends EmberRouter {
   @inject('router-scroll') service;
@@ -66,10 +28,6 @@ class EmberRouterScroll extends EmberRouter {
     this.on('routeDidChange', (transition) => {
       this._routeDidChange(transition);
     });
-
-    if (!get(this, 'isFastBoot')) {
-      scrollBarWidth = getScrollBarWidth();
-    }
   }
 
   destroy() {
@@ -87,9 +45,8 @@ class EmberRouterScroll extends EmberRouter {
    * it will be a single transition
    * @method updateScrollPosition
    * @param {transition|transition[]} transition If before Ember 3.6, this will be an array of transitions, otherwise
-   * @param {Boolean} recursiveCheck -  if "true", check until document height is >= y. `y` is the last coordinate the target page was on
    */
-  updateScrollPosition(transition, recursiveCheck) {
+  updateScrollPosition(transition) {
     const url = get(this, 'currentURL');
     const hashElement = url ? document.getElementById(url.split('#').pop()) : null;
 
@@ -117,13 +74,7 @@ class EmberRouterScroll extends EmberRouter {
       const targetElement = get(this, 'service.targetElement');
 
       if (targetElement || 'window' === scrollElement) {
-        if (recursiveCheck) {
-          // our own implementation
-          tryScrollRecursively(window.scrollTo, scrollPosition);
-        } else {
-          // using ember-app-scheduler
-          window.scrollTo(scrollPosition.x, scrollPosition.y);
-        }
+        window.scrollTo(scrollPosition.x, scrollPosition.y);
       } else if ('#' === scrollElement.charAt(0)) {
         const element = document.getElementById(scrollElement.substring(1));
 
@@ -155,7 +106,7 @@ class EmberRouterScroll extends EmberRouter {
     if (!delayScrollTop && !scrollWhenPainted && !scrollWhenIdle) {
       // out of the 3 options, this happens on the tightest schedule
       const callback = function() {
-        this.updateScrollPosition(transition, true);
+        this.updateScrollPosition(transition);
       }
       scheduleOnce('render', this, callback);
     } else if (scrollWhenPainted) {
