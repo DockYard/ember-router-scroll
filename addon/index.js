@@ -3,7 +3,7 @@ import { get, computed } from '@ember/object';
 import { inject } from '@ember/service';
 import { getOwner } from '@ember/application';
 import { scheduleOnce } from '@ember/runloop';
-import { setupRouter, reset, whenRouteIdle, whenRoutePainted } from 'ember-app-scheduler';
+import { setupRouter, reset, whenRouteIdle } from 'ember-app-scheduler';
 
 let requestId;
 
@@ -99,22 +99,14 @@ class EmberRouterScroll extends EmberRouter {
       return;
     }
 
-    const delayScrollTop = get(this, 'service.delayScrollTop');
-    const scrollWhenPainted = get(this, 'service.scrollWhenPainted');
     const scrollWhenIdle = get(this, 'service.scrollWhenIdle');
 
-    if (!delayScrollTop && !scrollWhenPainted && !scrollWhenIdle) {
-      // out of the 3 options, this happens on the tightest schedule
+    if (!scrollWhenIdle) {
+      // out of the option, this happens on the tightest schedule
       const callback = function() {
         this.updateScrollPosition(transition);
       }
       scheduleOnce('render', this, callback);
-    } else if (scrollWhenPainted) {
-      // as described in ember-app-scheduler, this addon can be used to delay rendering until after First Meaningful Paint.
-      // If you loading your routes progressively, this may be a good option to delay scrollTop until the remaining DOM elements are painted.
-      whenRoutePainted().then(() => {
-        this.updateScrollPosition(transition);
-      });
     } else {
       // as described in ember-app-scheduler, this addon can be used to delay rendering until after the route is idle
       whenRouteIdle().then(() => {

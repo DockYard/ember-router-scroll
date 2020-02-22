@@ -75,7 +75,7 @@ module('router-scroll', function(hooks) {
     const done = assert.async();
 
     this.owner.register('service:fastboot', EmberObject.extend({ isFastBoot: false }));
-    this.owner.register('service:router-scroll', EmberObject.extend({ delayScrollTop: false }));
+    this.owner.register('service:router-scroll', EmberObject.extend({ scrollWhenIdle: false }));
     this.owner.register('router:main', EmberRouterScroll.extend({
       updateScrollPosition() {
         assert.ok(true, 'it should call updateScrollPosition.');
@@ -118,12 +118,12 @@ module('router-scroll', function(hooks) {
     });
   });
 
-  test('when the application is not FastBooted with delayScrollTop', function(assert) {
+  test('when the application is not FastBooted with scrollWhenIdle', function(assert) {
     assert.expect(1);
     const done = assert.async();
 
     this.owner.register('service:fastboot', EmberObject.extend({ isFastBoot: false }));
-    this.owner.register('service:router-scroll', EmberObject.extend({ delayScrollTop: true }));
+    this.owner.register('service:router-scroll', EmberObject.extend({ scrollWhenIdle: true }));
     this.owner.register('router:main', EmberRouterScroll.extend({
       updateScrollPosition() {
         assert.ok(true, 'it should call updateScrollPosition.');
