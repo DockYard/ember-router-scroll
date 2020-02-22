@@ -16,9 +16,7 @@ class RouterScroll extends Service {
   scrollElement = 'window';
   isFirstLoad = true;
   preserveScrollPosition = false;
-  delayScrollTop = false;
   // ember-app-scheduler properties
-  scrollWhenPainted = false;
   scrollWhenIdle = false;
 
   init(...args) {
@@ -100,12 +98,8 @@ class RouterScroll extends Service {
       }
 
       const {
-        scrollWhenPainted = false,
-        scrollWhenIdle = false,
-        delayScrollTop = false
+        scrollWhenIdle = false
       } = config.routerScroll;
-      set(this, 'delayScrollTop', delayScrollTop);
-      set(this, 'scrollWhenPainted', scrollWhenPainted);
       set(this, 'scrollWhenIdle', scrollWhenIdle);
     }
   }
