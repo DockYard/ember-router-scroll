@@ -116,9 +116,16 @@ This config property uses [`ember-app-scheduler`](https://github.com/ember-app-s
 
 ```javascript
 ENV['routerScroll'] = {
-  scrollWhenIdle: true
+  scrollWhenIdle: true // ember-app-scheduler
 };
 ```
+
+Or
+
+```js
+ENV['routerScroll'] = {
+  scrollWhenAfterRender: true // scheduleOnce('afterRender', ...)
+};
 
 I would suggest trying all of them out and seeing which works best for your app!
 
