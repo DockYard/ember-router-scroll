@@ -100,13 +100,20 @@ class EmberRouterScroll extends EmberRouter {
     }
 
     const scrollWhenIdle = get(this, 'service.scrollWhenIdle');
+    const scrollWhenAfterRender = get(this, 'service.scrollWhenAfterRender');
 
-    if (!scrollWhenIdle) {
+    if (!scrollWhenIdle && !scrollWhenAfterRender) {
       // out of the option, this happens on the tightest schedule
       const callback = function() {
         this.updateScrollPosition(transition);
       }
       scheduleOnce('render', this, callback);
+    } else if (scrollWhenAfterRender) {
+      // out of the option, this happens on the tightest schedule
+      const callback = function() {
+        this.updateScrollPosition(transition);
+      }
+      scheduleOnce('afterRender', this, callback);
     } else {
       // as described in ember-app-scheduler, this addon can be used to delay rendering until after the route is idle
       whenRouteIdle().then(() => {

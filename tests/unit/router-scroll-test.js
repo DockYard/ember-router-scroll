@@ -134,11 +134,27 @@ module('router-scroll', function(hooks) {
     subject = this.owner.factoryFor('router:main').create();
 
     run(() => {
-      if(gte('3.6.0-beta.1')) {
-        subject.trigger('routeDidChange');
-      } else {
-        subject.didTransition();
+      subject.trigger('routeDidChange');
+    });
+  });
+
+  test('when the application is not FastBooted with scrollWhenAfterRender', function(assert) {
+    assert.expect(1);
+    const done = assert.async();
+
+    this.owner.register('service:fastboot', EmberObject.extend({ isFastBoot: false }));
+    this.owner.register('service:router-scroll', EmberObject.extend({ scrollWhenAfterRender: true }));
+    this.owner.register('router:main', EmberRouterScroll.extend({
+      updateScrollPosition() {
+        assert.ok(true, 'it should call updateScrollPosition.');
+        done();
       }
+    }));
+
+    subject = this.owner.factoryFor('router:main').create();
+
+    run(() => {
+      subject.trigger('routeDidChange');
     });
   });
 

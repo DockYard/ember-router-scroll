@@ -18,6 +18,7 @@ class RouterScroll extends Service {
   preserveScrollPosition = false;
   // ember-app-scheduler properties
   scrollWhenIdle = false;
+  scrollWhenAfterRender = false;
 
   init(...args) {
     super.init(...args);

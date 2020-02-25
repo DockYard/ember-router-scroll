@@ -110,15 +110,22 @@ ENV['routerScroll'] = {
 
 You may want the default "out of the box" behaviour.  We schedule scroll after Ember's `render`.  This occurs on the tightest schedule between route transition start and end.
 
-However, you have other option. You may need to delay scroll functionality until the route is idle (approximately after the first paint completes) using `scrollWhenIdle: true` in your config.  `scrollWhenIdle` defaults to `false`.
+However, you have other options. If you need an extra tick after `render`, set `scheduleWhenAfterRender: true`.  You also may need to delay scroll functionality until the route is idle (approximately after the first paint completes) using `scrollWhenIdle: true` in your config.  `scrollWhenIdle` && `scheduleWhenAfterRender` defaults to `false`.
 
 This config property uses [`ember-app-scheduler`](https://github.com/ember-app-scheduler/ember-app-scheduler), so be sure to follow the instructions in the README.  We include the `setupRouter` and `reset`.  This all happens after `routeDidChange`.
 
 ```javascript
 ENV['routerScroll'] = {
-  scrollWhenIdle: true
+  scrollWhenIdle: true // ember-app-scheduler
 };
 ```
+
+Or
+
+```js
+ENV['routerScroll'] = {
+  scrollWhenAfterRender: true // scheduleOnce('afterRender', ...)
+};
 
 I would suggest trying all of them out and seeing which works best for your app!
 
