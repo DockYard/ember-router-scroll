@@ -6,6 +6,7 @@ import { scheduleOnce } from '@ember/runloop';
 import { setupRouter, reset, whenRouteIdle } from 'ember-app-scheduler';
 
 let requestId;
+let REQUEST_CALLBACK;
 
 class EmberRouterScroll extends EmberRouter {
   @inject('router-scroll') service;
@@ -84,6 +85,8 @@ class EmberRouterScroll extends EmberRouter {
         }
       }
     }
+
+    REQUEST_CALLBACK = null;
   }
 
   _routeWillChange() {
@@ -95,7 +98,7 @@ class EmberRouterScroll extends EmberRouter {
   }
 
   _routeDidChange(transition) {
-    if (get(this, 'isFastBoot')) {
+    if (get(this, 'isFastBoot') || REQUEST_CALLBACK) {
       return;
     }
 
@@ -107,18 +110,28 @@ class EmberRouterScroll extends EmberRouter {
       const callback = function() {
         this.updateScrollPosition(transition);
       }
+
+      REQUEST_CALLBACK = callback;
+
       scheduleOnce('render', this, callback);
     } else if (scrollWhenAfterRender) {
       // out of the option, this happens on the tightest schedule
       const callback = function() {
         this.updateScrollPosition(transition);
       }
+
+      REQUEST_CALLBACK = callback;
+
       scheduleOnce('afterRender', this, callback);
     } else {
       // as described in ember-app-scheduler, this addon can be used to delay rendering until after the route is idle
-      whenRouteIdle().then(() => {
+      const callback = function() {
         this.updateScrollPosition(transition);
-      });
+      }
+
+      REQUEST_CALLBACK = callback;
+
+      whenRouteIdle().then(callback);
     }
   }
 }
