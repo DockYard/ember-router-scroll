@@ -99,9 +99,11 @@ class RouterScroll extends Service {
       }
 
       const {
-        scrollWhenIdle = false
+        scrollWhenIdle = false,
+        scrollWhenAfterRender = false
       } = config.routerScroll;
       set(this, 'scrollWhenIdle', scrollWhenIdle);
+      set(this, 'scrollWhenAfterRender', scrollWhenAfterRender);
     }
   }
 }
