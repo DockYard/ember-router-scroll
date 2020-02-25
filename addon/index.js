@@ -6,7 +6,6 @@ import { scheduleOnce } from '@ember/runloop';
 import { setupRouter, reset, whenRouteIdle } from 'ember-app-scheduler';
 
 let requestId;
-let IDLE_REQUESTED_CALLBACK = false;
 
 // to prevent scheduleOnce calling multiple times, give it the same ref to this function
 const CALLBACK = function(transition) {
@@ -115,15 +114,8 @@ class EmberRouterScroll extends EmberRouter {
       // out of the option, this happens on the tightest schedule
       scheduleOnce('afterRender', this, CALLBACK, transition);
     } else {
-      if (IDLE_REQUESTED_CALLBACK) {
-        return;
-      }
-
-      IDLE_REQUESTED_CALLBACK = true;
-
       // as described in ember-app-scheduler, this addon can be used to delay rendering until after the route is idle
       whenRouteIdle().then(() => {
-        IDLE_REQUESTED_CALLBACK = false;
         this.updateScrollPosition(transition);
       });
     }
