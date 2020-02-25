@@ -53,8 +53,6 @@ class EmberRouterScroll extends EmberRouter {
    * @param {transition|transition[]} transition If before Ember 3.6, this will be an array of transitions, otherwise
    */
   updateScrollPosition(transition) {
-    IDLE_REQUESTED_CALLBACK = false;
-
     const url = get(this, 'currentURL');
     const hashElement = url ? document.getElementById(url.split('#').pop()) : null;
 
@@ -125,6 +123,7 @@ class EmberRouterScroll extends EmberRouter {
 
       // as described in ember-app-scheduler, this addon can be used to delay rendering until after the route is idle
       whenRouteIdle().then(() => {
+        IDLE_REQUESTED_CALLBACK = false;
         this.updateScrollPosition(transition);
       });
     }
