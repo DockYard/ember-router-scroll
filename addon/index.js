@@ -27,7 +27,7 @@ class CounterPool {
 
   flush() {
     if (this.counter === 0 && this.onFinishedPromise && this.onFinishedPromise.then) {
-      this.onFinishedPromise.finally(() => {
+      this.onFinishedPromise.then(() => {
         this.onFinishedCallback();
       });
     }
