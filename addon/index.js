@@ -6,6 +6,49 @@ import { scheduleOnce } from '@ember/runloop';
 import { setupRouter, reset, whenRouteIdle } from 'ember-app-scheduler';
 
 let requestId;
+let idleRequestId;
+
+class CounterPool {
+  constructor() {
+    this._counter = 0;
+    this.onFinishedPromise = null;
+    this.onFinishedCallback = null;
+
+    this.flush();
+  }
+
+  get counter() {
+    return this._counter;
+  }
+  set counter(value) {
+    // put a cap so flush queue doesn't take too many paint cycles
+    this._counter = Math.min(value, 2);
+  }
+
+  flush() {
+    if (this.counter === 0 && this.onFinishedPromise && this.onFinishedPromise.then) {
+      this.onFinishedPromise.finally(() => {
+        this.onFinishedCallback();
+      });
+    }
+
+    idleRequestId = window.requestAnimationFrame(() => {
+      this.decrement();
+      this.flush();
+    });
+  }
+
+  decrement() {
+    this.counter = this.counter - 1;
+  }
+
+  destroy() {
+    window.cancelAnimationFrame(idleRequestId);
+    this.counter = 0;
+    this.onFinishedPromise = null;
+    this.onFinishedCallback = null;
+  }
+}
 
 // to prevent scheduleOnce calling multiple times, give it the same ref to this function
 const CALLBACK = function(transition) {
@@ -14,6 +57,8 @@ const CALLBACK = function(transition) {
 
 class EmberRouterScroll extends EmberRouter {
   @inject('router-scroll') service;
+
+  idlePool;
 
   @computed
   get isFastBoot() {
@@ -52,6 +97,11 @@ class EmberRouterScroll extends EmberRouter {
    * @param {transition|transition[]} transition If before Ember 3.6, this will be an array of transitions, otherwise
    */
   updateScrollPosition(transition) {
+    if (this.idlePool) {
+      this.idlePool.destroy();
+      this.idlePool = null;
+    }
+
     const url = get(this, 'currentURL');
     const hashElement = url ? document.getElementById(url.split('#').pop()) : null;
 
@@ -114,10 +164,14 @@ class EmberRouterScroll extends EmberRouter {
       // out of the option, this happens on the tightest schedule
       scheduleOnce('afterRender', this, CALLBACK, transition);
     } else {
-      // as described in ember-app-scheduler, this addon can be used to delay rendering until after the route is idle
-      whenRouteIdle().then(() => {
-        this.updateScrollPosition(transition);
-      });
+      if (!this.idlePool) {
+        this.idlePool = new CounterPool();
+      }
+
+      // increments happen all in one batch (before processing flush queue)
+      this.idlePool.counter = this.idlePool.counter + 1;
+      this.idlePool.onFinishedPromise = whenRouteIdle();
+      this.idlePool.onFinishedCallback = this.updateScrollPosition.bind(this, transition);
     }
   }
 }
