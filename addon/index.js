@@ -168,7 +168,8 @@ class EmberRouterScroll extends EmberRouter {
         this.idlePool = new CounterPool();
       }
 
-      // increments happen all in one batch (before processing flush queue)
+      // increments happen all in one batch (before processing flush queue) and happens indeterminately
+      // e.g. 4, 6, 10 times this could be called
       this.idlePool.counter = this.idlePool.counter + 1;
       this.idlePool.onFinishedPromise = whenRouteIdle();
       this.idlePool.onFinishedCallback = this.updateScrollPosition.bind(this, transition);
