@@ -6,6 +6,7 @@ import { scheduleOnce } from '@ember/runloop';
 import { setupRouter, reset, whenRouteIdle } from 'ember-app-scheduler';
 
 let requestId;
+let callbackRequestId;
 let idleRequestId;
 
 class CounterPool {
@@ -53,7 +54,9 @@ class CounterPool {
 
 // to prevent scheduleOnce calling multiple times, give it the same ref to this function
 const CALLBACK = function(transition) {
-  this.updateScrollPosition(transition);
+  callbackRequestId = window.requestAnimationFrame(() => {
+    this.updateScrollPosition(transition);
+  });
 }
 
 class EmberRouterScroll extends EmberRouter {
@@ -86,6 +89,10 @@ class EmberRouterScroll extends EmberRouter {
 
     if (requestId) {
       window.cancelAnimationFrame(requestId);
+    }
+
+    if (callbackRequestId) {
+      window.cancelAnimationFrame(callbackRequestId);
     }
 
     super.destroy(...arguments);
