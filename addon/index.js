@@ -27,6 +27,7 @@ class CounterPool {
 
   flush() {
     if (this.counter === 0 && this.onFinishedPromise && this.onFinishedPromise.then) {
+      // when we are done, attach a then callback and update scroll position
       this.onFinishedPromise.then(() => {
         this.onFinishedCallback();
       });
