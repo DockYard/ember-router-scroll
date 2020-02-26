@@ -1,5 +1,16 @@
 # Changelog
 
+## 3.1.3
+* [#242](https://github.com/DockYard/ember-router-scroll/pull/242) Unique functions to scheduleOnce...follow up
+* [#241](https://github.com/DockYard/ember-router-scroll/pull/241) Prevent multiple calls on routeDidChange
+* [#240](https://github.com/DockYard/ember-router-scroll/pull/240) Missing setter for scrollWhenAfterRender
+
+## 3.1.0
+* [#239](https://github.com/DockYard/ember-router-scroll/pull/239) Scroll when afterRender
+
+## 3.0.0
+* [#238](https://github.com/DockYard/ember-router-scroll/pull/238) Upgrade ember-app-scheduler to v4.0.0
+
 ## 2.0.1
 * [#237](https://github.com/DockYard/ember-router-scroll/pull/237) Remove recursive scroll check
 
