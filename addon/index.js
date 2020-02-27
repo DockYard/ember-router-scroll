@@ -5,6 +5,9 @@ import { getOwner } from '@ember/application';
 import { scheduleOnce } from '@ember/runloop';
 import { setupRouter, reset, whenRouteIdle } from 'ember-app-scheduler';
 
+let ATTEMPTS = 0;
+const MAX_ATTEMPTS = 100; // rAF runs every 16ms ideally, so 60x a second
+
 let requestId;
 let callbackRequestId;
 let idleRequestId;
@@ -52,11 +55,38 @@ class CounterPool {
   }
 }
 
+/**
+ * By default, we start checking to see if the document height is >= the last known `y` position
+ * we want to scroll to.  This is important for content heavy pages that might try to scrollTo
+ * before the content has painted
+ *
+ * @method tryScrollRecursively
+ * @param {Function} fn
+ * @param {Object} scrollHash
+ * @void
+ */
+function tryScrollRecursively(fn, scrollHash) {
+  const body = document.body;
+  const html = document.documentElement;
+  // read DOM outside of rAF
+  const documentHeight = Math.max(body.scrollHeight, body.offsetHeight,
+    html.clientHeight, html.scrollHeight, html.offsetHeight);
+
+  callbackRequestId = window.requestAnimationFrame(() => {
+    // write DOM (scrollTo causes reflow)
+    if (documentHeight >= scrollHash.y || ATTEMPTS >= MAX_ATTEMPTS) {
+      ATTEMPTS = 0;
+      fn.call(null, scrollHash.x, scrollHash.y);
+    } else {
+      ATTEMPTS++;
+      tryScrollRecursively(fn, scrollHash)
+    }
+  })
+}
+
 // to prevent scheduleOnce calling multiple times, give it the same ref to this function
 const CALLBACK = function(transition) {
-  callbackRequestId = window.requestAnimationFrame(() => {
-    this.updateScrollPosition(transition);
-  });
+  this.updateScrollPosition(transition);
 }
 
 class EmberRouterScroll extends EmberRouter {
@@ -137,7 +167,7 @@ class EmberRouterScroll extends EmberRouter {
       const targetElement = get(this, 'service.targetElement');
 
       if (targetElement || 'window' === scrollElement) {
-        window.scrollTo(scrollPosition.x, scrollPosition.y);
+        tryScrollRecursively(window.scrollTo, scrollPosition);
       } else if ('#' === scrollElement.charAt(0)) {
         const element = document.getElementById(scrollElement.substring(1));
 
