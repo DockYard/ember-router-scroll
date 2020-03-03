@@ -1,6 +1,5 @@
 import EmberRouter from '@ember/routing/router';
 import { get, computed } from '@ember/object';
-import { addEvented } from './-private/evented';
 import { inject } from '@ember/service';
 import { getOwner } from '@ember/application';
 import { scheduleOnce } from '@ember/runloop';
@@ -90,7 +89,7 @@ const CALLBACK = function(transition) {
   this.updateScrollPosition(transition);
 }
 
-class EmberRouterScroll extends addEvented(EmberRouter) {
+class EmberRouterScroll extends EmberRouter {
   @inject('router-scroll') service;
 
   idlePool;
@@ -179,7 +178,7 @@ class EmberRouterScroll extends addEvented(EmberRouter) {
       }
     }
 
-    this.triggerEvent('didScroll');
+    this.trigger('didScroll');
   }
 
   _routeWillChange() {
