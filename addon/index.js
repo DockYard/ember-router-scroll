@@ -178,7 +178,7 @@ class EmberRouterScroll extends EmberRouter {
       }
     }
 
-    this.trigger('didScroll');
+    this.trigger('didScroll', transition);
   }
 
   _routeWillChange() {
