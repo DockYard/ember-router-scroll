@@ -2,6 +2,9 @@
 
 - Updating to th v3.0 series was due to removing `scrollWhenPainted` as a config option.  Also, we fixed some hidden bugs with scheduling when to scroll to your last y position.
 
+## 3.3.0
+* [#246](https://github.com/DockYard/ember-router-scroll/pull/246) Add Evented trigger didScroll
+
 ## 3.2.0
 * [#244](https://github.com/DockYard/ember-router-scroll/pull/244) Bring back scroll recursive
 
