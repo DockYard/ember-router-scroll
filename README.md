@@ -126,7 +126,7 @@ Or
 ENV['routerScroll'] = {
   scrollWhenAfterRender: true // scheduleOnce('afterRender', ...)
 };
-
+```
 I would suggest trying all of them out and seeing which works best for your app!
 
 
