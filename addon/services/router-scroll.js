@@ -1,15 +1,106 @@
-import Service from '@ember/service';
-import { computed, set, get } from '@ember/object';
+import Service, { inject as service } from '@ember/service';
+import { computed, set, get, action } from '@ember/object';
 import { typeOf } from '@ember/utils';
 import { assert } from '@ember/debug';
 import { getOwner } from '@ember/application';
+import { scheduleOnce } from '@ember/runloop';
+import { addListener, removeListener, sendEvent } from '@ember/object/events';
+import { setupRouter, reset, whenRouteIdle } from 'ember-app-scheduler';
+
+let ATTEMPTS = 0;
+const MAX_ATTEMPTS = 100; // rAF runs every 16ms ideally, so 60x a second
+
+let requestId;
+let callbackRequestId;
+let idleRequestId;
+
+class CounterPool {
+  constructor() {
+    this._counter = 0;
+    this.onFinishedPromise = null;
+    this.onFinishedCallback = null;
+
+    this.flush();
+  }
+
+  get counter() {
+    return this._counter;
+  }
+  set counter(value) {
+    // put a cap so flush queue doesn't take too many paint cycles
+    this._counter = Math.min(value, 2);
+  }
+
+  flush() {
+    if (this.counter === 0 && this.onFinishedPromise && this.onFinishedPromise.then) {
+      // when we are done, attach a then callback and update scroll position
+      this.onFinishedPromise.then(() => {
+        this.onFinishedCallback && this.onFinishedCallback();
+      });
+    }
+
+    idleRequestId = window.requestAnimationFrame(() => {
+      this.decrement();
+      this.flush();
+    });
+  }
+
+  decrement() {
+    this.counter = this.counter - 1;
+  }
+
+  destroy() {
+    window.cancelAnimationFrame(idleRequestId);
+    this.counter = 0;
+    this.onFinishedPromise = null;
+    this.onFinishedCallback = null;
+  }
+}
+
+/**
+ * By default, we start checking to see if the document height is >= the last known `y` position
+ * we want to scroll to.  This is important for content heavy pages that might try to scrollTo
+ * before the content has painted
+ *
+ * @method tryScrollRecursively
+ * @param {Function} fn
+ * @param {Object} scrollHash
+ * @void
+ */
+function tryScrollRecursively(fn, scrollHash) {
+  const body = document.body;
+  const html = document.documentElement;
+  // read DOM outside of rAF
+  const documentHeight = Math.max(body.scrollHeight, body.offsetHeight,
+    html.clientHeight, html.scrollHeight, html.offsetHeight);
+
+  callbackRequestId = window.requestAnimationFrame(() => {
+    // write DOM (scrollTo causes reflow)
+    if (documentHeight >= scrollHash.y || ATTEMPTS >= MAX_ATTEMPTS) {
+      ATTEMPTS = 0;
+      fn.call(null, scrollHash.x, scrollHash.y);
+    } else {
+      ATTEMPTS++;
+      tryScrollRecursively(fn, scrollHash)
+    }
+  })
+}
+
+// to prevent scheduleOnce calling multiple times, give it the same ref to this function
+const CALLBACK = function(transition) {
+  this.updateScrollPosition(transition);
+}
 
 class RouterScroll extends Service {
+  @service router;
+
   @computed
   get isFastBoot() {
     const fastboot = getOwner(this).lookup('service:fastboot');
     return fastboot ? fastboot.get('isFastBoot') : false;
   }
+
+  idlePool;
 
   key;
   targetElement;
@@ -29,6 +120,119 @@ class RouterScroll extends Service {
         x: 0, y: 0
       }
     });
+
+    // https://github.com/ember-app-scheduler/ember-app-scheduler/pull/773
+    setupRouter(this.router);
+
+    addListener(this.router, 'routeWillChange', this._routeWillChange);
+    addListener(this.router, 'routeDidChange', this._routeDidChange);
+  }
+
+  destroy() {
+    reset();
+
+    removeListener(this.router, 'routeWillChange', this._routeWillChange);
+    removeListener(this.router, 'routeDidChange', this._routeDidChange);
+
+    if (requestId) {
+      window.cancelAnimationFrame(requestId);
+    }
+
+    if (callbackRequestId) {
+      window.cancelAnimationFrame(callbackRequestId);
+    }
+
+    super.destroy(...arguments);
+  }
+
+  /**
+   * Updates the scroll position
+   * it will be a single transition
+   * @method updateScrollPosition
+   * @param {transition|transition[]} transition If before Ember 3.6, this will be an array of transitions, otherwise
+   */
+  updateScrollPosition(transition) {
+    if (this.idlePool) {
+      this.idlePool.destroy();
+      this.idlePool = null;
+    }
+
+    const url = get(this, 'currentURL');
+    const hashElement = url ? document.getElementById(url.split('#').pop()) : null;
+
+    if (get(this, 'isFirstLoad')) {
+      this.unsetFirstLoad();
+    }
+
+    let scrollPosition;
+
+    if (url && url.indexOf('#') > -1 && hashElement) {
+      scrollPosition = { x: hashElement.offsetLeft, y: hashElement.offsetTop };
+    } else {
+      scrollPosition = get(this, 'position');
+    }
+
+    let preserveScrollPosition = (get(transition, 'router.currentRouteInfos') || []).some((routeInfo) => get(routeInfo, 'route.controller.preserveScrollPosition'));
+
+    // If `preserveScrollPosition` was not set on the controller, attempt fallback to `preserveScrollPosition` which was set on the router service.
+    if(!preserveScrollPosition) {
+      preserveScrollPosition = get(this, 'preserveScrollPosition')
+    }
+
+    if (!preserveScrollPosition) {
+      const scrollElement = get(this, 'scrollElement');
+      const targetElement = get(this, 'targetElement');
+
+      if (targetElement || 'window' === scrollElement) {
+        tryScrollRecursively(window.scrollTo, scrollPosition);
+      } else if ('#' === scrollElement.charAt(0)) {
+        const element = document.getElementById(scrollElement.substring(1));
+
+        if (element) {
+          element.scrollLeft = scrollPosition.x;
+          element.scrollTop = scrollPosition.y;
+        }
+      }
+    }
+
+    sendEvent(this, 'didScroll', transition);
+  }
+
+  @action
+  _routeWillChange() {
+    if (get(this, 'isFastBoot')) {
+      return;
+    }
+
+    this.update();
+  }
+
+  @action
+  _routeDidChange(transition) {
+    if (get(this, 'isFastBoot')) {
+      return;
+    }
+
+    const scrollWhenIdle = get(this, 'scrollWhenIdle');
+    const scrollWhenAfterRender = get(this, 'scrollWhenAfterRender');
+
+    if (!scrollWhenIdle && !scrollWhenAfterRender) {
+      // out of the option, this happens on the tightest schedule
+      scheduleOnce('render', this, CALLBACK, transition);
+    } else if (scrollWhenAfterRender && !scrollWhenIdle) {
+      // out of the option, this happens on the tightest schedule
+      scheduleOnce('afterRender', this, CALLBACK, transition);
+    } else {
+      if (!this.idlePool) {
+        this.idlePool = new CounterPool();
+      }
+
+      // increments happen all in one batch (before processing flush queue) and happens indeterminately
+      // e.g. 4, 6, 10 times this could be called
+      this.idlePool.counter = this.idlePool.counter + 1;
+      this.idlePool.onFinishedPromise = whenRouteIdle();
+      this.idlePool.onFinishedCallback = this.updateScrollPosition.bind(this, transition);
+    }
   }
 
   unsetFirstLoad() {
