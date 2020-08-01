@@ -124,6 +124,8 @@ class EmberRouterScroll extends EmberRouter {
     if (callbackRequestId) {
       window.cancelAnimationFrame(callbackRequestId);
     }
+
+    super.willDestroy(...arguments);
   }
 
   /**
