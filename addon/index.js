@@ -114,7 +114,7 @@ class EmberRouterScroll extends EmberRouter {
     });
   }
 
-  destroy() {
+  willDestroy() {
     reset();
 
     if (requestId) {
@@ -125,7 +125,7 @@ class EmberRouterScroll extends EmberRouter {
       window.cancelAnimationFrame(callbackRequestId);
     }
 
-    super.destroy(...arguments);
+    super.willDestroy(...arguments);
   }
 
   /**
