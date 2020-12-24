@@ -1,4 +1,3 @@
-import { run } from '@ember/runloop';
 import EmberObject from '@ember/object';
 import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
@@ -18,7 +17,9 @@ module('router-scroll', function(hooks) {
   });
 
   function getTransitionsMock(URL, isPreserveScroll) {
-    subject.set('currentURL', URL || 'Hello/World');
+    Object.defineProperty(subject, 'currentURL', {
+      value: URL || 'Hello/World',
+    });
 
     const transition = {
       handler: {
@@ -53,7 +54,7 @@ module('router-scroll', function(hooks) {
       done();
     }
 
-    const subject = this.owner.lookup('service:router');
+    subject = this.owner.lookup('service:router');
     subject.trigger('routeDidChange');
 
     assert.ok(true, 'it should not call updateScrollPosition.');
@@ -73,7 +74,7 @@ module('router-scroll', function(hooks) {
       done();
     }
 
-    const subject = this.owner.lookup('service:router');
+    subject = this.owner.lookup('service:router');
     subject.trigger('routeDidChange');
   });
 
@@ -89,7 +90,7 @@ module('router-scroll', function(hooks) {
       done();
     }
 
-    const subject = this.owner.lookup('service:router');
+    subject = this.owner.lookup('service:router');
     subject.trigger('routeDidChange');
   });
 
@@ -105,7 +106,7 @@ module('router-scroll', function(hooks) {
       done();
     }
 
-    const subject = this.owner.lookup('service:router');
+    subject = this.owner.lookup('service:router');
     subject.trigger('routeDidChange');
   });
 
@@ -121,7 +122,7 @@ module('router-scroll', function(hooks) {
       done();
     }
 
-    const subject = this.owner.lookup('service:router');
+    subject = this.owner.lookup('service:router');
     subject.trigger('routeDidChange');
   });
 
@@ -136,10 +137,14 @@ module('router-scroll', function(hooks) {
 
     this.owner.register('service:fastboot', EmberObject.extend({ isFastBoot: false }));
     const routerScrollService = this.owner.lookup('service:router-scroll');
-    routerScrollService.position = null;
+    Object.defineProperty(routerScrollService, 'position', {
+      get position() {
+        return null;
+      }
+    });
     routerScrollService.scrollElement = 'window';
 
-    const subject = this.owner.lookup('service:router');
+    subject = this.owner.lookup('service:router');
     subject.trigger('routeDidChange', getTransitionsMock('Hello/World', true));
   });
 
@@ -155,7 +160,7 @@ module('router-scroll', function(hooks) {
     const routerScrollService = this.owner.lookup('service:router-scroll');
     routerScrollService.preserveScrollPosition = true;
 
-    const subject = this.owner.lookup('service:router');
+    subject = this.owner.lookup('service:router');
     subject.trigger('routeDidChange', getTransitionsMock('Hello/World', true));
   });
 
@@ -178,9 +183,7 @@ module('router-scroll', function(hooks) {
 
     subject = this.owner.factoryFor('service:router-scroll').create();
 
-    run(() => {
-      subject.trigger('routeDidChange', getTransitionsMock('Hello/#World', false));
-    });
+    subject.trigger('routeDidChange', getTransitionsMock('Hello/#World', false));
   });
 
   test('Ensure correct internal router intimate api is used: _router', function(assert) {
@@ -202,9 +205,7 @@ module('router-scroll', function(hooks) {
 
     subject = this.owner.factoryFor('service:router-scroll').create();
 
-    run(() => {
-      subject.trigger('routeDidChange', getTransitionsMock('Hello/#World', false));
-    });
+    subject.trigger('routeDidChange', getTransitionsMock('Hello/#World', false));
   });
 
   test('Update Scroll Position: URL has nothing after an anchor', function(assert) {
@@ -223,9 +224,7 @@ module('router-scroll', function(hooks) {
 
     subject = this.owner.factoryFor('service:router-scroll').create();
 
-    run(() => {
-      subject.trigger('routeDidChange', getTransitionsMock('Hello/#'));
-    })
+    subject.trigger('routeDidChange', getTransitionsMock('Hello/#'));
   });
 
   test('Update Scroll Position: URL has nonexistent element after anchor', function(assert) {
@@ -247,9 +246,7 @@ module('router-scroll', function(hooks) {
 
     subject = this.owner.factoryFor('service:router-scroll').create();
 
-    run(() => {
-      subject.trigger('routeDidChange', getTransitionsMock('Hello/#Bar'));
-    });
+    subject.trigger('routeDidChange', getTransitionsMock('Hello/#Bar'));
   });
 
   test('Update Scroll Position: Scroll Position is set by service', function(assert) {
@@ -268,8 +265,6 @@ module('router-scroll', function(hooks) {
 
     subject = this.owner.factoryFor('service:router-scroll').create();
 
-    run(() => {
-      subject.trigger('routeDidChange', getTransitionsMock('Hello/World'));
-    });
+    subject.trigger('routeDidChange', getTransitionsMock('Hello/World'));
   });
 });
