@@ -12,50 +12,6 @@ const MAX_ATTEMPTS = 100; // rAF runs every 16ms ideally, so 60x a second
 
 let requestId;
 let callbackRequestId;
-let idleRequestId;
-
-class CounterPool {
-  constructor() {
-    this._counter = 0;
-    this.onFinishedPromise = null;
-    this.onFinishedCallback = null;
-
-    this.flush();
-  }
-
-  get counter() {
-    return this._counter;
-  }
-  set counter(value) {
-    // put a cap so flush queue doesn't take too many paint cycles
-    this._counter = Math.min(value, 2);
-  }
-
-  flush() {
-    if (this.counter === 0 && this.onFinishedPromise && this.onFinishedPromise.then) {
-      // when we are done, attach a then callback and update scroll position
-      this.onFinishedPromise.then(() => {
-        this.onFinishedCallback && this.onFinishedCallback();
-      });
-    }
-
-    idleRequestId = window.requestAnimationFrame(() => {
-      this.decrement();
-      this.flush();
-    });
-  }
-
-  decrement() {
-    this.counter = this.counter - 1;
-  }
-
-  destroy() {
-    window.cancelAnimationFrame(idleRequestId);
-    this.counter = 0;
-    this.onFinishedPromise = null;
-    this.onFinishedCallback = null;
-  }
-}
 
 /**
  * By default, we start checking to see if the document height is >= the last known `y` position
@@ -65,14 +21,20 @@ class CounterPool {
  * @method tryScrollRecursively
  * @param {Function} fn
  * @param {Object} scrollHash
+ * @param {Element} [element]
  * @void
  */
-function tryScrollRecursively(fn, scrollHash) {
-  const body = document.body;
-  const html = document.documentElement;
+function tryScrollRecursively(fn, scrollHash, element) {
+  let documentHeight;
   // read DOM outside of rAF
-  const documentHeight = Math.max(body.scrollHeight, body.offsetHeight,
-    html.clientHeight, html.scrollHeight, html.offsetHeight);
+  if (element) {
+    documentHeight = Math.max(element.scrollHeight, element.offsetHeight, element.clientHeight);
+  } else {
+    const body = document.body;
+    const html = document.documentElement;
+    documentHeight = Math.max(body.scrollHeight, body.offsetHeight,
+      html.clientHeight, html.scrollHeight, html.offsetHeight);
+  }
 
   callbackRequestId = window.requestAnimationFrame(() => {
     // write DOM (scrollTo causes reflow)
@@ -99,8 +61,6 @@ class RouterScroll extends Service {
     const fastboot = getOwner(this).lookup('service:fastboot');
     return fastboot ? fastboot.get('isFastBoot') : false;
   }
-
-  idlePool;
 
   key;
   targetElement;
@@ -152,11 +112,6 @@ class RouterScroll extends Service {
    * @param {transition|transition[]} transition If before Ember 3.6, this will be an array of transitions, otherwise
    */
   updateScrollPosition(transition) {
-    if (this.idlePool) {
-      this.idlePool.destroy();
-      this.idlePool = null;
-    }
-
     const url = get(this, 'currentURL');
     const hashElement = url ? document.getElementById(url.split('#').pop()) : null;
 
@@ -189,8 +144,11 @@ class RouterScroll extends Service {
         const element = document.getElementById(scrollElement.substring(1));
 
         if (element) {
-          element.scrollLeft = scrollPosition.x;
-          element.scrollTop = scrollPosition.y;
+          let fn = (x, y) => {
+            element.scrollLeft = x;
+            element.scrollTop = y;
+          }
+          tryScrollRecursively(fn, scrollPosition, element);
         }
       }
     }
@@ -223,15 +181,9 @@ class RouterScroll extends Service {
       // out of the option, this happens on the tightest schedule
       scheduleOnce('afterRender', this, CALLBACK, transition);
     } else {
-      if (!this.idlePool) {
-        this.idlePool = new CounterPool();
-      }
-
-      // increments happen all in one batch (before processing flush queue) and happens indeterminately
-      // e.g. 4, 6, 10 times this could be called
-      this.idlePool.counter = this.idlePool.counter + 1;
-      this.idlePool.onFinishedPromise = whenRouteIdle();
-      this.idlePool.onFinishedCallback = this.updateScrollPosition.bind(this, transition);
+      whenRouteIdle().then(() => {
+        this.updateScrollPosition(transition);
+      });
     }
   }
 
