@@ -2,6 +2,12 @@
 
 - Updating to th v3.0 series was due to removing `scrollWhenPainted` as a config option.  Also, we fixed some hidden bugs with scheduling when to scroll to your last y position.
 
+## 3.3.5
+* [#269](https://github.com/DockYard/ember-router-scroll/pull/269) [Enhancement]: improve idle case with improved scrollTo under high loads
+
+## 3.3.4
+* [#266](https://github.com/DockYard/ember-router-scroll/pull/266) [Deps]: bump app-scheduler 5.1.1
+
 ## 3.3.0
 * [#246](https://github.com/DockYard/ember-router-scroll/pull/246) Add Evented trigger didScroll
 

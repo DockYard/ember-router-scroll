@@ -54,8 +54,6 @@ const CALLBACK = function(transition) {
 class EmberRouterScroll extends EmberRouter {
   @inject('router-scroll') service;
 
-  idlePool;
-
   @computed
   get isFastBoot() {
     const fastboot = getOwner(this).lookup('service:fastboot');
@@ -97,11 +95,6 @@ class EmberRouterScroll extends EmberRouter {
    * @param {transition|transition[]} transition If before Ember 3.6, this will be an array of transitions, otherwise
    */
   updateScrollPosition(transition) {
-    if (this.idlePool) {
-      this.idlePool.destroy();
-      this.idlePool = null;
-    }
-
     const url = get(this, 'currentURL');
     const hashElement = url ? document.getElementById(url.split('#').pop()) : null;
 
