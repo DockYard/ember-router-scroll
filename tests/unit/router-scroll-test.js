@@ -126,35 +126,32 @@ module('router-scroll', function(hooks) {
     subject.trigger('routeDidChange');
   });
 
-  test('Update Scroll Position: Position is preserved', function(assert) {
+  test('Update Scroll Position: Position is preserved', async function(assert) {
     assert.expect(0);
-    const done = assert.async();
 
     window.scrollTo = () => {
       assert.ok(false, 'Scroll To should not be called');
-      done();
     }
 
     this.owner.register('service:fastboot', EmberObject.extend({ isFastBoot: false }));
     const routerScrollService = this.owner.lookup('service:router-scroll');
     Object.defineProperty(routerScrollService, 'position', {
       get position() {
-        return null;
+        return { x: 0, y: 0 };
       }
     });
     routerScrollService.scrollElement = 'window';
 
     subject = this.owner.lookup('service:router');
     subject.trigger('routeDidChange', getTransitionsMock('Hello/World', true));
+    await settled();
   });
 
-  test('Update Scroll Position: Can preserve position using routerService', function(assert) {
+  test('Update Scroll Position: Can preserve position using routerService', async function(assert) {
     assert.expect(0);
-    const done = assert.async();
 
     window.scrollTo = () => {
       assert.ok(false, 'Scroll To should not be called');
-      done();
     }
 
     const routerScrollService = this.owner.lookup('service:router-scroll');
@@ -162,6 +159,7 @@ module('router-scroll', function(hooks) {
 
     subject = this.owner.lookup('service:router');
     subject.trigger('routeDidChange', getTransitionsMock('Hello/World', true));
+    await settled();
   });
 
   test('Update Scroll Position: URL is an anchor', async function(assert) {
@@ -172,39 +170,21 @@ module('router-scroll', function(hooks) {
     elem.id = 'World';
     document.body.insertBefore(elem, null);
     window.scrollTo = (x, y) => {
-      assert.ok(x === elem.offsetLeft && y === elem.offsetTop, 'Scroll to called with correct offsets');
+      assert.ok(x === elem.offsetLeft && y === elem.offsetTop, `Scroll to called with correct offsets x: ${x} === ${elem.offsetLeft} and y: ${y} === ${elem.offsetTop}`);
       done();
     }
 
     this.owner.register('service:fastboot', EmberObject.extend({ isFastBoot: false }));
     const routerScrollService = this.owner.lookup('service:router-scroll');
-    routerScrollService.position = null;
+    routerScrollService.currentURL = '#World';
+    Object.defineProperty(routerScrollService, 'position', {
+      get() {
+        return { x: 0, y: 0 };
+      }
+    });
     routerScrollService.scrollElement = 'window';
 
-    subject = this.owner.factoryFor('service:router-scroll').create();
-
-    subject.trigger('routeDidChange', getTransitionsMock('Hello/#World', false));
-  });
-
-  test('Ensure correct internal router intimate api is used: _router', function(assert) {
-    assert.expect(1);
-    const done = assert.async();
-
-    const elem = document.createElement('div');
-    elem.id = 'World';
-    document.body.insertBefore(elem, null);
-    window.scrollTo = (x, y) => {
-      assert.ok(x === elem.offsetLeft && y === elem.offsetTop, 'Scroll to called with correct offsets');
-      done();
-    }
-
-    this.owner.register('service:fastboot', EmberObject.extend({ isFastBoot: false }));
-    const routerScrollService = this.owner.lookup('service:router-scroll');
-    routerScrollService.position = null;
-    routerScrollService.scrollElement = 'window';
-
-    subject = this.owner.factoryFor('service:router-scroll').create();
-
+    subject = this.owner.lookup('service:router');
     subject.trigger('routeDidChange', getTransitionsMock('Hello/#World', false));
   });
 
@@ -219,11 +199,10 @@ module('router-scroll', function(hooks) {
 
     this.owner.register('service:fastboot', EmberObject.extend({ isFastBoot: false }));
     const routerScrollService = this.owner.lookup('service:router-scroll');
-    routerScrollService.position = { x: 1, y: 2, };
+    Object.defineProperty(routerScrollService,'position', { value: { x: 1, y: 2 } });
     routerScrollService.scrollElement = 'window';
 
-    subject = this.owner.factoryFor('service:router-scroll').create();
-
+    subject = this.owner.lookup('service:router');
     subject.trigger('routeDidChange', getTransitionsMock('Hello/#'));
   });
 
@@ -241,11 +220,10 @@ module('router-scroll', function(hooks) {
 
     this.owner.register('service:fastboot', EmberObject.extend({ isFastBoot: false }));
     const routerScrollService = this.owner.lookup('service:router-scroll');
-    routerScrollService.position = { x: 1, y: 2, };
+    Object.defineProperty(routerScrollService,'position', { value: { x: 1, y: 2 } });
     routerScrollService.scrollElement = 'window';
 
-    subject = this.owner.factoryFor('service:router-scroll').create();
-
+    subject = this.owner.lookup('service:router');
     subject.trigger('routeDidChange', getTransitionsMock('Hello/#Bar'));
   });
 
@@ -260,11 +238,10 @@ module('router-scroll', function(hooks) {
 
     this.owner.register('service:fastboot', EmberObject.extend({ isFastBoot: false }));
     const routerScrollService = this.owner.lookup('service:router-scroll');
-    routerScrollService.position = { x: 1, y: 20, };
+    Object.defineProperty(routerScrollService,'position', { value: { x: 1, y: 20 } });
     routerScrollService.scrollElement = 'window';
 
-    subject = this.owner.factoryFor('service:router-scroll').create();
-
+    subject = this.owner.lookup('service:router');
     subject.trigger('routeDidChange', getTransitionsMock('Hello/World'));
   });
 });
