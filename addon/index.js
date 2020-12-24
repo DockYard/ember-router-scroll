@@ -19,6 +19,7 @@ let callbackRequestId;
  * @method tryScrollRecursively
  * @param {Function} fn
  * @param {Object} scrollHash
+ * @param {Element} [element]
  * @void
  */
 function tryScrollRecursively(fn, scrollHash, element) {
