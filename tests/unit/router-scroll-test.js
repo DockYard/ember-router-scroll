@@ -1,11 +1,8 @@
 import { run } from '@ember/runloop';
 import EmberObject from '@ember/object';
-import Evented from '@ember/object/evented';
-import EmberRouterScroll from 'ember-router-scroll';
 import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
 import { settled } from '@ember/test-helpers';
-import { gte } from 'ember-compatibility-helpers';
 
 let scrollTo, subject;
 
@@ -42,7 +39,7 @@ module('router-scroll', function(hooks) {
       }
     };
 
-    return gte('3.6.0-beta.1') ? transition : [transition];
+    return transition;
   }
 
   test('when the application is FastBooted', async function(assert) {
@@ -50,20 +47,14 @@ module('router-scroll', function(hooks) {
     const done = assert.async();
 
     this.owner.register('service:fastboot', EmberObject.extend({ isFastBoot: true }));
-    this.owner.register('router:main', EmberRouterScroll.extend({
-      updateScrollPosition() {
-        assert.notOk(true, 'it should not call updateScrollPosition.');
-        done();
-      }
-    }));
-
-    subject = this.owner.factoryFor('router:main').create();
-
-    if(gte('3.6.0-beta.1')) {
-      subject.trigger('routeDidChange');
-    } else {
-      subject.didTransition();
+    const routerScrollService = this.owner.lookup('service:router-scroll');
+    routerScrollService.updateScrollPosition = () => {
+      assert.notOk(true, 'it should not call updateScrollPosition.');
+      done();
     }
+
+    const subject = this.owner.lookup('service:router');
+    subject.trigger('routeDidChange');
 
     assert.ok(true, 'it should not call updateScrollPosition.');
     await settled();
@@ -75,23 +66,15 @@ module('router-scroll', function(hooks) {
     const done = assert.async();
 
     this.owner.register('service:fastboot', EmberObject.extend({ isFastBoot: false }));
-    this.owner.register('service:router-scroll', EmberObject.extend({ scrollWhenIdle: false }));
-    this.owner.register('router:main', EmberRouterScroll.extend({
-      updateScrollPosition() {
-        assert.ok(true, 'it should call updateScrollPosition.');
-        done();
-      }
-    }));
+    const routerScrollService = this.owner.lookup('service:router-scroll');
+    routerScrollService.scrollWhenIdle = false;
+    routerScrollService.updateScrollPosition = () => {
+      assert.ok(true, 'it should call updateScrollPosition.');
+      done();
+    }
 
-    subject = this.owner.factoryFor('router:main').create();
-
-    run(() => {
-      if(gte('3.6.0-beta.1')) {
-        subject.trigger('routeDidChange');
-      } else {
-        subject.didTransition();
-      }
-    });
+    const subject = this.owner.lookup('service:router');
+    subject.trigger('routeDidChange');
   });
 
   test('when the application is not FastBooted with targetElement', function(assert) {
@@ -99,23 +82,15 @@ module('router-scroll', function(hooks) {
     const done = assert.async();
 
     this.owner.register('service:fastboot', EmberObject.extend({ isFastBoot: false }));
-    this.owner.register('service:router-scroll', EmberObject.extend({ targetElement: '#myElement' }));
-    this.owner.register('router:main', EmberRouterScroll.extend({
-      updateScrollPosition() {
-        assert.ok(true, 'it should call updateScrollPosition.');
-        done();
-      }
-    }));
+    const routerScrollService = this.owner.lookup('service:router-scroll');
+    routerScrollService.targetElement = '#myElement';
+    routerScrollService.updateScrollPosition = () => {
+      assert.ok(true, 'it should call updateScrollPosition.');
+      done();
+    }
 
-    subject = this.owner.factoryFor('router:main').create();
-
-    run(() => {
-      if(gte('3.6.0-beta.1')) {
-        subject.trigger('routeDidChange');
-      } else {
-        subject.didTransition();
-      }
-    });
+    const subject = this.owner.lookup('service:router');
+    subject.trigger('routeDidChange');
   });
 
   test('when the application is not FastBooted with scrollWhenIdle', function(assert) {
@@ -123,19 +98,15 @@ module('router-scroll', function(hooks) {
     const done = assert.async();
 
     this.owner.register('service:fastboot', EmberObject.extend({ isFastBoot: false }));
-    this.owner.register('service:router-scroll', EmberObject.extend({ scrollWhenIdle: true }));
-    this.owner.register('router:main', EmberRouterScroll.extend({
-      updateScrollPosition() {
-        assert.ok(true, 'it should call updateScrollPosition.');
-        done();
-      }
-    }));
+    const routerScrollService = this.owner.lookup('service:router-scroll');
+    routerScrollService.scrollWhenIdle = true;
+    routerScrollService.updateScrollPosition = () => {
+      assert.ok(true, 'it should call updateScrollPosition.');
+      done();
+    }
 
-    subject = this.owner.factoryFor('router:main').create();
-
-    run(() => {
-      subject.trigger('routeDidChange');
-    });
+    const subject = this.owner.lookup('service:router');
+    subject.trigger('routeDidChange');
   });
 
   test('when the application is not FastBooted with scrollWhenAfterRender', function(assert) {
@@ -143,95 +114,49 @@ module('router-scroll', function(hooks) {
     const done = assert.async();
 
     this.owner.register('service:fastboot', EmberObject.extend({ isFastBoot: false }));
-    this.owner.register('service:router-scroll', EmberObject.extend({ scrollWhenAfterRender: true }));
-    this.owner.register('router:main', EmberRouterScroll.extend({
-      updateScrollPosition() {
-        assert.ok(true, 'it should call updateScrollPosition.');
-        done();
-      }
-    }));
+    const routerScrollService = this.owner.lookup('service:router-scroll');
+    routerScrollService.scrollWhenAfterRender = true;
+    routerScrollService.updateScrollPosition = () => {
+      assert.ok(true, 'it should call updateScrollPosition.');
+      done();
+    }
 
-    subject = this.owner.factoryFor('router:main').create();
-
-    run(() => {
-      subject.trigger('routeDidChange');
-    });
+    const subject = this.owner.lookup('service:router');
+    subject.trigger('routeDidChange');
   });
 
   test('Update Scroll Position: Position is preserved', function(assert) {
     assert.expect(0);
     const done = assert.async();
 
-    window.scrollTo = () => assert.ok(false, 'Scroll To should not be called');
-
-    this.owner.register('service:fastboot', EmberObject.extend({ isFastBoot: false }));
-    this.owner.register('service:router-scroll', EmberObject.extend({
-      position: null,
-      scrollElement: 'window'
-    }));
-    this.owner.register('router:main', EmberRouterScroll.extend());
-
-    subject = this.owner.factoryFor('router:main').create();
-
-    run(() => {
-      if(gte('3.6.0-beta.1')) {
-        subject.trigger('routeDidChange', getTransitionsMock('Hello/World', true));
-      } else {
-        subject.didTransition(getTransitionsMock('Hello/World', true));
-      }
+    window.scrollTo = () => {
+      assert.ok(false, 'Scroll To should not be called');
       done();
-    });
-  });
-
-  test('when the application is not FastBooted with scrollWhenPainted', function(assert) {
-    assert.expect(1);
-    const done = assert.async();
+    }
 
     this.owner.register('service:fastboot', EmberObject.extend({ isFastBoot: false }));
-    this.owner.register('service:router-scroll', EmberObject.extend({ scrollWhenPainted: true }));
-    this.owner.register('router:main', EmberRouterScroll.extend({
-      updateScrollPosition() {
-        assert.ok(true, 'it should call updateScrollPosition.');
-        done();
-      }
-    }));
+    const routerScrollService = this.owner.lookup('service:router-scroll');
+    routerScrollService.position = null;
+    routerScrollService.scrollElement = 'window';
 
-    subject = this.owner.factoryFor('router:main').create();
-
-    run(() => {
-      if(gte('3.6.0-beta.1')) {
-        subject.trigger('routeDidChange');
-      } else {
-        subject.didTransition();
-      }
-    });
+    const subject = this.owner.lookup('service:router');
+    subject.trigger('routeDidChange', getTransitionsMock('Hello/World', true));
   });
 
   test('Update Scroll Position: Can preserve position using routerService', function(assert) {
     assert.expect(0);
     const done = assert.async();
 
-    window.scrollTo = () => assert.ok(false, 'Scroll To should not be called');
-
-    const EmberRouterScrollObject = EmberRouterScroll.extend();
-    subject = EmberRouterScrollObject.create({
-      isFastBoot: false,
-      service: {
-        position: null,
-        scrollElement: 'window',
-      }
-    });
-
-    run(() => {
-      subject.service.preserveScrollPosition = true;
-
-      if(gte('3.6.0-beta.1')) {
-        subject.trigger('routeDidChange', getTransitionsMock('Hello/World', false));
-      } else {
-        subject.didTransition(getTransitionsMock('Hello/World', false));
-      }
+    window.scrollTo = () => {
+      assert.ok(false, 'Scroll To should not be called');
       done();
-    });
+    }
+
+    const routerScrollService = this.owner.lookup('service:router-scroll');
+    routerScrollService.preserveScrollPosition = true;
+
+    const subject = this.owner.lookup('service:router');
+    subject.trigger('routeDidChange', getTransitionsMock('Hello/World', true));
   });
 
   test('Update Scroll Position: URL is an anchor', async function(assert) {
@@ -247,13 +172,11 @@ module('router-scroll', function(hooks) {
     }
 
     this.owner.register('service:fastboot', EmberObject.extend({ isFastBoot: false }));
-    this.owner.register('service:router-scroll', EmberObject.extend({
-      position: null,
-      scrollElement: 'window'
-    }));
-    this.owner.register('router:main', EmberRouterScroll.extend(Evented));
+    const routerScrollService = this.owner.lookup('service:router-scroll');
+    routerScrollService.position = null;
+    routerScrollService.scrollElement = 'window';
 
-    subject = this.owner.factoryFor('router:main').create();
+    subject = this.owner.factoryFor('service:router-scroll').create();
 
     run(() => {
       subject.trigger('routeDidChange', getTransitionsMock('Hello/#World', false));
@@ -273,13 +196,11 @@ module('router-scroll', function(hooks) {
     }
 
     this.owner.register('service:fastboot', EmberObject.extend({ isFastBoot: false }));
-    this.owner.register('service:router-scroll', EmberObject.extend({
-      position: null,
-      scrollElement: 'window'
-    }));
-    this.owner.register('router:main', EmberRouterScroll.extend());
+    const routerScrollService = this.owner.lookup('service:router-scroll');
+    routerScrollService.position = null;
+    routerScrollService.scrollElement = 'window';
 
-    subject = this.owner.factoryFor('router:main').create();
+    subject = this.owner.factoryFor('service:router-scroll').create();
 
     run(() => {
       subject.trigger('routeDidChange', getTransitionsMock('Hello/#World', false));
@@ -296,15 +217,11 @@ module('router-scroll', function(hooks) {
     }
 
     this.owner.register('service:fastboot', EmberObject.extend({ isFastBoot: false }));
-    this.owner.register('service:router-scroll', EmberObject.extend({
-      get position() {
-        return { x: 1, y: 2 };
-      },
-      scrollElement: 'window'
-    }));
-    this.owner.register('router:main', EmberRouterScroll.extend());
+    const routerScrollService = this.owner.lookup('service:router-scroll');
+    routerScrollService.position = { x: 1, y: 2, };
+    routerScrollService.scrollElement = 'window';
 
-    subject = this.owner.factoryFor('router:main').create();
+    subject = this.owner.factoryFor('service:router-scroll').create();
 
     run(() => {
       subject.trigger('routeDidChange', getTransitionsMock('Hello/#'));
@@ -324,15 +241,11 @@ module('router-scroll', function(hooks) {
     }
 
     this.owner.register('service:fastboot', EmberObject.extend({ isFastBoot: false }));
-    this.owner.register('service:router-scroll', EmberObject.extend({
-      get position() {
-        return { x: 1, y: 2 };
-      },
-      scrollElement: 'window'
-    }));
-    this.owner.register('router:main', EmberRouterScroll.extend());
+    const routerScrollService = this.owner.lookup('service:router-scroll');
+    routerScrollService.position = { x: 1, y: 2, };
+    routerScrollService.scrollElement = 'window';
 
-    subject = this.owner.factoryFor('router:main').create();
+    subject = this.owner.factoryFor('service:router-scroll').create();
 
     run(() => {
       subject.trigger('routeDidChange', getTransitionsMock('Hello/#Bar'));
@@ -349,15 +262,11 @@ module('router-scroll', function(hooks) {
     }
 
     this.owner.register('service:fastboot', EmberObject.extend({ isFastBoot: false }));
-    this.owner.register('service:router-scroll', EmberObject.extend({
-      get position() {
-        return { x: 1, y: 20 };
-      },
-      scrollElement: 'window'
-    }));
-    this.owner.register('router:main', EmberRouterScroll.extend());
+    const routerScrollService = this.owner.lookup('service:router-scroll');
+    routerScrollService.position = { x: 1, y: 20, };
+    routerScrollService.scrollElement = 'window';
 
-    subject = this.owner.factoryFor('router:main').create();
+    subject = this.owner.factoryFor('service:router-scroll').create();
 
     run(() => {
       subject.trigger('routeDidChange', getTransitionsMock('Hello/World'));
