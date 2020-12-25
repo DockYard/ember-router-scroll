@@ -43,7 +43,7 @@ function tryScrollRecursively(fn, scrollHash, element) {
       fn.call(null, scrollHash.x, scrollHash.y);
     } else {
       ATTEMPTS++;
-      tryScrollRecursively(fn, scrollHash)
+      tryScrollRecursively(fn, scrollHash, element)
     }
   })
 }
