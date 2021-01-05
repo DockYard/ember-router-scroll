@@ -178,7 +178,7 @@ class RouterScroll extends Service {
       // out of the option, this happens on the tightest schedule
       scheduleOnce('render', this, CALLBACK, transition);
     } else if (scrollWhenAfterRender && !scrollWhenIdle) {
-      // out of the option, this happens on the tightest schedule
+      // out of the option, this happens on the second tightest schedule
       scheduleOnce('afterRender', this, CALLBACK, transition);
     } else {
       whenRouteIdle().then(() => {
