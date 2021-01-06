@@ -118,12 +118,10 @@ class RouterScroll extends Service {
       this.unsetFirstLoad();
     }
 
-    let scrollPosition;
+    let scrollPosition = get(this, 'position');
 
     if (url && url.indexOf('#') > -1 && hashElement) {
       scrollPosition = { x: hashElement.offsetLeft, y: hashElement.offsetTop };
-    } else {
-      scrollPosition = get(this, 'position');
     }
 
     // If `preserveScrollPosition` was not set on the controller, attempt fallback to `preserveScrollPosition` which was set on the router service.
