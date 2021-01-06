@@ -19,8 +19,8 @@ preserved when using the back or forward browser buttons.
 Compatibility
 ------------------------------------------------------------------------------
 
-* Ember.js v2.18 or above
-* Ember CLI v2.13 or above
+* Ember.js v3.12 or above
+* Ember CLI v3.12 or above
 
 
 Installation
@@ -31,7 +31,22 @@ ember install ember-router-scroll
 ```
 
 
-Usage
+Usage > 4.x
+------------------------------------------------------------------------------
+
+Users do not need to import and extend from `ember-router-scroll` anymore.  In order to upgrade, you should remove this import.
+
+This is what your `router.js` should look like.
+
+```js
+import EmberRouter from '@ember/routing/router';
+
+export class Router extends EmberRouter {
+  ...
+}
+```
+
+Usage < 4.x
 ------------------------------------------------------------------------------
 
 **1.** Import ember-router-scroll
@@ -48,7 +63,7 @@ class Router extends EmberRouterScroll {
 }
 ```
 
-In version prior to  v2.0, you can import the mixin and use it like so.  This is necessary if your application does not support JavaScript classes yet.
+In version prior to v2.0, you can import the mixin and use it like so.  This is necessary if your application does not support JavaScript classes yet.
 
 ```javascript
 // app/router.js
@@ -60,6 +75,9 @@ const Router = EmberRouter.extend(RouterScroll, {
 });
 ```
 
+Remaining optional steps for all versions 2.x - 4.x
+------------------------------------------------------------------------------
+
 **2.** Enable `historySupportMiddleware` in your app
 
 Edit `config/environment.js` and add `historySupportMiddleware: true,` to get live-reload working in nested routes.
@@ -70,15 +88,6 @@ historySupportMiddleware: true,
 ```
 
 This location type inherits from Ember's `HistoryLocation`.
-
-**3.** If using old style QUnit tests. If tests based on [RFC](https://github.com/emberjs/rfcs/pull/232), you can
-ignore this.
-In your router and controller tests, add `'service:router-scroll'` and `'service:scheduler'` as dependencies in the
-`needs: []` block:
-
-```javascript
-//{your-app}}/tests/unit/routes/{{your-route}}.js
-needs:[ 'service:router-scroll', 'service:scheduler' ],
 ```
 
 
@@ -108,7 +117,7 @@ ENV['routerScroll'] = {
 
 #### Scroll Timing
 
-You may want the default "out of the box" behaviour.  We schedule scroll after Ember's `render`.  This occurs on the tightest schedule between route transition start and end.
+You may want the default "out of the box" behaviour.  We schedule scroll immediately after Ember's `render`.  This occurs on the tightest schedule between route transition start and end.
 
 However, you have other options. If you need an extra tick after `render`, set `scrollWhenAfterRender: true`.  You also may need to delay scroll functionality until the route is idle (approximately after the first paint completes) using `scrollWhenIdle: true` in your config.  `scrollWhenIdle` && `scrollWhenAfterRender` defaults to `false`.
 
@@ -182,11 +191,11 @@ Example:
 ```javascript
 import Controller from '@ember/controller';
 
-export default Controller.extend({
-  queryParams: [
+export default class MyController extends Controller {
+  queryParams = [
     'preserveScrollPosition',
-  ],
-});
+  ];
+}
 ```
 
 **2.** Pass in query param
@@ -194,7 +203,7 @@ export default Controller.extend({
 Next, in the place where a transition is triggered, pass in `preserveScrollPosition=true`. For example
 
 ```handlebars
-{{link-to "About Tab" 'tab.about' (query-params preserveScrollPosition=true) }}
+<LinkTo "About Tab" "tab.about" {{query-params preserveScrollPosition=true}} />
 ```
 
 
@@ -217,19 +226,19 @@ Example:
 
 ```javascript
 import Controller from '@ember/controller';
+import { action } from '@ember/object';
 
-export default Controller.extend({
-  queryParams: ['filter'],
+export default class MyController extends Controller {
+  queryParams = ['filter'];
 
-  preserveScrollPosition: false,
+  preserveScrollPosition = false;
 
-  actions: {
-    changeFilter(filter) {
-      this.set('preserveScrollPosition', true);
-      this.set('filter', filter);
-    }
+  @action
+  changeFilter(filter) {
+    this.set('preserveScrollPosition', true);
+    this.set('filter', filter);
   }
-});
+}
 ```
 
 **2.** Reset preserveScrollPosition if necessary
@@ -241,11 +250,11 @@ where `preserveScrollPosition` is always set to true.
 ```javascript
 import Router from '@ember/routing/route';
 
-export default Route.extend({
+export default class MyRoute extends Route {
   resetController(controller) {
     controller.set('preserveScrollPosition', false);
   }
-});
+}
 ```
 
 
@@ -269,28 +278,28 @@ When you need to modify `preserveScrollPosition` on the service for a specific t
 Example:
 
 ```javascript
-import Component from '@ember/component';
+import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
+import { action } from '@ember/object';
 
-export default Component.extend({
-  routerScroll: service(),
-  router: service(),
+export default class MyComponent extends Component {
+  @service routerScroll;
+  @service router;
 
-  actions: {
-    async goToPaginationPage(pageNumber) {
-      this.set('routerScroll.preserveScrollPosition', true);
-      await this.router.transitionTo(
-        this.router.currentRouteName,
-        {
-          queryParams: { page: pageNumber }
-        }
-      );
+  @action
+  async goToPaginationPage(pageNumber) {
+    this.set('routerScroll.preserveScrollPosition', true);
+    await this.router.transitionTo(
+      this.router.currentRouteName,
+      {
+        queryParams: { page: pageNumber }
+      }
+    );
 
-      // Reset `preserveScrollPosition` after transition so future transitions behave as expected
-      this.set('routerScroll.preserveScrollPosition', false);
-    }
+    // Reset `preserveScrollPosition` after transition so future transitions behave as expected
+    this.set('routerScroll.preserveScrollPosition', false);
   }
-});
+}
 ```
 
 ## Running Tests
