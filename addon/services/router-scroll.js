@@ -30,8 +30,7 @@ function tryScrollRecursively(fn, scrollHash, element) {
   if (element) {
     documentHeight = Math.max(element.scrollHeight, element.offsetHeight, element.clientHeight);
   } else {
-    const body = document.body;
-    const html = document.documentElement;
+    const { body, documentElement: html } = document;
     documentHeight = Math.max(body.scrollHeight, body.offsetHeight,
       html.clientHeight, html.scrollHeight, html.offsetHeight);
   }
