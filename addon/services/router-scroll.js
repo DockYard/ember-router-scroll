@@ -130,8 +130,7 @@ class RouterScroll extends Service {
     let preserveScrollPosition = (get(transition, 'router.currentRouteInfos') || []).some((routeInfo) => get(routeInfo, 'route.controller.preserveScrollPosition')) || get(this, 'preserveScrollPosition')
 
     if (!preserveScrollPosition) {
-      const scrollElement = get(this, 'scrollElement');
-      const targetElement = get(this, 'targetElement');
+      const { scrollElement, targetElement } = this;
 
       if (targetElement || 'window' === scrollElement) {
         tryScrollRecursively(window.scrollTo, scrollPosition);
