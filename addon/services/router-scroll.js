@@ -127,12 +127,8 @@ class RouterScroll extends Service {
       scrollPosition = get(this, 'position');
     }
 
-    let preserveScrollPosition = (get(transition, 'router.currentRouteInfos') || []).some((routeInfo) => get(routeInfo, 'route.controller.preserveScrollPosition'));
-
     // If `preserveScrollPosition` was not set on the controller, attempt fallback to `preserveScrollPosition` which was set on the router service.
-    if (!preserveScrollPosition) {
-      preserveScrollPosition = get(this, 'preserveScrollPosition')
-    }
+    let preserveScrollPosition = (get(transition, 'router.currentRouteInfos') || []).some((routeInfo) => get(routeInfo, 'route.controller.preserveScrollPosition')) || get(this, 'preserveScrollPosition')
 
     if (!preserveScrollPosition) {
       const scrollElement = get(this, 'scrollElement');

@@ -34,7 +34,17 @@ ember install ember-router-scroll
 Usage > 4.x
 ------------------------------------------------------------------------------
 
-Nothing to initialize.
+Users do not need to import and extend from `ember-router-scroll` anymore.  In order to upgrade, you should remove this import.
+
+This is what your `router.js` should look like.
+
+```js
+import EmberRouter from '@ember/routing/router';
+
+export class Router extends EmberRouter {
+  ...
+}
+```
 
 Usage < 4.x
 ------------------------------------------------------------------------------
@@ -53,7 +63,7 @@ class Router extends EmberRouterScroll {
 }
 ```
 
-In version prior to  v2.0, you can import the mixin and use it like so.  This is necessary if your application does not support JavaScript classes yet.
+In version prior to v2.0, you can import the mixin and use it like so.  This is necessary if your application does not support JavaScript classes yet.
 
 ```javascript
 // app/router.js

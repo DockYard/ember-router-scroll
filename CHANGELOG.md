@@ -1,8 +1,11 @@
 # Changelog
 
-- Updating to th v3.0 series was due to removing `scrollWhenPainted` as a config option.  Also, we fixed some hidden bugs with scheduling when to scroll to your last y position.
+- Updating to the v3.0 series was due to removing `scrollWhenPainted` as a config option.  Also, we fixed some hidden bugs with scheduling when to scroll to your last y position.
 
 ## 4.0.0
+
+- See README for upgrade instructions
+
 * [#270](https://github.com/DockYard/ember-router-scroll/pull/270) [Major]: use`RouterService` instead of Ember `Router`
 
 ## 3.3.5
