@@ -41,7 +41,7 @@ This is what your `router.js` should look like.
 ```js
 import EmberRouter from '@ember/routing/router';
 
-export class Router extends EmberRouter {
+export default class Router extends EmberRouter {
   ...
 }
 ```
