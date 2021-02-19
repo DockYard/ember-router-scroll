@@ -1,6 +1,6 @@
 {
   "name": "ember-router-scroll",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "Scroll to top with preserved browser history scroll position",
   "keywords": [
     "ember-addon",
@@ -52,7 +52,7 @@
     "update": "ember update --run-codemods"
   },
   "dependencies": {
-    "ember-app-scheduler": "^5.1.1",
+    "ember-app-scheduler": "^5.1.2",
     "ember-cli-babel": "^7.11.1",
     "ember-compatibility-helpers": "^1.1.2"
   },

@@ -70,6 +70,13 @@ class RouterScroll extends Service {
   scrollWhenIdle = false;
   scrollWhenAfterRender = false;
 
+  constructor() {
+    super(...arguments);
+
+    // https://github.com/ember-app-scheduler/ember-app-scheduler/pull/773
+    setupRouter(this.router);
+  }
+
   init(...args) {
     super.init(...args);
 
@@ -79,9 +86,6 @@ class RouterScroll extends Service {
         x: 0, y: 0
       }
     });
-
-    // https://github.com/ember-app-scheduler/ember-app-scheduler/pull/773
-    setupRouter(this.router);
 
     addListener(this.router, 'routeWillChange', this._routeWillChange);
     addListener(this.router, 'routeDidChange', this._routeDidChange);

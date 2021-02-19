@@ -4873,10 +4873,10 @@ elliptic@^6.5.3:
     minimalistic-assert "^1.0.0"
     minimalistic-crypto-utils "^1.0.0"
 
-ember-app-scheduler@^5.1.1:
-  version "5.1.1"
-  resolved "https://registry.yarnpkg.com/ember-app-scheduler/-/ember-app-scheduler-5.1.1.tgz#1dd0bd26d8b82b709b7ec760472059c65951e93d"
-  integrity sha512-exbZ6wDssBwK+tW4xlQhGzFMng11H0w8jX//E1rjosEXlAtX1X2G0wc1135kX4GJmp5Bp9Pa+HCkH5P2SKAViw==
+ember-app-scheduler@^5.1.2:
+  version "5.1.2"
+  resolved "https://registry.yarnpkg.com/ember-app-scheduler/-/ember-app-scheduler-5.1.2.tgz#ddf40996579c8587f4264e5604ac3e4be61e33c8"
+  integrity sha512-nkm+Y9iTTdnO9yATpdg5p2h5PccMajiOJlz+NdgoFr5pgcdfkj7IxQXJw2TLd5iLH2GQiAMmnudrLLN1NIFdvA==
   dependencies:
     "@ember/test-waiters" "^2.3.0"
     "@types/ember" "^3.1.0"
