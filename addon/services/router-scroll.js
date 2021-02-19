@@ -87,7 +87,7 @@ class RouterScroll extends Service {
     addListener(this.router, 'routeDidChange', this._routeDidChange);
   }
 
-  destroy() {
+  willDestroy() {
     reset();
 
     removeListener(this.router, 'routeWillChange', this._routeWillChange);
@@ -101,7 +101,7 @@ class RouterScroll extends Service {
       window.cancelAnimationFrame(callbackRequestId);
     }
 
-    super.destroy(...arguments);
+    super.willDestroy(...arguments);
   }
 
   /**
