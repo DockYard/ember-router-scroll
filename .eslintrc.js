@@ -19,8 +19,7 @@ module.exports = {
     browser: true
   },
   rules: {
-    'ember/no-jquery': 'error',
-    'ember/no-new-mixins': 0
+    'ember/no-jquery': 'error'
   },
   overrides: [
     // node files
@@ -39,8 +38,7 @@ module.exports = {
         'addon/**',
         'addon-test-support/**',
         'app/**',
-        'tests/dummy/app/**',
-        'tests/helpers/**'
+        'tests/dummy/app/**'
       ],
       parserOptions: {
         sourceType: 'script'
