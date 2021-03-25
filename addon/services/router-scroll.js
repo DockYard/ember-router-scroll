@@ -5,7 +5,7 @@ import { assert } from '@ember/debug';
 import { getOwner } from '@ember/application';
 import { scheduleOnce } from '@ember/runloop';
 import { addListener, removeListener, sendEvent } from '@ember/object/events';
-import { setupRouter, reset, whenRouteIdle } from 'ember-app-scheduler';
+import { setupRouter, whenRouteIdle } from 'ember-app-scheduler';
 
 let ATTEMPTS = 0;
 const MAX_ATTEMPTS = 100; // rAF runs every 16ms ideally, so 60x a second
@@ -91,9 +91,7 @@ class RouterScroll extends Service {
     addListener(this.router, 'routeDidChange', this._routeDidChange);
   }
 
-  destroy() {
-    reset();
-
+  willDestroy() {
     removeListener(this.router, 'routeWillChange', this._routeWillChange);
     removeListener(this.router, 'routeDidChange', this._routeDidChange);
 
@@ -105,7 +103,7 @@ class RouterScroll extends Service {
       window.cancelAnimationFrame(callbackRequestId);
     }
 
-    super.destroy(...arguments);
+    super.willDestroy(...arguments);
   }
 
   /**
