@@ -1,27 +1,23 @@
 import { module, test } from 'qunit';
 import { setupApplicationTest } from 'ember-qunit';
-import {
-  visit,
-  click,
-  currentURL
-} from '@ember/test-helpers';
+import { visit, click, currentURL } from '@ember/test-helpers';
 import config from 'dummy/config/environment';
 
-module('Acceptance | basic functionality', function(hooks) {
+module('Acceptance | basic functionality', function (hooks) {
   setupApplicationTest(hooks);
 
-  hooks.beforeEach(function() {
+  hooks.beforeEach(function () {
     document.getElementById('ember-testing-container').scrollTop = 0;
   });
 
-  hooks.afterEach(function() {
+  hooks.afterEach(function () {
     config['routerScroll'] = {};
   });
 
-  test('The application should work when loading a page and clicking a link', async function(assert) {
+  test('The application should work when loading a page and clicking a link', async function (assert) {
     config['routerScroll'] = {
-      scrollElement: '#ember-testing-container'
-    }
+      scrollElement: '#ember-testing-container',
+    };
 
     await visit('/');
 
@@ -36,10 +32,10 @@ module('Acceptance | basic functionality', function(hooks) {
     assert.strictEqual(currentURL(), '/next-page');
   });
 
-  test('The application should work when loading a page and clicking a link to target an element to scroll to', async function(assert) {
+  test('The application should work when loading a page and clicking a link to target an element to scroll to', async function (assert) {
     config['routerScroll'] = {
-      scrollElement: '#target-main'
-    }
+      scrollElement: '#target-main',
+    };
 
     await visit('/target');
 
@@ -54,10 +50,10 @@ module('Acceptance | basic functionality', function(hooks) {
     assert.strictEqual(currentURL(), '/target-next-page');
   });
 
-  test('The application should work when just changing query params', async function(assert) {
+  test('The application should work when just changing query params', async function (assert) {
     config['routerScroll'] = {
-      scrollElement: '#ember-testing-container'
-    }
+      scrollElement: '#ember-testing-container',
+    };
 
     await visit('/');
 

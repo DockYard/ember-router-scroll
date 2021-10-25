@@ -28,11 +28,20 @@ function tryScrollRecursively(fn, scrollHash, element) {
   let documentHeight;
   // read DOM outside of rAF
   if (element) {
-    documentHeight = Math.max(element.scrollHeight, element.offsetHeight, element.clientHeight);
+    documentHeight = Math.max(
+      element.scrollHeight,
+      element.offsetHeight,
+      element.clientHeight
+    );
   } else {
     const { body, documentElement: html } = document;
-    documentHeight = Math.max(body.scrollHeight, body.offsetHeight,
-      html.clientHeight, html.scrollHeight, html.offsetHeight);
+    documentHeight = Math.max(
+      body.scrollHeight,
+      body.offsetHeight,
+      html.clientHeight,
+      html.scrollHeight,
+      html.offsetHeight
+    );
   }
 
   callbackRequestId = window.requestAnimationFrame(() => {
@@ -42,15 +51,15 @@ function tryScrollRecursively(fn, scrollHash, element) {
       fn.call(null, scrollHash.x, scrollHash.y);
     } else {
       ATTEMPTS++;
-      tryScrollRecursively(fn, scrollHash, element)
+      tryScrollRecursively(fn, scrollHash, element);
     }
-  })
+  });
 }
 
 // to prevent scheduleOnce calling multiple times, give it the same ref to this function
-const CALLBACK = function(transition) {
+const CALLBACK = function (transition) {
   this.updateScrollPosition(transition);
-}
+};
 
 class RouterScroll extends Service {
   @service router;
@@ -83,8 +92,9 @@ class RouterScroll extends Service {
     this._loadConfig();
     set(this, 'scrollMap', {
       default: {
-        x: 0, y: 0
-      }
+        x: 0,
+        y: 0,
+      },
     });
 
     addListener(this.router, 'routeWillChange', this._routeWillChange);
@@ -114,7 +124,9 @@ class RouterScroll extends Service {
    */
   updateScrollPosition(transition) {
     const url = this.currentURL;
-    const hashElement = url ? document.getElementById(url.split('#').pop()) : null;
+    const hashElement = url
+      ? document.getElementById(url.split('#').pop())
+      : null;
 
     if (this.isFirstLoad) {
       this.unsetFirstLoad();
@@ -127,7 +139,10 @@ class RouterScroll extends Service {
     }
 
     // If `preserveScrollPosition` was not set on the controller, attempt fallback to `preserveScrollPosition` which was set on the router service.
-    let preserveScrollPosition = (transition.router.currentRouteInfos || []).some((routeInfo) => routeInfo.route.controller.preserveScrollPosition) || this.preserveScrollPosition
+    let preserveScrollPosition =
+      (transition.router.currentRouteInfos || []).some(
+        (routeInfo) => routeInfo.route.controller.preserveScrollPosition
+      ) || this.preserveScrollPosition;
 
     if (!preserveScrollPosition) {
       const { scrollElement, targetElement } = this;
@@ -141,7 +156,7 @@ class RouterScroll extends Service {
           let fn = (x, y) => {
             element.scrollLeft = x;
             element.scrollTop = y;
-          }
+          };
           tryScrollRecursively(fn, scrollPosition, element);
         }
       }
@@ -207,7 +222,7 @@ class RouterScroll extends Service {
         // of the targetElement on screen
         set(scrollMap, 'default', {
           x,
-          y
+          y,
         });
       }
     } else if ('window' === scrollElement) {
@@ -226,7 +241,7 @@ class RouterScroll extends Service {
     if (key && 'number' === typeOf(x) && 'number' === typeOf(y)) {
       set(scrollMap, key, {
         x,
-        y
+        y,
       });
     }
   }
@@ -238,7 +253,10 @@ class RouterScroll extends Service {
       const scrollElement = config.routerScroll.scrollElement;
       const targetElement = config.routerScroll.targetElement;
 
-      assert('You defined both scrollElement and targetElement in your config. We currently only support definining one of them', !(scrollElement && targetElement));
+      assert(
+        'You defined both scrollElement and targetElement in your config. We currently only support definining one of them',
+        !(scrollElement && targetElement)
+      );
 
       if ('string' === typeOf(scrollElement)) {
         set(this, 'scrollElement', scrollElement);
@@ -248,10 +266,8 @@ class RouterScroll extends Service {
         set(this, 'targetElement', targetElement);
       }
 
-      const {
-        scrollWhenIdle = false,
-        scrollWhenAfterRender = false
-      } = config.routerScroll;
+      const { scrollWhenIdle = false, scrollWhenAfterRender = false } =
+        config.routerScroll;
       set(this, 'scrollWhenIdle', scrollWhenIdle);
       set(this, 'scrollWhenAfterRender', scrollWhenAfterRender);
     }
@@ -265,10 +281,10 @@ Object.defineProperty(RouterScroll.prototype, 'position', {
     const stateUuid = window.history.state?.uuid;
 
     set(this, 'key', stateUuid);
-    const key = this.key ||  '-1';
+    const key = this.key || '-1';
 
     return get(scrollMap, key) || scrollMap.default;
-  }
+  },
 });
 
 export default RouterScroll;
