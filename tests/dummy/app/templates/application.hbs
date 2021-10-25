@@ -3,13 +3,13 @@
     Click on the submarine to launch!
   </div>
 
-  {{#link-to "application" (query-params small=(not this.small) preserveScrollPosition=true) id="change-size"}}
+  <LinkTo @route="application" @query={{hash small=(not this.small) preserveScrollPosition=true}} id="change-size">
     Click here to change the size of the submarine
-  {{/link-to}}
+  </LinkTo>
 
-  {{#link-to "next-page"}}
+  <LinkTo @route="next-page">
     <img src="/images/yellow_submarine.gif" alt="Submarine" id="submarine" class={{if this.small "small"}}>
-  {{/link-to}}
+  </LinkTo>
 
   <div class="depth left">
     — 500 fathoms
