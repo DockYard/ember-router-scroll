@@ -27,13 +27,13 @@ module('Acceptance | basic functionality', function(hooks) {
 
     // testing specific
     let container = document.getElementById('ember-testing-container');
-    assert.equal(container.scrollTop, 0);
+    assert.strictEqual(container.scrollTop, 0);
 
     document.getElementById('monster').scrollIntoView(false);
     assert.ok(container.scrollTop > 0);
 
     await click('a[href="/next-page"]');
-    assert.equal(currentURL(), '/next-page');
+    assert.strictEqual(currentURL(), '/next-page');
   });
 
   test('The application should work when loading a page and clicking a link to target an element to scroll to', async function(assert) {
@@ -45,13 +45,13 @@ module('Acceptance | basic functionality', function(hooks) {
 
     // testing specific
     let container = document.getElementById('ember-testing-container');
-    assert.equal(container.scrollTop, 0);
+    assert.strictEqual(container.scrollTop, 0);
 
     document.getElementById('monster').scrollIntoView(false);
     assert.ok(container.scrollTop > 0);
 
     await click('a[href="/target-next-page"]');
-    assert.equal(currentURL(), '/target-next-page');
+    assert.strictEqual(currentURL(), '/target-next-page');
   });
 
   test('The application should work when just changing query params', async function(assert) {
@@ -62,7 +62,7 @@ module('Acceptance | basic functionality', function(hooks) {
     await visit('/');
 
     let container = document.getElementById('ember-testing-container');
-    assert.equal(container.scrollTop, 0);
+    assert.strictEqual(container.scrollTop, 0);
 
     document.getElementById('monster').scrollIntoView(false);
     assert.ok(container.scrollTop > 0);

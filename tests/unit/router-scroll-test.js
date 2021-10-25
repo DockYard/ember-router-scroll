@@ -163,14 +163,23 @@ module('router-scroll', function(hooks) {
   });
 
   test('Update Scroll Position: URL is an anchor', async function(assert) {
-    assert.expect(1);
+    assert.expect(2);
     const done = assert.async();
 
     const elem = document.createElement('div');
     elem.id = 'World';
     document.body.insertBefore(elem, null);
     window.scrollTo = (x, y) => {
-      assert.ok(x === elem.offsetLeft && y === elem.offsetTop, `Scroll to called with correct offsets x: ${x} === ${elem.offsetLeft} and y: ${y} === ${elem.offsetTop}`);
+      assert.strictEqual(
+        x,
+        elem.offsetLeft,
+        `Scroll to called with correct horizontal offset x: ${x} === ${elem.offsetLeft}`
+      );
+      assert.strictEqual(
+        y,
+        elem.offsetTop,
+        `Scroll to called with correct vertical offset y: ${y} === ${elem.offsetTop}`
+      );
       done();
     }
 
@@ -189,11 +198,16 @@ module('router-scroll', function(hooks) {
   });
 
   test('Update Scroll Position: URL has nothing after an anchor', function(assert) {
-    assert.expect(1);
+    assert.expect(2);
     const done = assert.async();
 
     window.scrollTo = (x, y) => {
-      assert.ok(x === 1 && y === 2, 'Scroll to called with correct offsets');
+      assert.strictEqual(
+        x,
+        1,
+        'Scroll to called with correct horizontal offset'
+      );
+      assert.strictEqual(y, 2, 'Scroll to called with correct vertical offset');
       done();
     }
 
@@ -207,14 +221,19 @@ module('router-scroll', function(hooks) {
   });
 
   test('Update Scroll Position: URL has nonexistent element after anchor', function(assert) {
-    assert.expect(1);
+    assert.expect(2);
     const done = assert.async();
 
     const elem = document.createElement('div');
     elem.id = 'World';
     document.body.insertBefore(elem, null);
     window.scrollTo = (x, y) => {
-      assert.ok(x === 1 && y === 2, 'Scroll to called with correct offsets');
+      assert.strictEqual(
+        x,
+        1,
+        'Scroll to called with correct horizontal offset'
+      );
+      assert.strictEqual(y, 2, 'Scroll to called with correct vertical offset');
       done();
     }
 
@@ -228,11 +247,20 @@ module('router-scroll', function(hooks) {
   });
 
   test('Update Scroll Position: Scroll Position is set by service', function(assert) {
-    assert.expect(1);
+    assert.expect(2);
     const done = assert.async();
 
     window.scrollTo = (x, y) => {
-      assert.ok(x === 1 && y === 20, 'Scroll to was called with correct offsets');
+      assert.strictEqual(
+        x,
+        1,
+        'Scroll to called with correct horizontal offset'
+      );
+      assert.strictEqual(
+        y,
+        20,
+        'Scroll to called with correct vertical offset'
+      );
       done();
     }
 
