@@ -47,7 +47,12 @@ module('router-scroll', function(hooks) {
     assert.expect(1);
     const done = assert.async();
 
-    this.owner.register('service:fastboot', EmberObject.extend({ isFastBoot: true }));
+    this.owner.register(
+      'service:fastboot',
+      class extends EmberObject {
+        isFastBoot = true;
+      }
+    );
     const routerScrollService = this.owner.lookup('service:router-scroll');
     routerScrollService.updateScrollPosition = () => {
       assert.notOk(true, 'it should not call updateScrollPosition.');
@@ -66,7 +71,12 @@ module('router-scroll', function(hooks) {
     assert.expect(1);
     const done = assert.async();
 
-    this.owner.register('service:fastboot', EmberObject.extend({ isFastBoot: false }));
+    this.owner.register(
+      'service:fastboot',
+      class extends EmberObject {
+        isFastBoot = false;
+      }
+    );
     const routerScrollService = this.owner.lookup('service:router-scroll');
     routerScrollService.scrollWhenIdle = false;
     routerScrollService.updateScrollPosition = () => {
@@ -82,7 +92,12 @@ module('router-scroll', function(hooks) {
     assert.expect(1);
     const done = assert.async();
 
-    this.owner.register('service:fastboot', EmberObject.extend({ isFastBoot: false }));
+    this.owner.register(
+      'service:fastboot',
+      class extends EmberObject {
+        isFastBoot = false;
+      }
+    );
     const routerScrollService = this.owner.lookup('service:router-scroll');
     routerScrollService.targetElement = '#myElement';
     routerScrollService.updateScrollPosition = () => {
@@ -98,7 +113,12 @@ module('router-scroll', function(hooks) {
     assert.expect(1);
     const done = assert.async();
 
-    this.owner.register('service:fastboot', EmberObject.extend({ isFastBoot: false }));
+    this.owner.register(
+      'service:fastboot',
+      class extends EmberObject {
+        isFastBoot = false;
+      }
+    );
     const routerScrollService = this.owner.lookup('service:router-scroll');
     routerScrollService.scrollWhenIdle = true;
     routerScrollService.updateScrollPosition = () => {
@@ -114,7 +134,12 @@ module('router-scroll', function(hooks) {
     assert.expect(1);
     const done = assert.async();
 
-    this.owner.register('service:fastboot', EmberObject.extend({ isFastBoot: false }));
+    this.owner.register(
+      'service:fastboot',
+      class extends EmberObject {
+        isFastBoot = false;
+      }
+    );
     const routerScrollService = this.owner.lookup('service:router-scroll');
     routerScrollService.scrollWhenAfterRender = true;
     routerScrollService.updateScrollPosition = () => {
@@ -133,7 +158,12 @@ module('router-scroll', function(hooks) {
       assert.ok(false, 'Scroll To should not be called');
     }
 
-    this.owner.register('service:fastboot', EmberObject.extend({ isFastBoot: false }));
+    this.owner.register(
+      'service:fastboot',
+      class extends EmberObject {
+        isFastBoot = false;
+      }
+    );
     const routerScrollService = this.owner.lookup('service:router-scroll');
     Object.defineProperty(routerScrollService, 'position', {
       get position() {
@@ -183,7 +213,12 @@ module('router-scroll', function(hooks) {
       done();
     }
 
-    this.owner.register('service:fastboot', EmberObject.extend({ isFastBoot: false }));
+    this.owner.register(
+      'service:fastboot',
+      class extends EmberObject {
+        isFastBoot = false;
+      }
+    );
     const routerScrollService = this.owner.lookup('service:router-scroll');
     routerScrollService.currentURL = '#World';
     Object.defineProperty(routerScrollService, 'position', {
@@ -211,7 +246,12 @@ module('router-scroll', function(hooks) {
       done();
     }
 
-    this.owner.register('service:fastboot', EmberObject.extend({ isFastBoot: false }));
+    this.owner.register(
+      'service:fastboot',
+      class extends EmberObject {
+        isFastBoot = false;
+      }
+    );
     const routerScrollService = this.owner.lookup('service:router-scroll');
     Object.defineProperty(routerScrollService,'position', { value: { x: 1, y: 2 } });
     routerScrollService.scrollElement = 'window';
@@ -237,7 +277,12 @@ module('router-scroll', function(hooks) {
       done();
     }
 
-    this.owner.register('service:fastboot', EmberObject.extend({ isFastBoot: false }));
+    this.owner.register(
+      'service:fastboot',
+      class extends EmberObject {
+        isFastBoot = false;
+      }
+    );
     const routerScrollService = this.owner.lookup('service:router-scroll');
     Object.defineProperty(routerScrollService,'position', { value: { x: 1, y: 2 } });
     routerScrollService.scrollElement = 'window';
@@ -264,7 +309,12 @@ module('router-scroll', function(hooks) {
       done();
     }
 
-    this.owner.register('service:fastboot', EmberObject.extend({ isFastBoot: false }));
+    this.owner.register(
+      'service:fastboot',
+      class extends EmberObject {
+        isFastBoot = false;
+      }
+    );
     const routerScrollService = this.owner.lookup('service:router-scroll');
     Object.defineProperty(routerScrollService,'position', { value: { x: 1, y: 20 } });
     routerScrollService.scrollElement = 'window';

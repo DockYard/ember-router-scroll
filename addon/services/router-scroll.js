@@ -76,6 +76,7 @@ class RouterScroll extends Service {
     setupRouter(this.router);
   }
 
+  // eslint-disable-next-line ember/classic-decorator-hooks
   init(...args) {
     super.init(...args);
 
