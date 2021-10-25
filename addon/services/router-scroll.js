@@ -1,5 +1,5 @@
 import Service, { inject as service } from '@ember/service';
-import { computed, set, get, action } from '@ember/object';
+import { set, get, action } from '@ember/object';
 import { typeOf } from '@ember/utils';
 import { assert } from '@ember/debug';
 import { getOwner } from '@ember/application';
@@ -55,7 +55,6 @@ const CALLBACK = function(transition) {
 class RouterScroll extends Service {
   @service router;
 
-  @computed
   get isFastBoot() {
     const fastboot = getOwner(this).lookup('service:fastboot');
     return fastboot ? fastboot.get('isFastBoot') : false;
