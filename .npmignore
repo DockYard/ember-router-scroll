@@ -14,6 +14,7 @@
 /.eslintignore
 /.eslintrc.js
 /.git/
+/.github/
 /.gitignore
 /.prettierignore
 /.prettierrc.js
@@ -22,6 +23,7 @@
 /.watchmanconfig
 /bower.json
 /config/ember-try.js
+/CODE_OF_CONDUCT.md
 /CONTRIBUTING.md
 /ember-cli-build.js
 /testem.js
