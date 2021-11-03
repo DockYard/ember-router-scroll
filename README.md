@@ -1,7 +1,7 @@
 ember-router-scroll
 ==============================================================================
 
-[![Build Status](https://travis-ci.org/DockYard/ember-router-scroll.svg?branch=master)](https://travis-ci.org/DockYard/ember-router-scroll)
+[![GitHub Actions Build Status](https://github.com/DockYard/ember-router-scroll/workflows/CI/badge.svg)](https://github.com/DockYard/ember-router-scroll/actions/workflows/ci.yml?query=branch%3Amaster)
 
 > Scroll to page top on transition, like a non-SPA website. An alternative scroll behavior for Ember applications.
 
