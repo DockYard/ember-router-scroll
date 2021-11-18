@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.1.2
+- Fix automatically scrolling to the element which id matches the hash segment of the url when there's loading substates.
+
 - Updating to the v3.0 series was due to removing `scrollWhenPainted` as a config option.  Also, we fixed some hidden bugs with scheduling when to scroll to your last y position.
 
 ## v4.1.0 (2021-06-18)
