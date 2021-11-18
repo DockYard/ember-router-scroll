@@ -22,9 +22,10 @@ let callbackRequestId;
  * @param {Function} fn
  * @param {Object} scrollHash
  * @param {Element} [element]
+ * @param {string?} url
  * @void
  */
-function tryScrollRecursively(fn, scrollHash, element) {
+function tryScrollRecursively(fn, scrollHash, element, url) {
   let documentHeight;
   // read DOM outside of rAF
   if (element) {
@@ -45,13 +46,19 @@ function tryScrollRecursively(fn, scrollHash, element) {
   }
 
   callbackRequestId = window.requestAnimationFrame(() => {
+    if (url && url.indexOf('#') > -1) {
+      const hashElement = document.getElementById(url.split('#').pop());
+      if (hashElement) {
+        scrollHash = { x: hashElement.offsetLeft, y: hashElement.offsetTop };
+      }
+    }
     // write DOM (scrollTo causes reflow)
     if (documentHeight >= scrollHash.y || ATTEMPTS >= MAX_ATTEMPTS) {
       ATTEMPTS = 0;
       fn.call(null, scrollHash.x, scrollHash.y);
     } else {
       ATTEMPTS++;
-      tryScrollRecursively(fn, scrollHash, element);
+      tryScrollRecursively(fn, scrollHash, element, url);
     }
   });
 }
@@ -123,20 +130,11 @@ class RouterScroll extends Service {
    * @param {transition|transition[]} transition If before Ember 3.6, this will be an array of transitions, otherwise
    */
   updateScrollPosition(transition) {
-    const url = this.currentURL;
-    const hashElement = url
-      ? document.getElementById(url.split('#').pop())
-      : null;
-
     if (this.isFirstLoad) {
       this.unsetFirstLoad();
     }
 
     let scrollPosition = this.position;
-
-    if (url && url.indexOf('#') > -1 && hashElement) {
-      scrollPosition = { x: hashElement.offsetLeft, y: hashElement.offsetTop };
-    }
 
     // If `preserveScrollPosition` was not set on the controller, attempt fallback to `preserveScrollPosition` which was set on the router service.
     let preserveScrollPosition =
@@ -145,10 +143,10 @@ class RouterScroll extends Service {
       ) || this.preserveScrollPosition;
 
     if (!preserveScrollPosition) {
-      const { scrollElement, targetElement } = this;
+      const { scrollElement, targetElement, currentURL } = this;
 
       if (targetElement || 'window' === scrollElement) {
-        tryScrollRecursively(window.scrollTo, scrollPosition);
+        tryScrollRecursively(window.scrollTo, scrollPosition, null, currentURL);
       } else if ('#' === scrollElement.charAt(0)) {
         const element = document.getElementById(scrollElement.substring(1));
 
@@ -157,7 +155,7 @@ class RouterScroll extends Service {
             element.scrollLeft = x;
             element.scrollTop = y;
           };
-          tryScrollRecursively(fn, scrollPosition, element);
+          tryScrollRecursively(fn, scrollPosition, element, currentURL);
         }
       }
     }
