@@ -16,7 +16,7 @@ module('router-scroll', function (hooks) {
     window.scrollTo = scrollTo;
   });
 
-  function getTransitionsMock(URL, isPreserveScroll) {
+  function getTransitionsMock(URL, isPreserveScroll = false, nested = false) {
     Object.defineProperty(subject, 'currentURL', {
       value: URL || 'Hello/World',
     });
@@ -24,7 +24,7 @@ module('router-scroll', function (hooks) {
     const transition = {
       handler: {
         controller: {
-          preserveScrollPosition: isPreserveScroll || false,
+          preserveScrollPosition: nested || isPreserveScroll,
         },
       },
       router: {
@@ -32,7 +32,7 @@ module('router-scroll', function (hooks) {
           {
             route: {
               controller: {
-                preserveScrollPosition: isPreserveScroll || false,
+                preserveScrollPosition: !nested && isPreserveScroll,
               },
             },
           },
@@ -174,6 +174,37 @@ module('router-scroll', function (hooks) {
 
     subject = this.owner.lookup('service:router');
     subject.trigger('routeDidChange', getTransitionsMock('Hello/World', true));
+    await settled();
+  });
+
+  test('Update Scroll Position: Can override preserveScrollPosition', async function (assert) {
+    assert.expect(1);
+    const done = assert.async();
+
+    window.scrollTo = () => {
+      assert.ok(true, 'Scroll To should be called');
+      done();
+    };
+
+    this.owner.register(
+      'service:fastboot',
+      class extends EmberObject {
+        isFastBoot = false;
+      }
+    );
+    const routerScrollService = this.owner.lookup('service:router-scroll');
+    Object.defineProperty(routerScrollService, 'position', {
+      get position() {
+        return { x: 0, y: 0 };
+      },
+    });
+    routerScrollService.scrollElement = 'window';
+
+    subject = this.owner.lookup('service:router');
+    subject.trigger(
+      'routeDidChange',
+      getTransitionsMock('Hello/World', false, true)
+    );
     await settled();
   });
 
