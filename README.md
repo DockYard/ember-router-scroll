@@ -89,7 +89,6 @@ historySupportMiddleware: true,
 ```
 
 This location type inherits from Ember's `HistoryLocation`.
-```
 
 
 ### Options
